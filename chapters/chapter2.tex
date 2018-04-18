@@ -1,14 +1,3080 @@
  \documentclass[../thesis.tex]{subfiles}
+
+ \newcommand{\W}{\mathcal{W}} % world
+%\newcommand{\S}{\mathcal{S}} % Sensors/Inputs
+
+
+\def\approxindep{\mathrel{%
+    \mathchoice{\APPROXINDEP}{\APPROXINDEP}{\scriptsize\APPROXINDEP}{\tiny\APPROXINDEP}%
+}}
+\def\APPROXINDEP{{%
+    \setbox0\hbox{$\independent$}%
+    \rlap{\hbox to \wd0{\hss$\sim$\hss}}\box0
+}}
+
+
+
  \begin{document}
 
- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras laoreet diam sit amet porta dignissim. Vivamus in risus velit. Morbi ultrices condimentum venenatis. Nullam ornare quam vel magna interdum, eget gravida ipsum feugiat. Sed fermentum justo ut turpis ornare aliquet. Aliquam condimentum leo et justo consequat, ut condimentum nisi fermentum. Aenean semper accumsan ex ut eleifend. Proin gravida sed erat a hendrerit. Etiam fringilla erat et libero sollicitudin congue. Nunc ultricies ultricies dignissim. Praesent molestie tincidunt turpis ut porttitor. Nullam sit amet neque vitae ante dapibus faucibus et nec odio. Suspendisse elementum luctus diam tempor porta. Maecenas consectetur odio risus, sed pulvinar nisl condimentum at~\cite{doucet2009tutorial}.
+% Sebastian Benthall, Cornell Tech \\
+%  Anupam Datta, Carnegie Melon University \\
+%  Michael Carl Tschantz, ICSI
+%}
+ 
+ 
+\section{Abstract}
+Many privacy and data protection policies stipulate
+restrictions on the flow of information based on that
+information's original source.
+We formalize this concept of privacy as Origin Privacy.
+This formalization shows how information flow security
+can be represented using causal modeling.
+Causal modeling of information security leads to
+general theorems about the limits of privacy by design
+as well as a shared language for representing specific
+privacy concepts such as noninterference, differential
+privacy, and authorized disclosure.
+These considerations raise questions for future work
+about whether policies should be design with respect
+to the feasibility of automating their enforcement.
 
-Aliquam viverra, erat laoreet lacinia commodo, arcu libero facilisis mi, ut tincidunt tellus ipsum vitae libero. Fusce consequat tincidunt leo in mollis. Integer blandit tortor aliquam, sollicitudin est eu, lacinia eros. Donec eget ipsum id ipsum feugiat varius. Ut quis feugiat sapien, nec mollis elit. Vivamus quis diam porta, iaculis nibh nec, tincidunt ante. Donec massa nibh, auctor ut fringilla in, pharetra id ante. Nullam tristique augue ac turpis viverra posuere.
+%\keywords{information flow security, Bayesian networks, noninterference, differential privacy, causality} 
 
-Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam metus arcu, fringilla et euismod sed, facilisis facilisis arcu. Sed hendrerit ligula et leo eleifend, vitae hendrerit leo ornare. Pellentesque rhoncus ultricies sem et viverra. Suspendisse tempor nulla vitae lectus porttitor, sed feugiat erat ultricies. Morbi leo mi, dapibus vitae viverra ac, fermentum quis lectus. Nulla dapibus dolor at magna porttitor, et pulvinar leo gravida. Pellentesque in tincidunt magna. Nam faucibus efficitur libero, non eleifend enim fringilla vel. Nulla nisl lectus, bibendum eget nisi et, tristique finibus tortor. Phasellus in nunc ultrices purus pulvinar ultricies at a justo. Curabitur at ipsum nec ex pharetra elementum. Vestibulum et pulvinar nisl, eu bibendum nibh. Vivamus velit nibh, euismod non tempor ac, tristique at elit.
+\section{Introduction}
+\label{sec:orgheadline2}
 
-Nam porttitor tempor molestie. Suspendisse et bibendum enim. Maecenas vel dignissim arcu, vitae sodales urna. Duis sit amet ultricies elit. Vivamus id tortor suscipit, cursus nulla non, vestibulum dui. Praesent eu libero eu massa varius varius. Nulla aliquet at turpis sed lacinia. Integer rutrum diam id enim feugiat, nec dapibus sapien sagittis. Maecenas arcu mauris, tincidunt tempus velit eu, malesuada consequat nunc. Morbi felis lacus, fermentum sit amet accumsan eu, condimentum in enim. Fusce quis risus nisl.
+%\mct{The introduction is missing some high-level vision.  Why are you focusing on origins?  What limitation exists in the prior work to require this work?}
+% sb: will hold off on revising since in future versions we may drop
+%     'origin' angle all together
 
-Pellentesque lorem tortor, iaculis vitae pulvinar quis, euismod vitae lectus. Integer sagittis pulvinar sapien vel malesuada. In hac habitasse platea dictumst. Pellentesque lectus sem, imperdiet eu est et, tempor varius ipsum. Nullam ullamcorper lacinia metus at hendrerit. Aenean ornare enim quis augue pellentesque, vitae condimentum libero dignissim. Vestibulum nulla magna, fringilla ut molestie quis, dignissim at nunc. Quisque vel metus nec justo ultrices ullamcorper eu non risus. Aenean in quam vel nibh pellentesque condimentum.
+Many policies (e.g. HIPAA, GLBA, FERPA, and
+Executive Order 13526 in the United States and the GDPR
+in the European Union) place restrictions on the collection,
+flow, and processing of personal information. When engineers
+build technical systems that collect and use personal data,
+they are under business and social pressure to translate
+prescriptive privacy policies, fitted to their case by
+lawyers, ethicists, and other policy-makers, into engineering
+requirements \cite{barth07csf,fisler2010embracing,swire14iapp,sen14sp}.
+The goal of engineering a privacy policy is to enable automated 
+enforcement of some or all of the policy.
+This reduces the cost of protecting privacy.
+To automate enforcement of a privacy policy, that policy must 
+first be translated into a machine-readable language with a 
+precise syntax and semantics.
+
+Prior research has explored the feasibility of translating
+classes of privacy clauses into formal logic for enforcement.
+Some attempt to formalize a wide range of policies, such
+as those expressible within the framework of Contextual
+Integrity \cite{barth07csf,shvartzshnaider2017vaccine}.
+Others focus on particular kinds of clauses, such as those
+restricting information based on its purpose
+\cite{tschantz13esorics} or its use \cite{datta2017use}.
+This article is concerned with clauses in privacy policies
+that restricting information based on its \emph{origin}.
+We consider the origin of data to be the processes that 
+created or transmitted that data to the system 
+governed by the privacy policy, that is, the data's provenance.
+
+Section~\ref{sec:policy} will show how existing
+policies motivate this work
+by defining restricted classes of information in terms
+of the processes that originated them.
+This policy analysis reveals that origin clauses are most
+often used to identify a broad class or type of information
+that is then subject to restrictions or exemptions.
+In addition, information topic
+(what the information refers to or is about) is also
+frequently used alongside information origin.
+We show that the distinction between information origin
+and information topic is subtle but important for the
+purposes of determining the conditions under which
+a formalized policy can be enforced.
+
+In Section~\ref{sec:ontology}, we derive, from the policies
+analyzed, a general ontology of systems, processes, and messages.
+This ontology is intended to bridge between policies as
+intuitively articulated in natural language and the mathematical
+formalisms we will use in the rest of the paper.
+Using this ontology, we propose Origin Privacy as a
+framework for understanding
+privacy requirements and the knowledge necessary to enforce
+them by design.
+
+Section~\ref{sec:causality} shows how this informal
+specification can be mapped to a well established
+formal representation
+of causal models~\cite{pearl1988probabilistic}.
+In addition to presenting the formal theory,
+we show that causal modeling makes clear distinctions
+between two elements of information flow that are
+sometimes conflated: causal flow and nomic association,
+where ``nomic'' means law-like, or regular.
+These two aspects of information flow correspond
+to information origin and information topic.
+
+In Section~\ref{sec:security}, we combine the
+ontology with causal modeling to develop
+the Embedded Causal System (ECS) model.
+This model represents a computational system
+embedded in a larger environment.
+This is motivated by the need to consider technical
+systems in their environments (possibly interacting
+with third parties) when assessing their privacy,
+fairness, and security properties~\cite{veale2017fairer}.
+We show demonstrate conditions under which an ECS model
+is secure according to the well-established formal security model
+of noninterference \cite{gm82security}.
+We also formalize semantic security for an ECS model
+and reproduce the result that it is, in general, impossible
+for a system designer to guarantee semantic security
+on a statistical database given auxiliary knowledge.
+It is well known that information
+can be revealing of other sensitive information given
+auxiliary knowledge. Our theorem reflects the conditions
+under which auxiliary knowledge is possible.
+The contibutions from the model are due to explicit
+causal modeling of the generative process of data
+input into the system as well as the operations
+of the system itself.
+
+In Section~\ref{sec:robustness}, we build on these results
+to develop security models for cases where information
+is restricted based on its origin.
+We find these models analogous to noninterference
+and semantic security, and demonstrate sufficient
+conditions under which an ECS has these properties.
+
+Section~\ref{sec:usecase} shows a case study of using Origin privacy.
+We show that in a case of biometric sensing with
+Internet of Things devices, origin privacy specification
+can be used to enforce GDPR compliance.
+Section~\ref{sec:differential} shows how differential privacy
+is a special case of origin privacy.
+Section \ref{sec:incentives} demonstrates how a game theoretic
+layer can be added to the ECS model to show how system
+security properties relate to the impact on system users.
+Section~\ref{sec:future} addresses directions for future work.
+
+
+%\mct{Is there no prior work section?
+%I think the noninterference composition results should be covered.}
+% sb: Good point. Let's revisit this when we are preparing for publication.
+%
+
+
+\textbf{Contributions}. The contributions of this paper
+include:
+\begin{itemize}
+\item An analysis of privacy policies, specifically with
+  respect to how they determine protected classes of information
+  through information topic and information origin.
+\item An informal ontology and articulation of Origin Privacy
+  appropriate for use by policy designers.
+\item Disambiguation of the concept of ``information flow''
+  into causal flow and nomic association components through
+  causal modeling.
+\item The Embedded Causal System (ECS) model, a model of a
+  causal system embedded in its environment suitable for
+  proving properties of information flow security under these
+  conditions.
+\item Proofs of conditions for noninterference and semantic security
+  in causal and embedded causal systems.
+\item Formal security models for origin noninterference and origin
+  semantic security, with proofs of sufficient conditions.
+\item Demonstration of the use of Origin Privacy in a
+  biometric Internet of Things use case.
+\item Relaxed security models based on mutual information and
+  proofs of their formal relationship to differential privacy.
+\item A demonstration of the use of ECS models in game theoretic
+  modeling using Multi-Agent Influence Diagrams.
+\end{itemize}
+
+This paper includes two technical appendices.
+Appendix \ref{appendix:information-theory-theorems}
+proves several supplemental theorems in information theory
+that are used in a proof of the relationship between
+causal modeling and differential privacy.
+Appendix \ref{appendix:maid} outlines the major
+findings of \cite{koller2003multi} on Multi-Agent
+Influence Diagrams, and introduces a new concept:
+tactical independence.
+
+\section{Policy Motivations for Origin Privacy}
+\label{sec:policy}
+
+To motivate a consideration of Origin Privacy as a flavor
+of privacy specification, we look to existing policies that
+include rules that restrict information flow based on its origin.
+We build on prior work in logical specification of privacy
+laws as inspiration for this 
+approach~\cite{barth06sp,DeYoungGJKD10}.
+
+\subsection{Policy Example: HIPAA Psychotherapy Notes}
+\label{sec:orgheadline3}
+
+Some laws define a class of information in terms
+of the process that creates it.
+A straightforward example from law are psychotherapy notes
+as defined under HIPAA\footnote{45 CFR \S 164.501.}:
+
+\begin{quote}
+Psychotherapy notes means notes recorded (in any medium) by a health care provider 
+who is a mental health professional documenting or analyzing the contents of 
+conversation during a private counseling session or a group, joint, or family 
+counseling session and that are separated from the rest of the individual's 
+medical record. Psychotherapy notes excludes medication prescription and 
+monitoring, counseling session start and stop times, the modalities and 
+frequencies of treatment furnished, results of clinical tests, and any 
+summary of the following items: Diagnosis, functional status, 
+the treatment plan, symptoms, prognosis, and progress to date.
+\end{quote}
+
+In this definition, there is a reference to a process involving 
+``documenting or analyzing [\ldots] a [\ldots] counseling session''.
+Any information with provenance beginning with its creation by a health 
+care provider who is a mental health professional documenting a conversation 
+during a counseling session separately from an individual's medical record, 
+barring some exceptions, are psychotherapy notes.
+
+\subsection{Policy Example: GLBA}
+\label{sec:orgheadline4}
+
+Some laws include references to information origin in the 
+definition of what information is protected. 
+We find this in particular in the Privacy Rule of 
+the Gramm--Leach--Bliley Act, which applies to 
+``nonpublic personal information'' (NPI)\footnote{GLBA, 15 U.S. Code \S 6809}. 
+This class of information is defined as personally identifiable
+financial information that is
+\begin{enumerate}
+\item provided by a consumer to a financial institution;
+\item resulting from any transaction with the consumer
+  or any service performed for the consumer; or
+\item otherwise obtained by the financial institution.
+\end{enumerate}
+
+Reading progressively through each of these
+criteria, the concept of \emph{origin} 
+helps us understand the differences between
+them and how that affect their enforceability.
+% \mct{Before getting to the criteria, there's general condition that
+% the information must be ``personally identifiable financial
+%  information''.  Maybe that should be discussed first.}
+Criterion~1 explicitly refers to the channel
+of transmission and does not refer 
+to any specific meaning or category of
+the information transmitted 
+(though examples are provided in the law, these are
+constrained only by what is normally 
+transmitted in the process of
+procuring a financial service).
+It sets clear guidelines as to the
+process of creation and transmission.
+Criterion~2 refers to broad classes of
+ways in which the information is transmitted 
+to the governed entity.
+Criterion~3 is written as if to cover all other 
+cases where a financial institution could 
+collect individualized information, 
+regardless of the process of transmission. 
+It is agnostic to process of transmission. 
+It raises the question of whether information can be
+personal financial information without having the specific
+provenance of a transaction or service with a
+financial institution.
+For example, information about a person's income may be
+personal financial information no matter how it is discovered.
+
+%\mct{It appears that Criterion~3 is a superset of 1 and 2.  So, why
+%  are 1 and 2 even stated?  In fact, Criterion~3 doesn't even seem to
+%  be a limitation.  Why not just say it's all ``personally
+%  identifiable financial information''?}
+% sb: I don't know. Do you think we need to address this?
+%
+
+\subsection{Policy example: PCI DSS}
+\label{sec:pci-dss}
+
+Though not a law, we consider the Payment Card Industry 
+Data Security Standard (PCI DSS) as an exemplary 
+security regulation~\cite{bradleypayment}.
+Established as a proprietary information security standard 
+by the Payment Card Industry Security Standards Council, 
+it applies to organizations that use
+major branded credit cards such as Visa, Mastercard, 
+and American Express.
+Though referenced in the laws of some U.S. states, it is 
+mandated mainly by Visa and Mastercard themselves through 
+their dealings with 
+merchants\footnote{Minnesota Session Laws - 
+CHAPTER 108--H.F.No. 1758. Nevada Revised Statutes, Chap. 
+603A \S 215. Wash. Rev. Code \S 19.255.020 (2011). 
+See~\cite{pcisecuritystandardscouncilFAQ}}.
+
+We note two aspects of the PCI DSS that make it an effective 
+regulatory standard.
+First, the PCI DSS governs only types of data the enforcing 
+industry is responsible for generating: cardholder data and 
+sensitive authentication data~\cite{pcisecuritystandardscouncil2016DSS}.
+This data is generally not meaningful outside of the operations 
+that the payment card industry enables, because the potential 
+uses of the data are a function of the system that created 
+the data in the first place.
+This allows the payment card industry to 
+straightforwardly enforce contractual obligations on those 
+that use the data.
+This is in contrast with legal regimes that regulate the 
+flow of more generally meaningful information between persons 
+and organizations.
+
+A second feature of PCI DSS is that they are explicit about 
+the application of the standard to networks of technology and 
+business processes,
+which they call the cardholder data environment 
+(CDE) \cite{pcisecuritystandardscouncil2016DSS}:
+\begin{quote}
+  The PCI DSS security requirements apply to all system components 
+included in or connected to the cardholder data environment.
+  The cardholder data environment (CDE) is comprised of people, 
+processes and technologies that store, process, or transmit 
+cardholder data or sensitive authentication data.
+\end{quote}
+which PCI DSS further defines as 
+\cite{pcisecuritystandardscouncil2016DSS}:
+\begin{quote}
+  The first step of a PCI DSS assessment is to accurately 
+determine the scope of the review.
+  At least annually and prior to the annual assessment, 
+the assessed entity should confirm the accuracy of their 
+PCI DSS scope by identifying all locations and flows of 
+cardholder data, and identify all systems that are connected 
+to or, if compromised, could impact the CDE (for example, 
+authentication servers) to ensure they are included in the
+  PCI DSS scope.
+  All types of systems and locations should be considered as 
+part of the scoping process, including backup/recovery sites 
+and fail-over systems.
+\end{quote}
+
+This is a clear example of how a privacy policy can be specific
+about the technical system to which it applies.
+
+\subsection{Other policies}
+
+The examples above have been chosen for their representativeness
+of the concepts developed in this paper.
+Other information protection policies do not define protected
+information solely in terms of its origin but rather depend
+in whole or in part on
+a definition of information topic. For example,
+the Family Educational Rights and Privacy Act (FERPA)
+defines ``education records'' as
+\begin{quote}
+  those records, files, documents, and other materials which—
+  
+  (i) contain information directly related to a student; and
+
+  (ii) are maintained by an educational agency or institution or by a person acting for such agency or institution.
+\end{quote}
+
+The Children's Online Privacy Protection Rule (COPPA)
+includes a broad definition of ``personal informal''
+as any individually identifiable information collected
+on-line, but includes special restrictions on personal
+information collected from a child, which could be
+read as a restriction based on origin.
+
+The United States Executive Order 13526 of 2009,
+gives certain government officials authority to classify
+documents they determine pose a risk to national
+security.
+In some cases, the information may be classified
+as soon as it is produced.
+In all cases, the information's classification
+prevents unauthorized access.
+Derivative information carries the classification
+of the original information.
+Information may be declassified when the
+conditions for classification no longer hold.
+Information restrictions on information
+therefore depend partly on its procedural history,
+but also on predictions made about the effects of
+disclosure.
+
+Our analysis of Origin Privacy explores the
+limits of privacy by design and what policies
+can be automatically enforced on a system
+bound by laws of statistical causation.
+We will demonstrate the ambiguity of
+the term ``information'' and how this
+renders the application of many policies
+that restrict information based on information
+topic indeterminate.
+
+
+\section{Origin Privacy}
+\label{sec:ontology}
+
+We will now provide an informal definition of Origin Privacy.
+First, we will introduce an ontology appropriate to the
+design of technical systems and inspired by the policy
+examples above.
+Three concepts are introduced in this section.
+\emph{Systems} are assemblages of people and technologies
+through which information flows and is transformed.
+\emph{Processes} are regular events, implemented as
+a person or technology's behavior, which act on
+information.
+Processes pass information to other processes as data.
+The \emph{origin} of data is the history of processes
+that led to its creation.
+Origin privacy includes any privacy restrictions made
+on information flow conditioned on that information's
+origin.
+
+\subsection{Systems}
+
+Regulations mark out spaces or domains in which information 
+may flow more freely than others, or where restrictions 
+specifically apply.
+For example, HIPAA applies to ``covered entities'', including 
+health care providers\footnote{``Covered entity means: 
+(1) A health plan. (2) A health care clearinghouse. 
+(3) A health care provider who transmits any health 
+information in electronic form in connection with a 
+transaction covered by this subchapter. 45 CFR \S 160.103}.
+These spaces may be defined by legal jurisdiction, or they 
+may be defined through networks of contractual relations.
+More often than not, the regulated space is not bounded 
+geographically but rather by relationships between 
+personnel, institutions, and technical systems,
+all of which are participating in information flows 
+and processing.
+
+The Payment Card Industry Data Security Standard (PCI DSS) 
+is explicit about this in its definition of the covered system 
+in terms of the
+``people, processes, and technologies that store, process, or
+transmit'' data (Section \ref{sec:pci-dss} provides further details) \cite{pcisecuritystandardscouncil2016DSS}.
+We generalize this concept and
+refer to assemblages of people, processes, and technologies 
+such as these \emph{information processing systems}, or 
+just \emph{systems}.
+
+There will inevitably be people, processes, and technologies
+that interact with a governed system without being included
+within it. We refer to these external factors as the
+\emph{environment} of the system.
+Systems have inputs and outputs, which are events
+that pass data from and to the environment.
+We will find it useful to model the world of a system
+within its environment as a larger, superordinate system.
+This causally embedded system framework is formalized
+in Section \ref{sec:ecs}.
+
+The use of the term ``system'' here is abstract and intended
+to provide a precise analytic frame.
+How it gets applied to an empirical case can vary.
+For example, in healthcare, we might consider a single hospital
+with its procedures as a system, or a network of covered entities
+collectively as a system.
+A complete discussion of systems and how they may be nested or
+interconnected is beyond the scope of this paper.
+
+\subsection{Processes}
+
+For the purpose of these definitions, we will assume that
+technical systems and their environments consist of many
+different components implementing information processes.
+People in their professional roles are, for the purposes of 
+this framework, included as another way of implementing processes.
+
+The outputs of a process may be the input to another.
+These messages between processes are \emph{data}.
+When a process $A$ sends data to another process $B$ under one or
+more conditions, we say that there is a channel from $A$ and $B$,
+or, equivalently, that (the state of) $A$ directly causes
+(the state of) $B$.
+
+The structure of processes and their dependence on each other
+implies a causal graph \cite{pearl1988probabilistic} with directed
+edges representing the channels between processes.
+We will discuss the implications of causal modeling of systems
+more thoroughly in Section \ref{sec:causality}.
+
+%
+% NOTE: Contiguity is mentioned here, but not formally defined
+% in the mathematical section of this paper.
+%
+
+Systems are composed of contiguous processes,
+meaning that for any two processes in the system there will
+be an (undirected) path between the two through channels that
+includes only other processes in the system.
+
+While causal modeling has been used in a security context
+(e.g.,~\cite{feng2014security}), formal security research
+more often relies on static analysis of programs (e.g.,~\cite{mclean90sp}).
+We choose a causal models in this article because
+these models can represent both programs and their
+subprograms (see Section \ref{sec:programs}),
+as well as non-technical environmental processes
+that generate data.\footnote{While it may be the case that
+  programs are as expressive as causal models, this
+discussion is beyond the scope of this paper.}
+An example of such a process is a medical examination
+conducted via an interpersonal interaction between
+patient and doctor.
+
+\subsection{Origin and Provenance}
+
+The data resulting from a process depends causally
+on a history of prior processes.
+Sometimes data that is an input to a system
+is generated by a process that is not immediately part
+of the system.
+Data can flow through 
+a series of relays before it reaches
+the system on which a privacy policy is being enforced.
+The entire history of the information as it flows from its 
+creation to the system input is the information's 
+\emph{provenance}.
+The governed system may or may not have access to
+assured metadata (such as cryptographic certificates)
+about the provenance of its data.
+
+\iffalse
+## Commenting out for PoPETS
+See Figure \ref{fig:provenance}.
+
+\begin{figure*}
+\noindent
+Data's Provenance:
+\begin{center}
+\footnotesize
+\begin{tikzcd}[cramped, sep=small, math mode=false]
+   \begin{tabular}{ll}data creator\\ (ultimate source)\end{tabular} \arrow[r]
+ & \begin{tabular}{ll}intermediate\\ system $A$\end{tabular} \arrow[r]
+ & \begin{tabular}{ll}intermediate\\ system $B$\end{tabular} \arrow[r]
+ & \begin{tabular}{ll}transmitting system\\ (immediate source)\end{tabular} \arrow[r]
+ & \begin{tabular}{ll}governed\\ system \end{tabular}\arrow[r, dotted]
+ & \begin{tabular}{ll}potential\\ receipt\end{tabular}\\
+\end{tikzcd}
+\end{center}
+\noindent
+Data's Known Provenance:
+\begin{center}
+\footnotesize
+\begin{tikzcd}[cramped, sep=small, math mode=false]
+   \phantom{\begin{tabular}{ll}data creator\\ (ultimate source)\end{tabular}} \arrow[r]
+ & \begin{tabular}{ll}intermediate\\ system $A$\end{tabular} \arrow[r]
+ & \phantom{\begin{tabular}{ll}intermediate\\ system $B$\end{tabular}} \arrow[r]
+ & \begin{tabular}{ll}transmitting system\\ (immediate source)\end{tabular} \arrow[r]
+ & \begin{tabular}{ll}governed\\ system \end{tabular}\arrow[r, dotted]
+ & \begin{tabular}{ll}potential\\ receipt\end{tabular}\\
+\end{tikzcd}
+\end{center}
+\caption{Data's Origin.  The data is created by some system and makes it way to the governed system, subject to the privacy policy, by way of intermediate entities and finally the transmitting system.  The governed system must consult the privacy policy to determine whether it may further transmit the data to some potential receipt.  In some cases, the governed system might not have a complete view of the data's provenance, knowing only a subset of the other entities involved in the data's transmission to it.}
+\label{fig:provenance}
+\end{figure*}
+\fi
+
+We consider the origin of data to be the processes
+that have caused it, either directly or indirectly.
+For the purposes of enforcement of a policy, these processes
+may be either in the governed system or outside of it,
+in an originating system or the system's environment.
+
+\subsection{Origin privacy}
+
+Given the above ontology, we can now provide a definition
+of origin privacy.
+Origin privacy includes any and only those information
+flow restrictions implemented in a system that are conditioned
+on the provenance of system inputs.
+ 
+\section{Information Flow and Causal Models}
+\label{sec:causality}
+
+We have motivated Origin Privacy as a concept of privacy
+that is useful when considering how to design
+information processing systems to be compliant with
+laws and other rules regarding the flow of personal 
+information.
+The ontology in Section~\ref{sec:ontology} is motivated
+by policies that specifically mention systems and
+restrict information flow based on its origin.
+
+In this section we will introduce philosophical and formal
+concepts with which we will make our definitions and claims
+about origin privacy precise.
+Philosophically, privacy depends on appropriate
+information flow~\cite{nissenbaum09book}, where information is defined
+as that which allows somebody to learn about something else
+based on its regular associations with it.
+We find a formalization of this idea in Bayesian networks,
+a common formalism in statistics which represents the
+relationships between random variables with a directed
+acyclic graph.
+Bayesian networks have two attractive properties which
+we will explain.
+First, it is easy to derive some independence relations
+between variables from the graph structure of a Bayesian
+network.
+Second, this formalism supports an intervention operation
+that gives it robust causal semantics.
+All of these conceptual tools will be used in proofs
+later in this paper.
+We will close this section by showing how this formalism
+rigorously clarifies an ambiguity in the term `information flow',
+which refers to both causal flow and nomic associations between
+variables.
+
+\subsection{Philosophy: Contextual Integrity and Information Flow}
+
+Origin Privacy is intended to be broadly consistent
+with the Contextual Integrity \cite{nissenbaum09book}
+philosophy of privacy in so far as it defines privacy
+as \emph{appropriate information flow}.
+Specifically, Contextual Integrity maintains that
+privacy expectations can be characterized by norms
+about how information about persons flows in particular
+social contexts, or spheres.
+
+In this article, we restrict our analysis of Origin Privacy
+to cases where expectations of privacy have been articulated
+as \emph{policies} in natural language and endowed with a 
+social system of enforcement.
+We consider laws and contracts as kinds of policies.
+Policies may or may not express social norms as per
+Contextual Integrity; addressing the conditions under
+which policies reflect social norms is beyond the scope
+of this article.
+However, we maintain that some policies are specifically
+\emph{privacy} policies because they, like privacy norms,
+prescribe personal information flows. 
+
+As a way of bridging from Contextual Integrity through
+privacy policies to the specification of privacy-preserving
+mechanisms, we address \emph{information flows} in general.
+Despite its wide use, the phrase ``information flow''
+is rarely given a precise definition.
+However, philosophical and formal work on information flows have
+provided general insights that can bridge between social, legal,
+and technical theories of privacy.
+We will build on these insights to make
+arguments about origin privacy.
+
+There is a long history of literature on information flow
+in computer security and privacy 
+research \cite{mclean90sp,gray91sp,barthe04,tschantz15csf,smith15lics}.
+%\cite{csftschantz13blackboxtr} \cite{tschantz14arxiv}
+These take their inspiration from Shannon's classic formulation 
+of information theory~\cite{shannon1948mathematical}.
+Dretske's philosophical
+formulation of information flow~\cite{dretske1983epistemology}
+also draws on Shannon's information theory.
+In this work, we are explicitly bridging between philosophy and engineering
+principles, finding common ground between.
+
+According to Dretske's theory, a message
+carries information about some phenomenon if a suitably equipped
+observer could learn about the phenomenon from the message.
+In other words, a message carries information about anything that
+can be learned from it.
+For an observer to learn from it, the message must have
+a \emph{nomic} connection with its subject, where here "nomic" means
+``law-like'' or ``regular''~\cite{dretske1981knowledge}.
+%\mct{How does this differ from the information as mere association view?}
+% sb: Do you have a citation for this view that I could use
+%     in order to make the comparison?
+Messages, in this understanding, get their meaning from the
+processes that generate them, because these processes connect
+the content of messages reliably to other events.
+There is a logical connection between the definition of information
+flow and the structure of the regular dependence between events.
+The formal theory of the causal dependence between events has been
+worked out in the literature on causal graphical 
+models \cite{pearl1988probabilistic}.
+
+\subsection{Causal Probabilistic Graphical Models}
+\label{sec:orgheadline18}
+
+There is the a well known formalism for representing
+the causal relationship between uncertain events: the
+\emph{Bayesian network}, or probabilistic 
+graphical model, framework \cite{pearl1988probabilistic}. 
+As we will see, this form of modeling can be used to represent
+processes within a system, as well as in its an environment.
+Before showing the relationship between Bayesian networks
+and Origin Privacy, we will present them and a few of their
+formal properties, drawing heavily on \cite{koller2003multi}
+for our choice of formal notation and wording.
+
+\subsubsection{Bayesian networks}
+\label{sec:orgheadline16}
+
+A Bayesian network represents the joint probability distribution
+of a set of random variables with a graph. Consider variables
+\(X_1, ..., X_n\) where each \(X_i\) takes on values in some set
+\(dom(X_i)\). We use \(\mathcal{X}\) to refer to the set \(X_1, ..., X_n\)
+and \(dom(\mathcal{X})\) to refer to their joint domain.
+
+A Bayesian network (BN) represents the distribution using a graph
+whose nodes represent the random variables and whose edges represent
+direct influence of one variable on another.
+
+\begin{dfn}[Bayesian network]
+A Bayesian network over variables $\mathcal{X} = X_1, ..., X_n$ is 
+a pair (G,Pr). G is a directed acyclic graph with $n$ nodes, 
+each labeled for one of the variables in $\mathcal{X}$. We use
+$Pa(X)$ to denote the parents of $X$ in the graph. Pr is a mapping
+of each node $X$ to a conditional probability distribution (CPD),
+$Pr(X \vert Pa(X))$.
+\end{dfn}
+
+\begin{exm}
+  Alice will be on time for work $W$ if she sets her
+  alarm $A$ early enough and traffic $T$ allows.
+  Bad traffic can be caused by construction $C$
+  or an accident on the road $D$.
+\end{exm}
+\begin{center}
+\begin{tikzcd}
+  A \arrow[rrd] & & \\
+  C \arrow[r] & T \arrow[r] & W \\
+  D \arrow[ur] & & 
+\end{tikzcd}
+\end{center}
+
+Given the discussion of information flows above,
+we can see why this
+is relevant to privacy. The condition dependence
+functions between
+random variables are the \emph{nomic relations}
+between events and messages.
+If two variables are conditionally dependent on
+each other, and this
+conditional dependence is known to the observer of one
+of the variables,
+then the observer can infer something (have knowledge of)
+the other
+variables. Hence, by our definitions, the variables carry
+information about each other.
+If privacy is appropriate information flow, then
+the privacy of a system will depend on the
+causal relationships between its components
+and the environment.
+
+A directed edge between one variable and another
+indicates a possible
+conditional dependence between them.
+Strictly speaking, it does not
+necessitate that there is a conditional dependence between them,
+it only necessitates that there is a conditional
+probability distribution
+function defined between them.
+But it does guarantee that at least one such conditional
+probability distribution does exist, and under reasonable
+conditions \emph{most} possible functions
+(in a measure-theoretic sense) will exhibit
+the conditional independence~\cite{meek1995strong}.
+As functions ensuring
+independence are quite rare in the space of all possible
+conditional probability functions, this quirk in the
+notation has not prevented
+this formalism from being useful in identifying
+independence in practice.
+
+%%% Seems to be repeated below
+% One property of causal models is that the
+% conditional independence of its variables can
+% to some extent be read off of the model's
+% graph structure.
+
+\subsubsection{D-separatedness}
+
+A useful property of probabilistic graphical models
+is that some aspects of the joint probability
+distribution of all variables represented in the graph
+can be read easily from the graph's structure.
+Of particular interest in the analysis of the joint probability
+distribution is when and under what conditions
+two random variables are independent.
+
+\begin{dfn}[Path]
+A \emph{path} between two nodes \(X_1\) and \(X_2\)  in a graph 
+to be a sequence of nodes starting with \(X_1\) and ending with \(X_2\)
+such that successive nodes are connected by an edge (traversing
+in either direction).
+\end{dfn}
+
+\begin{dfn}[Head-to-tail, tail-to-tail, head-to-head]
+For any three nodes (\(A, B,C\)) in succession on a
+path, they may be \emph{head-to-tail} 
+(\(A \rightarrow B \rightarrow C\) or \(A \leftarrow B \leftarrow C\)), 
+\emph{tail-to-tail} (\(A \leftarrow B \rightarrow C\)), or \emph{head-to-head}
+(\(A \rightarrow B \leftarrow C\)).
+\end{dfn}
+
+We will find it useful to refer to a special kind of paths, \emph{direct paths}.
+
+\begin{dfn}[Direct path]
+  A \emph{direct path} from \(X_1\) to \(X_2\)
+  is a path starting with \(X_1\) and ending with \(X_2\)
+  such that all triples are head-to-tail.
+\end{dfn}
+
+\begin{dfn}[Ancestors and descendants]
+  If there is a direct path from \(X_1\) to \(X_2\),
+  then $X_1$ is an ancestor of $X_2$ and $X_2$ is a descendant
+  of $X_1$.
+
+  Let $descendants(X)$ be the set of descendants of $X$.
+\end{dfn}
+
+
+There are two ways in which a variable
+\(A\) can be conditionally dependent on another variable \(B\) without
+one of them being a descendant of the other.
+The variables may share an unobserved common cause
+or they may share an observed common effect.
+
+\begin{exm}
+  One building in a neighborhood loses power, $B_1$.
+  One can guess that other buildings $B_i$ around nearby lost power,
+  because power in each building is dependent on the electric grid
+  $G$. All the buildings may be affected by the common cause of a grid
+  failure.
+\end{exm}
+\begin{center}
+\begin{tikzcd}
+   & B_1 \\
+  G \arrow[ur] \arrow[r] \arrow[dr]& B_2 \\
+   & B_3& 
+\end{tikzcd}
+\end{center}
+
+\begin{exm}
+  Suppose we observe that Alice is late for work $W$, as per our
+  earlier example. This could be due to many reasons,
+  including traffic $T$ and missing her alarm $A$.
+  Traffic may be due to construction $C$ or an accident $D$.
+  The probability of any particular cause is conditionally
+  dependent on the others, because if any one cause is
+  ruled out, the others are more likely.
+\end{exm}
+
+The existence of a path between two nodes is
+necessary for their probabilistic dependence on each other.
+It is not sufficient, particularly when considering
+their dependence \emph{conditional on other variables}.
+For this reason, paths in a Bayesian network can be
+blocked or unblocked based on a set of variables that is
+otherwise known or observed, the \emph{conditioning set}.
+
+
+\begin{dfn}[Blocked path]
+A path is considered to be \emph{blocked} if either:
+\begin{itemize}
+\item it includes a node that is in the conditioning set \(C\) 
+where the arrows point to it do not meet head-to-head, or
+\item it includes a node where arrows do meet head to head, but
+neither this node nor any of its descendants is in the
+conditioning set
+\end{itemize}
+\end{dfn}
+
+\begin{dfn}[D-separation]
+If every path from \(X_1\) to \(X_2\) given conditioning set \(C\)
+is blocked, then \(X_1\) and \(X_2\) are d-separated.
+\end{dfn}
+
+\begin{thm}\label{thm:d-seperated}
+  If \(X_1\) and \(X_2\) are d-separated conditioned on set \(C\),
+  then $X_1 \independent X_2 \vert C$.
+\end{thm}
+
+\begin{proof}
+  Proof is discussed in \cite{koller2003multi}.
+\end{proof}
+\hfill
+\hfill
+
+The converse (that independence implies d-separatedness) is
+not true in general because specific conditional distribution
+functions can imply independence.
+Similarly, it is not generally
+true that the absence of d-separatedness implies conditional
+dependence.
+However, is has been shown that conditional distribution functions
+implying conditional independence are rare
+in a measure-theoretic sense
+\cite{geiger1990logical,meek1995strong,koller2003multi}.
+%When there is uncertainty about which of a wide range of functions
+%characterizes the probability distribution over many variables,
+%absence of d-separation is strong evidence of the probability of
+%independence.
+%\mct{This is hard to follow.}
+
+\subsubsection{Intervention}
+
+We have used the terms \emph{Bayesian network} and
+\emph{causal model} interchangeably.
+This is because Bayesian networks support a causal
+interpretation through one additional construct,
+\emph{intervention} \cite{pearl1993bayesian}.
+An intervention on a Bayesian network sets
+the values of one or more of its values.
+Unlike an observation of a variable,
+an intervention effectively creates a new graphical
+model that cuts off the
+influence of a set variable on its parents and vice versa.
+Descendants of the set variable are affected by
+the intervention according to the probability
+distribution of the original model.
+
+\begin{dfn}[Intervention]
+  An \emph{atomic intervention} setting variable
+  $X_i$ to $x'_i$ on a Bayesian network $\W$ creates a new
+  network $\W'$ with post-intervention probability
+  distribution $Pr_{x'_i}$
+
+  $$Pr_{x'_i}(X_1,X_2,...,X_n) = \begin{cases}
+               \frac{Pr(X_1,X_2,...,X_n)}{Pr(X_i = x'_i \vert Pa(X_i))} & \text{if} X_i = x'_i \\
+               0, & \text{otherwise}\\
+  \end{cases}$$
+\end{dfn}
+
+Theories of causation based on manipulation and intervention
+have been influential in philosophy~\cite{woodward2005making}
+and have been shown to be effective theories in
+psychology of causation~\cite{sloman2005causal}
+including the role of causation in moral 
+reasoning~\cite{sloman2009causal}, suggesting interventionist
+causation as a potential bridge between computer science
+and ethical domains such as privacy and fairness.
+Cowgill and Tucker~\cite{cowgillalgorithmic} 
+discuss the evaluation
+of algorithmic impact using counterfactuals, which
+draws on a different but compatible theory of
+causality~\cite{rubin1974estimating}.
+
+\subsection{Ambiguity of information flow}
+\label{sec:ambiguity}
+
+We have drawn a connection
+between information flow in the philosophical sense
+relevant to Contextual Integrity and Bayesian networks.
+A Bayes network is a way of representing the nomic dependencies
+between phenomena.
+They are ``nomic'' because they describe probability 
+distributions that generalize over particular instances of a 
+system's functioning. These nomic relations
+are factored out as an explicit structure of causal relationships.
+
+This reveals an ambiguity in the very concept of \emph{information flow},
+illustrated in the following example.
+
+\begin{exm}
+Alice, a teacher tells every student
+privately their test score's rank $R$ (first in class,
+second in class, etc.) after every test, with class
+participation used as a tie-breaker.
+Alice sends a message $B$ to Bob with the information that
+he has the second highest rank in the class.
+Alice also sends a message $E$ to Eve that she has
+the highest rank in the class.
+From her message and knowledge of the test environment,
+Eve learns from her message that Bob was told that he
+was, at best, second in class.
+Did information about Bob flow to Eve?
+\end{exm}
+
+A formal representation of this example makes the
+root of the ambiguity clear.
+Consider a three node Bayesian network where $R$ is the test
+results, $B$ is the message sent to Bob, and $E$ is
+the message sent to Eve:
+\begin{center}
+\begin{tikzcd}[row sep=tiny]
+   & B \\
+  R \arrow[ur] \arrow[dr]&  \\
+   & E
+\end{tikzcd}
+\end{center}
+There is \textbf{causal flow} along the edges from
+$R$ to $B$ and from $R$ to $E$.
+But an observer of a single variable aware of the
+system's laws (nomic connections,
+graphical structure) can learn \textbf{nomic associations}
+of a message that inform about variables that
+are not in the message's causal history.
+Despite $E$ neither causing nor being caused by $B$,
+$E$ reveals information about $B$.
+
+The phrase ``information flow'' is ambiguous because the
+word ``information'' is ambiguous \cite{nunberg1996farewell}:
+it can refer to both a message and the contents of a message.
+We do not favor either sense.
+Rather, we propose that to resolve this ambiguity,
+one has to recognize how the systematic creation and
+transfer of messages--represented in general by a graph
+of causal flows--gives each message its meaningful
+contents.
+In our formalism, an information flow is a causal flow
+that, by virtue of its place in a larger causal structure,
+has nomic associations.
+
+Our analysis of privacy policies shows how
+they variously restrict the flow
+of information based on its contents as well as its
+causal history or origin.
+This is consistent with our analysis of ``information flow''
+as refering to one causal flow within a larger system
+of causes that give it contents.
+This scientific formulation of information flows is not
+yet native to the the language of the law.
+That the law refers variously to aspects of information flow
+based on contents and causal history reflects how
+both are essential to the meaning of the term.
+
+Following on this account of information flow,
+in the following sections we will precisely model a system
+in its environment
+in order to disambiguate the different
+aspects of information flow and understand the conditions
+under which a system can be free of information leaks.
+We will measure the strength of
+nomic associations using a well-understood measure,
+\emph{mutual information}.
+Mutual information 
+captures how much about one random variable can be
+learned from observing another.
+
+\begin{dfn}[Mutual information]
+  The mutual information of two discrete random variables
+  $X$ and $Y$ is
+
+  $$I(X,Y) = \sum_{x \in X} \sum_{y \in Y} p(x,y) log \frac{p(x,y)}{p(x)p(y)}$$
+\end{dfn}
+
+In particular, $I(X,Y) = 0$ if and only if $X \independent Y$.
+
+%space
+Mutual information is a technical term with a specific mathematical
+meaning.
+It is no etymological accident that it forms part of the analytic
+definition of ``information flow'' that we have developed in this
+section.
+In the Appendix, we derive several theorems relating to
+the mutual information of variables organized in a Bayesian
+Network.
+We will use these theorems in proofs about system security
+in the following sections.
+
+\section{Bayesian networks and information flow security}
+\label{sec:security}
+
+In this section, we formalize the ontology from
+Section~\ref{sec:ontology} that we derived from
+privacy policies.
+Our formalization uses the causal graphical modeling
+tools outlined in Section~\ref{sec:causality}.
+We show that several known results in information flow
+security have dual results within our formal causal modeling
+of systems in their environments.
+We demonstrate this for concepts of 
+noninterference~\cite{gm82security} and the impossibility
+of guaranteeing secrecy given the possibility of
+arbitrary auxiliary knowledge~\cite{dwork06icalp,dwork08jpc}.
+
+Where our analysis goes beyond these known results
+in information flow security are that our models
+explicitly take into account the relationship between
+a technical system and its environment.
+In each case, our theorems prove conditions of the
+security properties that could not be discovered
+by static program analysis in isolation.
+For example, it is well known that information
+can be revealing of other sensitive information given
+auxiliary knowledge. Our theorem reflects the conditions
+under which auxiliary knowledge is possible.
+
+Because the CPD defined by \(Pr\) between each random
+variable and its
+parents can be an arbitrary function, including deterministic
+logical operations, it is possible to encode a system of
+computational components, including sensors, data processors,
+and actuators, as a BN.
+Earlier we defined Origin Privacy in terms of systems, processes,
+and messages.
+These concepts map easily into this formalism: systems are
+Bayesian networks; processes are random variables or events;
+the inputs and outputs of processes are determined by links
+connecting them to other processes; messages are
+the instantiation 
+of particular random variables,
+which are available as inputs to
+later variables.
+
+%\mct{I think key points of this section is the following:\\
+%CS people have been using noninterference, which models systems as a computation.  This model is limited in what it can say since it doesn't have a model of the environment in which the system operates.  We will instead models systems as ECSes, expressed with causal graphs that can extend out to model the environment.  ECSes have a property that implies noninterference.  To do this, we have cut out part of the ECS to model the system found in noninterference, leaving the rest as the environment.  We present a property that these cut-out graphical sub-models corresponding to systems can have that implies the computation modeling the same system having noninterference.
+%\\ 
+%I'm I right?  If so, I'm missing the part where you show that your model is the same as the old model.
+%}
+%
+%sb: I'm not sure what you're getting at, but it sounds important.
+%We should discuss before publication.
+%
+
+\subsection{Embedded Causal System (ECS) Model}
+\label{sec:ecs}
+
+In the subsequent sections we will use the following standard
+notation and model, which we will refer to as the
+Embedded Causal System (ECS) Model.
+
+\begin{dfn}[World]
+  A \emph{world} $\W$ is a set of random variables
+  with a conditional
+  probability distribution that may be modeled as a
+  Bayesian network $(G_\W,Pr_\W)$.
+\end{dfn}
+\begin{center}
+\begin{tikzcd}
+   \W \\
+\end{tikzcd}
+\end{center}
+
+%
+%\begin{dfn}[Contiguous]
+%  Given a Bayesian network $(G,Pr)$ over $\mathcal{X}$,
+%  a subset $\Y \subset \mathcal{X}$ is \emph{contiguous}
+%  if for all $Y_1, Y_2 \in \Y$, there is a path between
+%  $Y_1, Y_2$ such that all nodes on the path are members
+%  of $\Y$.
+%\end{dfn}
+%
+
+\begin{dfn}[System]
+  A subset of the world $\Y \subset \W$ is the \emph{system}.
+\end{dfn}
+
+%% A system must be contiguous.
+
+\begin{dfn}[Environment]
+  The \emph{environment} of $\Y$ is the set of 
+  nodes in the world that are not in the system,
+  $\mathcal{E} = \W - \Y$ 
+\end{dfn}
+\begin{center}
+\begin{tikzcd}
+  \Y \arrow[d, bend left=50]\\
+  \mathcal{E} \arrow[u, bend left=50]
+\end{tikzcd}
+\end{center}
+
+(In this and a few other diagrams, we will include cycles because
+these are diagrams of blockmodels over other networks.
+In a blockmodel of $G$, a partition $\{P_1, P_2, \ldots\}$ of the set
+of original nodes $\mathcal{X}$ is treated as a new set of nodes,
+with an edge between $P_1$ and $P_2$ iff
+there exists $X_1$ and $X_2$ such that $X_1$ is in $P_1$, $X_2$ is in $P_2$, and $(X_1,X_2)$ is in $G_{\msf{edges}}$)
+
+It is common in security research to consider \emph{systems}
+as units of analysis; these systems contain \emph{programs}; system
+input is data and system output is the result of the programs
+operating on the data~\cite{mclean90sp}.
+These programs are represented using a formal approximation of a
+programming language
+in order to prove security properties of systems.
+Systems in our formalism also have inputs and outputs,
+which are defined by their position relative
+to the environment.
+
+\begin{dfn}[Sensors and inputs]
+  A \emph{sensor} is an edge $(A,B) \in G_\W$
+  such that $A \in \mc{E}$ and $B \in \Y$,
+  An \emph{input} is the head node of a sensor, $B$.
+  Denote the set of all inputs with $\mathcal{S}$.
+\end{dfn}
+
+%
+% MCT: Shouldnt' inputs be represented as I?
+% SB: Maybe. We can revisit this before publication.
+%
+
+\begin{dfn}[Actuators and outputs]
+  An \emph{actuator} is an edge $(A,B) \in G_\W$ such
+  that $A \in \Y$ and $B \in \mc{E}$.
+  An \emph{output} is the tail node of an actuator, $A$.
+  Denote the set of all outputs with $\A$.
+\end{dfn}
+\begin{center}
+\begin{tikzcd}[column sep=tiny]
+  \mathcal{S} \arrow[r] &
+  \Y \setminus (\mathcal{S} \cup \A) \arrow[r] &
+  \A \arrow[dl, bend left=50]\\
+  & \mathcal{E} \arrow[ul, bend left=50] &
+\end{tikzcd}
+\end{center}
+
+See the definition of \emph{orderly} (Definition \ref{def:orderly-system})
+for a set of further constraints on inputs and outputs
+that are necessary for proving security properties of ECS models.
+
+For some security related applications of this model,
+it is necessary to distinguish between ``high-side''
+and ``low-side'' inputs and outputs.
+High-side variables denote sensitive variables
+that should not be leaked.
+
+\begin{dfn}[High and low sides]
+  Inputs $\mathcal{S}$ are partitioned into high $\mathcal{S}_H$
+  and low $\mathcal{S}_L$ side variables.
+  Similarly, outputs $\A$ are each partitioned
+  high-side $\A_H$ and low-side $\A_L$ variables.
+\end{dfn}
+\begin{center}
+\begin{tikzcd}[column sep=tiny]
+  \mathcal{S_H} \arrow[r]
+  & \Y \setminus (\mathcal{S} \cup \A)
+  \arrow[r]
+  \arrow[dr]
+  & \A_H \arrow[ddl, bend left=100]\\
+  \mathcal{S_L} \arrow[ur] &
+  &
+  \A_L \arrow[dl, bend left=50]\\
+  &
+  \mathcal{E}
+  \arrow[uul, bend left=100]
+  \arrow[ul, bend left=50]
+  &
+\end{tikzcd}
+\end{center}
+
+Note that in the above diagram and throughout this paper,
+we will sometimes refer to a set of random variables
+such as the set of all high-side inputs $\mc{S}_H$
+as if it is a single random variable.
+This is well-motivate, because for any set of random
+variables $\mc{X} = \{X_0, X_1, X_2, ...\}$
+one can define a new random variable
+whose domain $Dom(\mc{X})$ is the cross product
+$Dom{X_0} \times Dom{X_1} \times ...$ and whose
+probability distribution is the joint probability
+distribution $Pr(X_0, X_1, ...)$.
+
+\begin{exm}
+  A hospital uses a system to manage its medical records.
+  It takes input from many health care professionals through
+  many different forms of treatment.
+  Most medical records are considered a low-side input
+  because they can be accessed by other professionals
+  treating the patient.
+  Psychotherapy notes are a high-side input because they
+  have special restrictions on their use.
+\end{exm}
+
+\begin{exm}
+  An intelligence agency has many classified sensors,
+  such as satellites and drone imagery, which contain information
+  that is critical for national security.
+  These are high-side inputs.
+  They also use many data sets that are available publicly
+  and commercially.
+  These are low-side inputs.
+\end{exm}
+
+\subsection{System design}
+\label{sec:design}
+
+In many cases what we are interested in is the possibility
+of a \emph{system designer} inventing a system subject
+to certain constraints.
+
+%An example of such a constraint is the system's
+%meeting a \emph{specification}, which is a desired
+%relationship between inputs and outputs.
+%
+%\begin{dfn}[Specification]
+%  A \emph{specification} is a function
+%  $f \from \mathcal{S}, \A \to [0,1]$
+%  \mct{Do you mean $f \from \mathcal{S} \times \A \to [0,1]$?}
+%  that is a joint probability distribution
+%  over $\{\mathcal{S}, \A\}$.
+%  The system $\Y$ fulfills the specification iff
+%  $Pr(\mathcal{S},\A) = f(\mathcal{S},\A)$.
+%  \mct{I'm not sure what $f(\mathcal{S},\A)$.  If $f$ is a function
+%    from $\mathcal{S} \times \A$, then it has to take elements of them
+%    as inputs, not the whole sets.}
+%  \mct{If $\Y$ is fulfilling something, it must be found in the
+%    equation somewhere.  I suspect it's implicitly determining $Pr$,
+%    but maybe that should be made explicit as $Pr_{\Y}$.}
+%\end{dfn}
+%
+% I dont' think I use this definition  of nontriviality anywhere in the draft...
+%
+%\begin{dfn}[Nontriviality]
+%  A specification $f \from \mathcal{S}, \A \to [0,1]$
+%  is \emph{nontrivial} iff given $Pr = f$,
+%  $Pr(\A \vert \mathcal{S}) \neq Pr(\A)$.
+%\end{dfn}
+%
+%\mct{I think you're just saying that $f$ depends upon the input
+%  $\mc{S}$: there exists $s_1$, $s_2$, and $a$ such that
+%  $f(s_1,a) \neq f(s_2,a)$.}
+%
+%\mct{Making $f$ be a joint distribution over inputs and outputs is
+%  nonstandard.  Typically, we make it a function from inputs to
+%  distributions over outputs.  This isn't just currying, but looks
+%  similar.  We should discuss.}
+%
+
+%The general theory of Bayesian networks shows
+%that the extent to which nomic associations
+%between variables allow information to flow
+%between them depends not only on the causal
+%structure of the network, but also on which
+%other variables have already been conditioned
+%on or, in a Bayesian sense, are observed.
+%
+
+We are interested in the ways that an ECS
+enables inferences, and how these inferences
+depend on what is known or observable about
+the system and its environment.
+We define some terms here to denote properties
+of the conditioning set that we will use in
+later proofs.
+Intuitively, conditioning sets can be interpreted
+as observed states of the world that are available
+to an adversary trying to learn high-side information.
+
+The condition of being \emph{present} captures the
+intuition that system designers cannot account for
+the ways that downstream uses of system outputs
+may be used to reveal sensitive information.
+
+\begin{dfn}[Present]
+  A system $\mathcal{Y}$ with conditioning set $\mc{C}$ is \emph{present}
+   iff
+  \begin{itemize}
+  \item No descendants of $\mathcal{A}$ are in the
+    conditioning set $\mc{C}$, and
+  \item No descendant of $\mathcal{A}$ is in
+    $\mathcal{S}$.
+  \end{itemize}
+\end{dfn}
+
+The term ``present'' indicates that the attacker
+is able to condition on variables prior to and
+during the operating of the system, but not
+variables in the ``future'' of the system.
+Requiring that the system outputs are not ancestors of
+the the system inputs guarantees that the system is
+in fact positioned in a particular place in time,
+so to speak.
+
+The condition of being \emph{covered} captures the intuition
+that in general we do not expect attackers to have
+the ability to observe systems 
+\emph{as they are functioning}, even if we allow them
+to know exactly how a system works because
+they know the causal relationships between the
+system components.
+
+\begin{dfn}[Covered]
+  \label{def:covered-system}
+  A system is \emph{covered} if no $Y \in \mathcal{Y}$
+  is in the conditioning set $\mc{C}$.
+\end{dfn}
+
+%
+%\mct{A somewhat subtle point here is that people don't see $\A$
+%  directly, but rather see the effects of $\A$.  If the reader isn't
+%  paying attention they might take your model as ruling out seeing
+%  outputs altogether.}
+%
+
+We also specify a condition on the relationship
+between sensors, actuators, the system, and the environment.
+In some cases we will not allow an input to be caused
+by a system variable.
+We will also not allow an output to cause a system variable.
+When both these conditions hold, we call a system \emph{orderly}.
+
+\begin{dfn}[Orderly]
+  \label{def:orderly-system}
+  A system is \emph{orderly} iff:
+  \begin{itemize}
+  \item $\forall X \in \mathcal{W}, S \in \mathcal{S}, X \in Pa(S) \Longrightarrow X \in \mathcal{E}$
+  \item $\forall X \in \mathcal{W}, A \in \mathcal{A}, A \in Pa(X) \Longrightarrow X \in \mathcal{E}$
+  \end{itemize}
+\end{dfn}
+
+Given only the subgraph represented by $\mathcal{Y}$,
+under some condition it will be the case that the
+high-side inputs and the low-side outputs are conditionally
+independent.
+We will name this property \emph{safety}.
+
+\begin{dfn}[Safe]
+  A system $\mathcal{Y}$ is \emph{safe} given
+  conditioning set $\mc{C}$ iff
+  when considering it as a subgraph,
+  there are no unblocked paths between 
+  $\mathcal{A}_L$ and $\mathcal{S}_H$.
+\end{dfn}
+
+If there are no unblocked paths between $\A_L$ and ${S}_H$
+in the system subgraph, then these variables are d-separated
+and so the system is safe.
+We assume for our purposes that a system designer can
+guarantee its safety through sound engineering alone.
+
+For example, in the system defined by the graph
+\begin{center}
+\begin{tikzcd}
+  \mathcal{S}_H \arrow[r] & \mathcal{A}_H \\
+  \mathcal{S}_L \arrow[r] \arrow[ur]& \mathcal{A}_L
+\end{tikzcd}
+\end{center}
+
+when $\mathcal{A}_H$ is not in the conditioning set,
+the path between $\mathcal{S}_H$ and $\mathcal{A}_L$
+is blocked, so the high-side input and low-side
+outputs are independent.
+
+In general, system designers can guarantee safety
+by removing any direct paths from $\mathcal{S}_H$ to
+$\mathcal{A}_L$ and then ensuring that the system is
+covered.
+
+\begin{thm}
+  \label{thm:safety}
+  If a system subgraph $\Y$ has no direct paths from
+  $\mathcal{S}_H$ to $\mathcal{A}_L$ and is covered
+  and orderly, then it is safe.
+\end{thm}
+\begin{proof}
+  Assume there are no direct paths from $\mathcal{S}_H$ to
+  $\mathcal{A}_L$ in the system subgraph.
+  So any unblocked path between $\mathcal{S}_H$ and
+  $\mathcal{A}_L$ must be indirect.
+  
+  Suppose there is a path $p$ that begins
+  with an incoming edge to $\mathcal{S}_H$,
+  as in $\mc{S}_H \leftarrow \cdots \mc{A}_L$.
+  Because the system is orderly, incoming edges
+  to into input $\mathcal{S}_H$ must come
+  from nodes that are not in the system $\Y$,
+  as in $\mc{S}_H \leftarrow \mc{E} \cdots \mc{A}_L$.
+  Because these
+  nodes are not in the system subgraph, they cannot be
+  in $p$.
+  
+  Therefore, the path $p$ must begin with an outgoing edge to
+  $\mathcal{S}_H$. By a parallel argument, the path
+  must end with an incoming edge to $\mathcal{A}_L$,
+  as in $\mc{S}_H \rightarrow \cdots \rightarrow \mc{A}_L$.
+
+  Because the path $p$ is indirect and it begins with an outgoing
+  edge and ends with an incoming edge, there must be some
+  node $X$ such that $X$ is on the path and $X$ is a common
+  effect node, 
+  as in 
+  $\mc{S}_H \rightarrow \cdots \rightarrow X \leftarrow \cdots \rightarrow \mc{A}_L$.
+  %\mct{Why?}
+  
+  Because the system is covered, $X$ must be unobserved.
+  This implies that the path $p$ is blocked.
+  Therefore, there are no unblocked paths between
+  $\mathcal{S}_H$ and $\mathcal{A}_L$.
+  Thus, by Theorem~\ref{thm:d-seperated}, these
+  variables are independent and the system is safe.
+\end{proof}
+
+Information flow security literature often considers
+systems or programs in isolation from their environment.
+In practice, systems are always connected with an environment,
+which is why we have developed ECS.
+So Theorem \ref{thm:safety} is not enough to show the conditions of
+security in an ECS model because its inputs and outputs
+are not connected with variables in an environment.
+For this, we turn to a well established formal security model,
+noninterference.
+
+
+\subsection{Noninterference}
+\label{sec:noninterference}
+
+\emph{Noninterference}, introduced by \cite{gm82security},
+is a security policy model widely used in computer science.
+Sabelfeld and Myers~\cite{sabelfeld03journal} define noninterference
+informally as ``a variation of confidential (high)
+input does not cause a variation of public (low) output.''
+
+More formally, model a program $C$ as taking an
+input state $s = (s_h,s_l)$,
+as producing an output in a set $S \cup \{ \bot \}$,
+where
+$\bot$ stands for nontermination
+and $\bot \notin S$.
+We use $\lbb C\rbb  : S \rightarrow S \cup \{ \bot \}$
+to denote such a semantics.
+An equivalence relation $=_L$ holds when
+two inputs they agree on the low values ($s=_Ls'$ iff
+$s_l = s_l'$). The attacker's power is characterized
+by a relation $\approx_L$ such that if two behaviors
+are related by $\approx_L$ they are indistinguishable
+to an attacker. 
+
+Following \cite{tschantz15csf} and \cite{datta2017use},
+we expand the definition of the operator $\lbb \cdot\rbb $
+to be a function to and from probability distributions
+over states, which affords a probabilistic definition
+of noninterference.
+
+\begin{dfn}[(Probabilistic) noninterference]
+For a given semantic model, $C$ is
+  exhibits \emph{noninterference} or \emph{is secure} iff for all $s_1$ and $s_2$ in $S$, $s_1 =_L s_2$ implies $\lbb C\rbb(s_1) \approx_L \lbb C\rbb(s_2)$.
+\end{dfn}
+
+This definition admits a wide range of possible semantics for
+the attacker's equivalence relation $\approx_L$.
+
+We will choose a particular semantics relevant
+to the ECS model.
+We impose a probability distribution over inputs
+$\mathcal{S}$.
+With it we can construct the variable 
+$\A = \lbb C\rbb(\mathcal{S})$.
+We use $\Y$ to denote the minimal Bayesian network relating
+$\mathcal{S}$ to $\A$ and treat it as the system model.
+As per the ECS model, we partition the inputs
+and outputs into high and low sides,
+$(\mathcal{S}_H, \mathcal{S}_L)$ and
+$(\mathcal{A}_H, \mathcal{A}_L)$,
+respectively.
+%\mct{This should be done in a way respecting $=_L$, right?}
+%sb: I don't know what this means.
+Define attacker indistinguishability $\approx_L$
+as probabilistic indistinguishability of the low-side outputs when
+conditioned on inputs:
+
+\begin{dfn}[ECS attacker indistinguishability]
+  $$\A \approx_L \A' \text{ iff } Pr(\A_L) = Pr
+  (\A_L')$$
+\end{dfn}
+
+Conceptually, we are modeling the execution of the
+program $C$ as the realization of the random variables in
+$\Y$.
+$C$ implies a probability distribution $Pr(\mc{A} \vert \mc{S})$.
+It also implies a probability distribution of $\mc{A}$
+conditional on $\mc{S} = s$ realized.
+$\lbb C\rbb(s) = Pr(\A \vert \mathcal{S} = s)$, where $s$ is an instantiation of $\mathcal{S}$.
+For $s \in \mathcal{S}, a \in \A$, let
+$(s_h,s_l,a_h,a_l) =_L (s_h',s_l',a_h',a_l')$
+iff $s_l = s_l'$.
+
+\begin{dfn}[ECS Noninterference]
+  For a given ECS model, $\Y$
+  exhibits \emph{noninterference} or \emph{is secure} iff
+ $$\forall s_1,s_2  \in \mathcal{S}, s_1 =_L s_2 \Longrightarrow P(\A \vert \mathcal{S} = s_1) \approx_L P(\A \vert \mathcal{S} = s_2)$$
+\end{dfn}
+
+\begin{cor}\label{cor:noninterference-ind}
+  $\Y$ is secure by noninterference iff
+  $$\A_L \independent \mc{S}_H \given \mc{S}_L$$
+\end{cor}
+\begin{proof}
+  $\Y$ is secure by noninterference iff
+  $$\forall s_1,s_2  \in \mathcal{S}, s_1 =_L s_2 \Longrightarrow P(\A \vert \mathcal{S} = s_1) \approx_L P(\A \vert \mathcal{S} = s_2)$$
+  iff
+  \begin{equation}
+    \begin{split}
+      & \forall s_H,s_H',s_L,s_L'  \in \mathcal{S}, s_L = s_L' \\
+      & \Longrightarrow P(\A \vert \mathcal{S}_H = s_H, \mathcal{S}_L = s_L) \approx_L P(\A \vert \mathcal{S}_H = s_H', \mathcal{S}_L = s_L')
+    \end{split}
+  \end{equation}
+  iff
+  \begin{equation}
+    \begin{split}
+      & \forall s_H,s_H',s_L \in \mathcal{S} \\
+      & P(\A_L \vert \mathcal{S}_H = s_H, S_L = s_L) = P(\A_L \vert \mathcal{S}_H = s_H', S_L = s_L)
+    \end{split}
+  \end{equation}
+  iff
+  $$A_L \independent S_H \vert S_L$$
+\end{proof}
+
+Under what conditions is a system secure by noninterference?
+
+\iffalse
+\cite{sabelfeld03journal}'s informal definition of
+noninterference is expressed in terms of causation:
+``a variation of confidential (high)
+input does not cause a variation of public (low) output.''
+In Pearl's account of causation, an intervention or
+manipulation of a variable in a causal model sets its
+value and, for the purposes of inferring other variables,
+severs the edges pointing to that variable from others
+in the graph.
+Consequently, even if we model a system within its environment,
+if there is not path from its high-side inputs to its low-side
+outputs then an \emph{intervention} (in Pearl's sense)
+on its high-side inputs will not cause a variation in the
+low-side outputs.
+\fi
+
+We can prove that if the system designer can guarantee
+that the system is present and safe, then it is secure
+by noninterference.
+
+\begin{lem}
+  \label{lem:present}
+  If an ECS model is present,
+  then there can be no unblocked path between
+  $\mc{S}_H$ and $\A_L$ that includes an outgoing
+  edge from $\A_L$.
+\end{lem}
+\begin{proof}
+  Proof by contradiction.
+  
+  Suppose an unblocked path exists
+  between $\mathcal{S}_H$ and $\A_L$
+  such that the edge connecting to $\A_L$ was outgoing.
+  That is, suppose the path was of the form:
+  $$S_H \cdots \leftarrow \A_L$$
+  for some $S_H$ in $\mc{S}_H$.
+
+  Consider the sequence of nodes on the path
+  $S_H, X_1, X_2, \ldots, X_n, \A_L$ and the direction of
+  the arrows between them, with $X_n \rightarrow \A_L$,
+  and labeling
+  $S_H$ with $X_0$.
+
+  Because the system is present, no descendant of $\A_L$,
+  is in $\mathcal{S}$.
+  Therefor the must be at least one edge on the path
+  such that $X_{i-1} \rightarrow X_i$.
+
+  Count down from $n$ to $1$ and identify the first
+  $X_i$ such that $X_{i-1} \rightarrow X_i$, 
+ 
+  $X_i$ will be a descendant of $\A_L$ because
+  there is a direct path between $\A_L$ and it.
+  $X_i$ cannot be $X_0 = S_H$, which is in $\mc{S}$.
+
+  Therefore node $X_i$ will be the common cause of a
+  head-to-head connection.  That is,
+  \[S_H \cdots X_{i-1} \rightarrow X_i \leftarrow X_{i+1} \leftarrow \cdots \leftarrow \A_L \]
+  Because the system is present, this node
+  $X_i$ must not be in the conditioning set.
+  The path must therefore have a head-to-head
+  connecting node that is not in the conditioning
+  set.
+  So it is a blocked path, resulting in a contradiction.
+\end{proof}
+
+\begin{thm}
+  \label{thm:ecs-noninterference}
+  Given an ECS model,
+  if the system is present, safe, and orderly
+  then the system
+  is secure by noninterference.
+\end{thm}
+
+\begin{proof}
+  Consider possible paths between $\A_L$ and $\mc{S}_H$
+  while $\mc{S}_L$ is in the conditioning set.
+
+  By Lemma \ref{lem:present}, a present system
+  can have no unblocked paths from $\mc{S}_H$ to $\A_L$
+  that end with an outgoing edge from $\A_L$.
+  So any unblocked path from $\mc{S}_H$ to $\A_L$ must
+  end with an incoming edge into $\A_L$.
+
+  Because the system is orderly,
+  if $X \rightarrow A$ for any $A$ in $\A$, then $X \in \Y$.
+  Therefore, unblocked paths must include nodes
+  in the $\Y$ subgraph.
+  
+  Because the system is safe, there are no unblocked paths
+  between $\mathcal{S}_H$ and $\A_L$ consisting of 
+  only nodes in the system $\Y$ subgraph.
+
+  So any unblocked path between $\mc{S}_H$ and $\A_L$ must include
+  both nodes that are in $\Y$ and nodes the are in $\mathcal{E}$.
+  We have already ruled out paths that include descendants
+  of $\A$.
+  So such a path must include ancestors of $\mathcal{S}$.
+  The path must begin with $\mc{S}_H$, go into the environment,
+  then re-enter the system via $\mc{S}_L$, then go to $\A_L$.
+  Because the system is orderly, incoming edges into $\mc{S}_L$
+  must be $E \in \mathcal{E}$ and outgoing edges must be
+  $Y in \mathcal{Y}$.
+  That is,
+  $$S_H \leftarrow \cdots E \rightarrow S_L \rightarrow Y \cdots \leftarrow A_L$$
+  for some $S_H$ in $\mc{S}_H$, $S_L$ in $\mc{S}_L$, and $A_L$ in $\A_L$.
+
+  $S_L$ is in the conditioning set and part of a head-to-tail
+  structure $E \rightarrow S_L \rightarrow Y$ on the path.
+  Therefore the path is blocked.
+  
+  So with $\mathcal{S}_L$ in the conditioning set,
+  all paths between
+  $\A_L$ and $\mathcal{S_H}$ must be
+  blocked.
+
+  So $\A_L \independent \mc{S}_H \vert \mc{S}_L$.
+  By Corollary~\ref{cor:noninterference-ind},
+  the system is secure by noninterference.
+\end{proof}
+
+It is therefore possible to implement an ECS that is
+secure in the sense of noninterference
+as long as a few conditions of the system
+(covered, safe, and orderly) are guaranteed.
+Privacy policies that restrict information flow
+(e.g. by guaranteeing confidentiality) of data
+based on how it was inputted into the system can
+be modeled in this framework.
+In the next section, we will show that policies
+that impose restrictions on information flow
+based on the content of information cannot be
+as easily restricted; to be effective there
+must be independence relations in the environment
+of the system.
+Thus the viability of privacy policies depends
+on the distinction noted in \ref{sec:ambiguity}
+between causal flow and association.
+
+\subsection{Preventing associations}
+\label{sec:prevention}
+
+We have proven that under certain conditions
+an ECS is secure by noninterference
+(Theorem \ref{thm:ecs-noninterference}).
+Noninterference is a widely respected formal
+security model in among computer security
+researchers.
+One reason for this is that it is a criterion
+that depends only one the internals of the
+system.
+Computer scientists can guarantee that a system,
+such as a program, is secure by noninterference
+without considering how that program will be used
+in practice.
+What if we wanted to hold systems to a higher standard
+that takes into consideration the processes that generate
+a system's data?
+For this we need a stronger security property.
+
+We can be more specific and introduce a security policy model
+that is strictly stronger than noninterference.
+
+\begin{dfn}[ECS semantic security] %%%%
+  For a given ECS model, $\Y$ is
+  exhibits \emph{semantic security} iff
+
+  $$ \mc{S}_H \independent \A_L $$
+\end{dfn}
+
+Semantic security is a well known property of
+cryptographic systems that means, intuitively,
+that an attacker intending to determine the
+contents of a message might as well not look at
+an encrypted signal.
+The term has taken on a wider use in the differential
+privacy literature as it has been introduced
+as a desideratum for statistical
+databases along the lines of that proposed
+by Dalenius in 1977. \cite{dalenius77statistik, dwork06icalp}
+Dwork and Naor \cite{dwork06icalp,dwork08jpc} show that it is impossible to
+guarantee the semantic security of such a database
+given arbitrary auxiliary knowledge.
+
+We draw on the spirit of this literature in our
+definition of ECS semantic security.
+The principle difference between ECS semantic
+security and noninterference is that the
+latter is concerned with the Independence of
+system outputs from sensitive inputs
+\emph{conditioned} on the inputs,
+whereas the former takes into consideration
+how environmental correlations may allow
+system outputs to reveal system inputs.
+
+Noninterference does not imply semantic security.
+Put another way, the same system can be secure by
+noninterference but semantically insecure.
+Consider the system:
+
+\begin{center}
+\begin{tikzcd}
+  E \arrow[r] \arrow[dr] & S_H \arrow[r] & A_H\\
+  & S_L \arrow[r] \arrow[ur] & A_L \\
+\end{tikzcd}
+\end{center}
+
+This system is safe when $A_H$ is not in the conditioning
+set.
+It is secure by noninterference because when $S_L$
+is in the conditioning set, the path from $S_H$
+to $A_L$ that goes through $E$ is blocked.
+But when $S_L$ is not in the conditioning set,
+this path is open and therefore $A_L$ can
+be conditionally dependent on $S_H$. 
+
+%\iffalse
+%
+%PROBLEM: A possible path is opened by $S_L$ being
+%a common effect. So the system has to be present?
+%
+%Semantic security implies noninterference security
+%under rather general conditions.
+%
+%*** PROOF NEEDED -- WHAT CONDITIONS? ***
+%
+%\begin{thm}
+%  If a system is both orderly and
+%  ECS semantically secure,
+%  then it is secure by noninterference.
+%\end{thm}
+%\begin{proof}
+%  *** Check edge cases! ***
+%  If a system is semantically secure, then
+%  $$A_L \independent S_H$$
+%
+%  By the definition of d-separation,
+%  adding nodes to the conditioning set will only
+%  unblock paths if those nodes are common
+%  effects on the path, or are descendants
+%  of a common path.
+%
+%  *** actually need ANOTHER condition,
+%  which is that sensors are not
+%  descendants from actuators?!? ***
+%
+%  $$A_L \independent S_H \vert S_L$$
+%\end{proof}
+%\fi
+%
+
+Our conjecture is that semantic security
+cannot be guaranteed by the system designer alone.
+We are able to prove sufficient conditions for
+semantic security by including a general
+property of the world, including the
+environment outside the system.
+
+\begin{dfn}[Propitious]
+  The world $\mathcal{W}$ is \emph{propitious}
+  iff there is no unblocked path between
+  $S_H$ and $S_L$.
+\end{dfn}
+
+\begin{thm}
+  \label{thm:semantic}
+  If a system is present, safe, and orderly,
+  and the world is propitious, then the
+  system is semantically secure.
+\end{thm}
+\begin{proof}
+  By Theorem \ref{thm:ecs-noninterference},
+  the system is secure by noninterference,
+  implying that
+  $$S_H \independent A_L \vert S_L$$
+
+  So no unblocked paths run from $S_H$ to $A_L$
+  when $S_L$ is in the conditioning set.
+
+  Recall from the proof of
+  Theorem \ref{thm:ecs-noninterference}
+  that this was because we ruled out all possible
+  paths from $S_H$ to $A_L$.
+
+  Paths running from $S_H$ through $S_L$ to $A_L$
+  were blocked because $S_L$ was in the conditioning
+  set.
+
+  Consider any such path, now unblocked as $S_L$
+  is not in the conditioning set.
+
+  If it is unblocked, then there is an unblocked
+  path between $S_H$ and $S_L$, which contradicts
+  the assumption that the world is propitious.
+
+  Therefore there are no unblocked paths between
+  $S_H$ and $A_L$ and so $A_L \independent S_H$.
+  
+\end{proof}
+
+%\mct{It feels like the punchline of this section should be that noninterference can be designed for whereas semantic security cannot.  However, this isn't made clear for two reasons.  
+%\\
+%First, it's not all the clear how much harder the conditions of Thm.~\ref{thm:semantic} are to meet than the conditions of Thm.~\ref{thm:ecs-noninterference}.  The harder one just requires adding one extra one, propitious, to the set of three required for the easier one.  A 25\% increase isn't that bad, right?  Well, that's, of course, not the right way of looking at this.  We need to look at how hard each of these conditions are to ensure.  I don't see such a discussion anywhere.  Indeed, more can be done to make each of these conditions intuitive (starting with their names).
+%\\
+%Second, people know that semantic security is something promised in crypto papers, so it can't be that hard, right?  We need some explanation about why it's possible to achieve it in that special case, but not in general.}
+%
+%\mct{Much of this section reminds me of work on composition properties for noninterference.  We should compare what we're doing to that work.}
+%
+
+\section{Formalizing origin privacy}
+\label{sec:robustness}
+
+We have defined origin privacy as privacy policies
+that place restrictions on information based on its
+provenance.
+This is in contrast to policies that restrict information
+based on its content.
+Another way to put this difference is that origin-based
+privacy policies restrict information based on
+the structure of causal flows, while information content
+based policies restrict information based on its nomic
+associations.
+
+The problem with restricting information flows based on
+information content is well illustrated by the problem
+of guaranteeing semantic security in an ECS system.
+Any sensitive information content can potentially
+have nomic associations with otherwise inocuous
+inputs due to causal paths in the environment.
+Guaranteeing the absence of associations depends
+on properties of the environment that may be outside
+the system designer's control.
+Noninterference, on the other hand, is an achievable
+property for a system designer.
+However, it is defined in such a way that it can be guaranteed
+even when some kinds of harmful information leaks are
+probable in practice.
+
+In our legal analysis in Section \ref{sec:policy}
+we identified some policies that restrict information
+based on its provenance, or origin, rather than its information
+content.
+In Section \ref{sec:ontology}, we have identified the origin
+of information as the chain of processes causing its
+input into the system.
+Taking the concept of ``high-side'' input as those inputs
+to a system that are treated with special sensitivity,
+we can model an example world that meets the most basic
+requirement of an origin based policy roughly like so:
+
+\begin{center}
+\begin{tikzcd}
+  O \arrow[r] & R_0 \arrow[r] & \cdots R_n \arrow[r] & S_H \arrow[r] & A_H\\
+  & & & S_L \arrow[r] \arrow[ur] & A_L \\
+\end{tikzcd}
+\end{center}
+
+In this model, the original value $O$ is connected only
+to the high-side input $S_H$ by a direct
+path of relays $R_0, \ldots, R_n$.
+We can define the origin property as:
+
+\begin{dfn}[Origin restricted]
+  A system $\Y$ with inputs $\mc{S}$ 
+  is \emph{origin-restricted} for a protected
+  variable $O$ iff all direct paths from $O$ to $\mathcal{S}$
+  end in $\mathcal{S}_H$, and there is at least one such path.
+\end{dfn}
+
+In what sense is an origin restricted system secure?
+We would like the low-side output of an origin restricted
+system to be independent of the sensitive variable.
+As we have seen in Sections \ref{sec:noninterference}
+and \ref{sec:prevention}, there are multiple security
+models that make different assumptions about the
+conditions of security.
+We can use analogous security models for origin privacy.
+
+\begin{dfn}[Origin noninterference]
+  $\Y$ is secure by origin noninterference with respect
+  to a sensitive variable $O \in \mathcal{E}$ iff
+  $$A_L \independent O \vert S_L$$
+\end{dfn}
+
+\begin{thm}
+  \label{thm:origin-noninterference}
+  Given an ECS model,
+  if the system is present, safe, orderly,
+  and origin restricted
+  then the system
+  is secure by origin noninterference.
+\end{thm}
+
+\begin{proof}
+  Because the system is origin restricted,
+  there is at least one direct path from $O$
+  to $S_H \in \mathcal{S}_H$.
+
+  If there were an unblocked path from $A_L$
+  to $O$ that included an outgoing edge from $A_L$,
+  this would extend into an unblocked path to $S_H$,
+  violating the condition imposed by Lemma \ref{lem:present}.
+  Therefore there is no unblocked path from $A_L$
+  to $O$ that includes an outgoing edge from $A_L$.
+
+  Because the system is orderly, incoming edges
+  to $A_L$ must go to nodes in the system.
+  Therefore, any unblocked path from $O$
+  to $A_L$ must go through $\mathcal{S}$
+  
+
+  Because the system is safe, there is no unblocked
+  path from $\mathcal{S}_H$ to $A_L$.
+
+  Because the system is orderly, any path from $E \in \mathcal{E}$
+  to $Y \in \Y$ going through $\mathcal{S}_L$ will
+  include a head-to-tail triplet centered on $S_L$.
+  Conditioning on this node $S_L$ blocks the path.
+
+  Therefore there is no unblocked path between $O$
+  and $A_L$, and the system is secure by origin noninterference.
+\end{proof}
+
+\begin{dfn}[Origin semantic security]
+  $\Y$ is secure by origin noninterference with respect
+  to a sensitive variable $O \in \mathcal{E}$ iff
+  $$A_L \independent O$$
+\end{dfn}
+
+\begin{thm}
+  Given an ECS model,
+  if the system is present, safe, orderly,
+  and origin-restricted
+  and the world is propitious,
+  then the system
+  is secure by origin semantic security.
+\end{thm}
+
+\begin{proof}
+  By Theorem \ref{thm:origin-noninterference},
+  the system is secure by origin noninterference.
+
+  The system is origin restricted, implying that
+  there is at least one direct path from $O$ to $S_H$.
+  $S_L$ cannoth be on this path because the system
+  is orderly.
+  As no node on this path is in the conditioning
+  set, it is not blocked.
+  
+  Mirroring the proof to \ref{thm:semantic},
+  we consider any path $\phi$ between $O$ and $A_L$
+  that was blocked by conditioning on $S_L$.
+  Such path must have a node $S_L$ either within
+  a head-to-tail triplet or as a common cause.
+
+  Suppose $\phi$ includes $S_L$ in a head-to-tail
+  triplet.
+  Then there is a subpath of $\phi$ there is an
+  unblocked path between $S_L$ and $O$.
+  But there is also an unblocked path from $O$
+  to $S_H$, implying that there is an unblocked
+  path from $S_L$ to $S_H$.
+  This contradicts the condition that the world is
+  propitious.
+
+  Suppose $\phi$ includes a $S_L$ as a common cause
+  node.
+  Because the system is orderly, both outgoing
+  edges must go to nodes in $\Y$.
+  The path $\phi$ must therefore enter the system
+  through a node in $S_H$.
+  That implies a subpath of $\phi$ within the
+  system runs unblocked from $S_H$ to $S_L$.
+  That contradicts the condition that the world
+  is propitious.
+
+  Because no unblocked path between $O$ and $A_L$
+  is possible, $O \independent A_L$ and the
+  system has origin semantic security.
+  
+\end{proof}
+
+This demonstrates that origin restrictions
+do prevent associations between
+low-side outputs and the sensitive environmental
+variable under the condition that the systems
+are otherwise secure.
+
+%
+%\mct{It would be nice if the above theorems were if-and-only-ifs.  I
+%  suspect showing such a thing would be complicated by the possibility
+%  of not having d-separation but the distributions having independence
+%  anyhow.}%
+%
+% sb: that would be nice. We would need to 'faithfulness' property,
+% or use the 'there exists one network with this structure such that...'
+% techniques to establish soundness.
+%
+
+%
+%Note that while it is considered true in privacy literature
+%that it is impossible it is impossible to prevent
+%inferences from being drawn from data because
+%of the possible presence of auxiliary knowledge
+%\cite{dwork06icalp,dwork08jpc}, we can see an exception
+%to this rule when considering a system embedded in
+%its environment.
+%If there is in fact independence between the system and
+%and environmental variable, there is no auxiliary information
+%that would allow one to infer that environmental variable
+%from system state.
+%
+%If we consider an embedded causal system,
+%the structure of the world determines what
+%auxiliary knowledge is possible.
+%More granularly, this has implications
+%for what combinations of structural knowledge and
+%observations of particular variables are necessary
+%for an adversary to draw sensitive inferences from
+%system outputs.
+%This granularity has let us define a positive privacy
+%property, origin privacy, that allows for guarantees
+%about inferences about sensitive variables on the
+%condition that system designers have reliable
+%knowledge of the structure of the world.
+%
+
+\section{Use Case: IoT and biometric data}
+\label{sec:usecase}
+
+In this section we introduce a use case of Origin Privacy that
+we have identified through legal analysis and conversations
+with stakeholders.
+
+\begin{exm}[Smart building biometric sensing]
+In an ``Internet of Things'' instrumented building, many sensors
+collect information about the contents of rooms, including
+photograph and other imagery such as infrared scanning
+to identify the number and size of people
+present. This information is useful to control the environment
+in the room (heating, ventilliation). However, this data can
+also be potentially identified using auxiliary information,
+such as a facial recognition database.
+This processed data reveals the identities of persons in
+the room.
+In some cases this may be intentional, as when it is used
+for building security.
+In other cases these revelations may be unexpected and constitute
+an invasion of privacy.
+\end{exm}
+
+We chose this example because it highlights the way smart building
+technology interacts with privacy policies around photography
+and biometric data.
+
+\subsection{GDPR biometric data}
+
+Here we focus particularly on the EU's General Data Protection
+Regulation (GDPR) (Regulation (EU) 2016/679).
+In general, the GDPR places a number of restrictions on
+the processing of \emph{personal data}, which it defines
+thus:
+
+\begin{quote}
+  `personal data' means any information relating to
+  an identified or identifiable natural person (`data subject');
+  an identifiable natural person is one who can be
+  identified, directly or indirectly, in particular
+  by reference to an identifier such as a name,
+  an identification number, location data,
+  an online identifier or to one or more factors specific
+  to the physical, physiological, genetic, mental,
+  economic, cultural or social identity of that natural person;
+  (Article 4 \S 1, GDPR)
+\end{quote}
+
+We interpret this definition as referring to the
+topic or content of information; personal data is
+any information \emph{relating to} a natural person.
+As we have argued, a system designer cannot guarantee
+that a system does not process information relating
+to a natural person since these relations may be
+caused by nomic associations that are external to the
+system itself.
+
+Noting this difficulty with ensuring compliance, we
+can nevertheless continue to work with the more
+specific requirements relating to biometric data.
+In particular, the  GDPR makes a distinction between
+photographs and biometric data:
+
+\begin{quote}
+The processing of photographs should not systematically 
+be considered to be processing of special categories of personal 
+data as they are covered by the definition of biometric data 
+only when processed through a specific technical means 
+allowing the unique identification or authentication 
+of a natural person. (Recital 51, GDPR)
+\end{quote}
+
+By definition under the GDPR, biometric data is a form of personal
+data that results from particular kinds of processes:
+
+\begin{quote}
+  'biometric data' means personal data resulting from
+  specific technical processing relating to the physical,
+  physiological or behavioural characteristics of a
+  natural person, which allow or confirm the unique
+  identification of that natural person, such as facial
+  images or dactyloscopic data; (Article 4 \S 14, GDPR)
+\end{quote}
+
+Unlike the definition of personal data, the definition
+of biometric data is an origin requirement because it
+refers to the causal flow of data from a class of
+processes.
+Using these legal requirements, we can now
+use Origin Privacy to formalize their semantics
+with respect to a system.
+
+\subsection{Formalizing GDPR requirements}
+
+Consider the smart building example as an ECS.
+Let $S_P$ be the photographic input to the system.
+Let $S_D$ be a database of identified photographs,
+originating from an external process $E_F$.
+Let $Y_B$ be a component of the system $\Y$ caused by
+$S_P$ and $S_D$; it includes imagery from $S_P$
+that has been identified using the database $S_D$.
+
+\begin{center}
+\begin{tikzcd}
+  E_F \arrow[r] & S_D \arrow[r] & Y_B \arrow[r] & A_H\\
+  & S_P \arrow[ur] \arrow[rr] & & A_L \\
+  \\
+\end{tikzcd}
+\end{center}
+
+We note that the photographic input $S_P$ may
+indeed ``relate to'' natural persons in a systematic
+way if, for example, certain persons frequent the
+smart building on a regular schedule.
+Since these regularities (nomic associations) are
+unknown to the system designer, there is little she
+can do to guarantee the treatment of this information
+as personal data.
+What the system designer does have access to is the
+identified faces database, $S_D$.
+The \emph{process of identification} that results
+in the biometric building surveillance data $Y_B$ requires
+data from an identified source such as $S_D$.
+
+The system designer knows about the origin of $S_D$.
+Specifically, she knows that this data is sourced from $E_F$,
+a process that personally identifies the facial images
+within it.
+Knowing the environmental source is sensitive,
+they can impose the conditions for noninterference between
+$E_F$ and $A_L$: that no unblocked path exist within $Y$ between
+inputs originating in $E_F$ and $A_L$.
+This implies that both $S_D$ and $Y_B$ be d-separated
+from $A_L$ within $\Y$.
+Note that in the diagram above, $E_F$ is indeedd d-separated
+from $A_L$ when the system is \emph{covered}, i.e.
+when none of its components are in the conditioning set.
+Intuitively, $Y_B$ is subject to restricted flow because
+it originates from the sensitive process $E_F$; it
+inherits this origin from one of its parent components,
+$S_D$.
+
+We build on this result to model more complicated aspects
+of GDPR compliance.
+For example, processing of personal information, including
+biometric information, is generally legal given the consent
+of the identified person.
+We can introduce identified sources into the ECS model
+by denoting the set of natural persons $\mathcal{I}$,
+and denoting a process that generates data from
+an identified person $X_i$ for $i \in I$.
+We can then place conditions on any data that is
+a result of causal flow from this source, as
+in this example specification:
+
+\begin{exm}[Disclosure specification]
+In the system, all outputs $A \in \A_L$ such that
+$A$ is a descendant of $X_i$ must also be a descendant
+of $Z_i$, where $i \in I$ is the identifier of a natural person,
+$X_i$ is personally identifiable information, and
+$Z_i$ is a disclosure agreement identifiable with that person.
+\end{exm}
+
+To the extent the GDPR controls on biometric information are
+use restriction or topic restrictions
+as opposed to an origin restriction,
+they cannot be automatically enforced based on origin alone.
+However, considering GDPR through the rigor of Origin Privacy
+clarifies some of its requirements as formal specification
+shows what knowledge is needed by the system designer for
+origin based policy enforcement.
+
+\section{Relationship to Differential Privacy}
+\label{sec:differential}
+
+In this section we will show the connection between
+origin privacy and differential privacy.
+Thus far we have defined origin privacy strictly in
+terms of conditional independence.
+This has been inspired by the formal security model
+of \emph{noninterference}.
+
+When assessing computational systems that process
+personal information, it is possible for privacy
+requirements to be looser than this strict security
+requirement.
+The particular case of privacy preserving statistical
+analysis of databases of personal information has
+motivated differential privacy as a formal privacy
+model. \cite{dwork06icalp,dwork08jpc}
+
+Formally, an algorithm $\A$ is $\epsilon$-differentially private
+if for all subsets $S \subset image(\A)$ and
+datasets $D_1$ and $D_2$ that differ on a single element,
+the probability of the output of the algorithm run
+on the datasets being in $S$ differs by at most a
+multiplicative factor of $e^\epsilon$ and an additive
+factor $\delta$. \cite{dwork2014algorithmic}
+
+\begin{dfn}[Differential Privacy (($\epsilon,\delta$)-DP)]
+$$Pr[\A(D_1) \in S] \leq e^\epsilon Pr[\A(D_2) \in S] + \delta$$
+\end{dfn}
+
+When $\delta = 0$, then $\A$ is $\epsilon$-differentially
+private ($\epsilon$-DP).
+
+Consistent with our origin privacy approach, we will
+investigate how differential privacy can be assessed
+given a model of system and its environment as a
+causal Bayes network.
+We will draw on prior results relating differential
+privacy and causality and variations on differential
+privacy expressed in terms of mutual information.
+
+\subsection{Mutual information differential privacy}
+
+\cite{cuff2016differential} demonstrate that there is
+an equivalence between differential privacy and what they define
+as mutual information differential privacy:
+
+\begin{dfn}[Mutual information differential privacy ($\epsilon$-MI-DP)]
+  A randomized mechanism $P_{Y \vert X^n}$ satisfies $\epsilon$-mutual
+  information differential privacy if,
+
+  $$sup_{i, P_{X^n}} I(X_i, Y \vert X^{-i}) \leq \epsilon$$
+
+  where $X^{-i}$ is the dataset $X$ excluding variable
+  $X_i$.
+\end{dfn}
+
+They prove that $\epsilon$-MI-DP is equivalent to differential
+privacy in the sense that $\epsilon$-MI-DP implies
+($\epsilon,\delta$)-DP) for some $\delta$, though
+$\epsilon$-MI-DP is weaker than $\epsilon$-DP.
+\cite{mcsherry_2017} argues that that $\epsilon$-MI-DP
+falls short of the desiderata of $\epsilon$-DP.
+Nevertheless, we will proceed with the
+$\epsilon$-MI-DP because it is suggestive of
+probabilistic structure may be used to
+infer a privacy relevant bound.
+
+That the mutual information limit
+is conditioned on every other member of the database is
+an indication of a disappointing fact about differential
+privacy, which is that its beneficial properties
+with respect to preserving privacy are not robust
+to cases when entries in the database are correlated with each
+other.
+
+The value of using MI-DP for our purposes is that
+the properties of mutual information are well-understood,
+and we can derive a number of useful theorems
+about mutal information between variables in a Bayesian
+network.
+
+\subsection{Randomizing database inputs}
+
+We can now combine the previous results to
+show how a system designer can develop a
+Bayesian network model that guarantees
+differential privacy.
+A common way of achieving differential privacy
+is by randomizing inputs to the database
+prior to aggregation; this is done in practice
+in \cite{erlingsson2014rappor}.
+We can model randomization explicitly as in
+the following example.
+
+Let $X_i$ be a set of variables representing the
+personal information to be aggregated.
+Let $Y_i$ be a random variable over the same domain
+as $X_i$ that is almost but not quite independent
+of $X_i$; we'll say that the mutual information between
+$X_i$ and $Y_i$ is bounded by $\epsilon_i$.
+Then aggregate all the $Y_i$ variables into a database,
+$Z$, that is available for querying.
+
+\begin{center}
+\begin{tikzcd}
+  X_0 \arrow[r,"\epsilon"] & Y_0 \arrow[ddr] & \\
+  X_1 \arrow[r,"\epsilon"] & Y_1 \arrow[dr] & \\
+  X_2 \arrow[r,"\epsilon"] & Y_2 \arrow[r] & Z \\
+  X_3 \arrow[r,"\epsilon"] & Y_3 \arrow[ur] & \\
+  X_4 \arrow[r,"\epsilon"] & Y_4 \arrow[uur] & \\
+\end{tikzcd}
+\end{center}
+
+In the above diagram, we annotate an arrow between
+variables $A$ and $B$ with the upper bound on the
+mutual information $I(A,B)$ afforded by the conditional
+probability distribution. In this case, we
+have set all the $\epsilon_i$ equal to each other,
+$\epsilon$.
+
+We can now use this graphical structure to prove
+that this system is $2\epsilon$-MI-DP).
+We can prove this using the Data Processing Inequality,
+
+\begin{prp}[Data Processing Inequality]
+  If three variables are in a Markov chain
+  $$X \rightarrow Y \rightarrow Z$$
+  where $X \independent Z \vert Y$, then $I(X,Y) \geq I(X,Z)$
+\end{prp}
+
+A standard proof of this is in the appendix.
+We will also use the Path Mutual Information Theorem (PMIT),
+that we prove as Theorem \ref{thm:path-mutual-information} in
+the appendix.
+
+\begin{exm}
+  For the structure described above,
+  $Z$ is $2\epsilon$-MI-DP.
+\end{exm}
+
+\begin{proof}
+  Note that because $X_i$ and $X^{-i}$
+  are joined only by a path with a common
+  effect node, $I(X_i,X^{-i}) = 0$.
+
+  It follows that:
+  \begin{equation}
+    \begin{split}
+      I(X_i, Z \vert X^{-i})\\
+      = I(X_i;Z,X^{-i}) - I(X_i,X^{-i}) \\
+      = I(X_i;Z,X^{-i}) \\
+      = I(X_i;Z) + I(X_i;X^{-1} \vert Z)
+    \end{split}
+  \end{equation}
+
+  By DPI and the graphical structure,
+  we know that for all $i$
+  $$I(X_i,Z) \leq I(X_i,Y_i) = \epsilon$$
+
+  By PMIT, we know the mutual information of
+  two variables connected by a path with all
+  of its common effect nodes observed is bounded
+  by the mutual information of steps along the path.
+  In this case, it entails that:
+
+  $$I(X_i;X^{-1} \vert Z) \leq I(X_i,Y_i) = \epsilon$$
+
+  By substitution, we know that:
+
+  $$I(X_i, Z \vert X^{-i}) = I(X_i;Z) + I(X_i;X^{-1} \vert Z) \leq 2\epsilon$$
+
+  As this holds for all $i$, it follows that $Z$ is $2\epsilon$-MI-DP.
+\end{proof}
+
+
+\subsection{Generalizing $\epsilon$-security}
+
+We can generalize the two formal security models
+that we introduced in Sections X and Y to models
+that allow for $\epsilon$ mutual information between
+sensitive inputs and low-side outputs.
+
+\begin{dfn}[$\epsilon$-noninterference]
+  A system is secure by $\epsilon$-noninterference iff 
+  $$I(A_L, S_H \vert S_L) \leq \epsilon$$.
+\end{dfn}
+
+\begin{dfn}[$\epsilon$-semantic security]
+  A system is $\epsilon$-semantically secure iff 
+  $$I(A_L, S_H] \leq \epsilon$$.
+\end{dfn}
+
+Recall that two variables are perfectly independent
+if and only if their mutual information is zero,
+implying that $0$-noninterference is equivalent to
+noninterference, and $0$-semantic security is equivalent
+to ECS semantic security.
+
+We can now show that differential privacy follows
+from an application of $\epsilon$-noninterference
+with one important caveat.
+We have defined noninterference in terms of a system's
+high-side and low-side inputs.
+Schematically, we have considered the ``high side'' to
+be a part of the system in need of special information
+flow restrictions, while the ``low side'' is what's
+available to less restricted access.
+
+This model is intended to be generalized to cases where
+there are multiple categories of restricted information.
+In particular, to prove that $\epsilon$-noninterference
+implies differential privacy, we must consider
+\emph{each entry individually} to be noninterferent
+with respect to the other entries in the data set.
+
+\begin{thm}
+  For an ECS model, if for all $D_i$,
+  ECS is secure by $\epsilon$-noninterference with
+  respect to $D_i$ as a high-side input and $D^{-i}$
+  as low-side input, then $A$ is differentially
+  private with respect to data set $D$
+\end{thm}
+
+\begin{center}
+\begin{tikzcd}
+  D_i  \arrow[rd,"\epsilon"] & \\
+  D^{-1} \arrow[r] & A \\
+\end{tikzcd}
+\end{center}
+\begin{proof}
+  If for all $D_i$,
+  ECS is secure by $\epsilon$-noninterference with
+  respect to $D_i$ as a high-side input and $D^{-i}$
+  as low-side input,
+  then
+  
+  $$\forall i, I(D_i, A_L \vert D^{-i}) \leq \epsilon$$
+
+  which implies that
+
+  $$sup_{i, P_{X^n}} I(D_i, A_L \vert D^{-i}) \leq \epsilon$$
+
+  which is the condition for $\epsilon$-MI-DP.
+\end{proof}
+
+It is interesting to note that in this proof,
+the fact that noninterference conditions on some
+inputs is necessary for proving its use in
+securing differential privacy.
+It is not generally the case that if
+each of a database's entries $D_i$
+is $\epsilon$-semantically secure
+from the output $A$ that the output
+will be $\epsilon$-differentially private.
+A bound on $I(D_i;A)$ does not imply a
+bound on $I(D_i; A \vert D^{-i}$), as
+is apparent from Equation \ref{eq:mutual-with-semantic}.
+
+\begin{equation}
+  \label{eq:mutual-with-semantic}
+  I(D_i;A \vert D^{-i}) = I(D_i,D^{-1}; A) - I(D_i;A)
+\end{equation}
+
+\section{Incentives in ECS}
+\label{sec:incentives}
+
+We have motivated ECS modeling by showing how it
+captures the implicit ontology of privacy policies
+and enables reasoning about the security properties
+of systems embedded in an environment.
+We have used Bayesian networks as a modeling tool
+because they clarifying the relationship between
+two aspects of information flow.
+Bayesian networks also provide a robust, qualitative
+means of determining dependency relations between their
+variables, which we have used in our proofs about the
+relationship between various system and privacy properties.
+In this section, we will show how the same ECS framework
+can be extended to include strategic actors and their incentives.
+
+To accomplish this, we will use the Multi-Agent Influence Diagram
+(MAID) framework developed by \cite{koller2003multi}.
+In brief, a MAID is a Bayesian network with two important
+extensions.
+
+\begin{itemize}
+\item Some of the variables are reserved as \emph{decision variables}
+  and assigned to one of several agents.
+  An agent's assignment of CPDs to its decision variables is
+  that agent's \emph{strategy}; replacing each decision variable
+  with the CPD from a \emph{strategy profile} transforms the MAID
+  into a Bayesian network.
+\item Some of the variables are reserved as \emph{utility variables}.
+  These are assigned to one agent each, and are summed when realized
+  into the agent's total utility.
+  Utility variables must not have children.
+\end{itemize}
+
+A formal definition of MAIDS, strategies, and other useful
+properties is given in Section \ref{appendix:maid},
+which includes an account of the graphical notation we
+will use in Section \ref{sec:maid-notation}.
+
+\subsection{Expert services model}
+
+As an illustration of an information game
+that can be represented as a MAID, consider the
+following diagram, which is a generalized model of
+an expert service.
+The services, which include health services, legal services,
+as well as some software based services like search engines,
+involve a client, $c$, who presents knowledge of their situation
+to an expert, $e$.
+The expert has access to general knowledge relevant to the
+client's condition, and recommends some action based on
+this knowledge.
+The client can choose to take this recommendation.
+In the idealized case considered here, the client
+and the expert have perfectly aligned incentives and
+so the expert will use their knowledge to the best
+of their ability.
+
+\begin{center}
+  \begin{tikzcd}
+    & W \arrow[ddl, bend right = 40] \arrow[ddr, bend left = 40]& \\
+    & S \arrow[dl] \arrow[dd] \arrow[dr, bend left = 20, dotted]& \\
+    V \arrow[dd] \arrow[ddr] &  & \tilde{R}_e \arrow[dl] \\
+    & \tilde{A}_c \arrow[dl] \arrow[d] &\\
+    \breve{U_e} & \breve{U_c} &\\
+  \end{tikzcd}
+\end{center}
+
+In this model, $W$ is the generalized knowledge of the world that
+is available to $e$ at their decision variable representing
+their recommendation, $\tilde{R}_e$.
+The action taken by the client $\tilde{A}_c$ and the
+action value function $V$ determine the utility of
+both the expert and the client, $\breve{U_e}$ and $\breve{U_c}$.
+The value function is influence both by general facts about
+the world $W$ and the particular situation of the client, $S$.
+The client knows their situation but not the general expert knowledge.
+
+The client's action is informed by the general knowledge only
+through the recommendation of the expert.
+The expert may or may not know the client's specific situation;
+this is represented by the dotted arrow between $S$ and $\tilde{R}_e$.
+
+The value of such a model is that a qualitative analysis
+can readily provide insights into the influence of an
+information flow on outcomes.
+Since we know the expert's utility depends on influencing
+the client to make the best possible action at $\tilde{A}_c$,
+and that the value of this action depends on $V$,
+the expert's effectiveness will be limited by how well
+they can predict $V$ given the knowledge availabel to them
+at $\tilde{R}_e$.
+Without information about their client's specific situation $S$,
+their advice can at best be perfectly general.
+But with access to information $S$, the expert can improve
+their recommendation and outcomes for both players.
+
+\subsection{Expert ECS Model}
+\label{sec:expert-ecs-model}
+
+We now combine the expert service model with
+the ECS model.
+We will embed the expert insider an ECS and given them
+access to personal information of the client via the
+high-side input.
+They will also have access to general knowledge
+through the low-side input.
+An adversary will have access to the low-side output,
+but not the high-side output.
+Using this model, we will be able to test how
+the security properties we have analyzed in
+Section \ref{sec:security}
+and Section \ref{sec:robustness} can
+be motivated in terms of the way they
+affect the incentives of interacting with the
+system.
+
+\begin{center}
+  \begin{tikzcd}
+    & & W \arrow[dddll, bend right = 40] \arrow[dl, dotted, "e_1"] \arrow[ddd] \arrow[dddr, bend left = 30] & \\
+    & C \arrow[d] \arrow[ddrr] \arrow[ddl] & & \\
+    & \tilde{E}_a \arrow[d] & & \\
+    V \arrow[dddd] \arrow[ddddr, bend right = 20] & \mc{S}_H \arrow[d] \arrow[ddr, dotted, "e_2"] & \mc{S}_L \arrow[dl] \arrow[dd] & V' \arrow[dddd] \arrow[ddddl, bend left = 20] \\
+    & \tilde{D}_b \arrow[d] & & \\
+    & \mc{A}_H \arrow[d] & \mc{A}_L \arrow[d] & \\
+    & \tilde{D}_a \arrow[d] \arrow[dl] & \tilde{D}_e \arrow[d] \arrow[dr]& \\
+    \breve{U}^+_a & \breve{U}_b & \breve{U}_e & \breve{U}^-_a\\
+\end{tikzcd}
+\end{center}
+
+This game has three players, Alice ($a$), Bob ($b$),
+and Eve ($e$).
+
+Alice and Bob have perfectly aligned incentives,
+and Eve is an attacker who is adversarial to
+Alice.
+We specify that the following relations hold:
+
+$$\breve{U}^+_a = \breve{U}_b$$
+$$\breve{U}^-_a = -\breve{U}_e$$
+$$\breve{U}_a = \breve{U}_b - \breve{U}_e$$
+
+At the center of this model is an ECS,
+with high- and low- side sensors ($\mc{S}_H, \mc{S}_L$)
+and actuators ($\mc{A}_H, \mc{A}_L$).
+
+In this model, Alice is aware of her
+personal information $\tilde{C}_a$ and decides at
+$\tilde{E}_a$ what if any of it to divulge
+secretly (via $\mc{S}_H$)
+into the system because she wants an expert recommendation
+from Bob.
+Bob has access to general expertise $W$ through
+a low-side input ($\mc{S}_L$).
+These inputs are both available to Bob at his
+decision node $\tilde{D}_b$, at which he chooses a
+recommended action for Alice, which he passes through
+the high-side output $\mc{A}_H$.
+
+Alice will use the information about the recommendation
+taken from the high-side output $\mc{A}_H$ to choose
+an action.
+The utility of this action will depend on the
+action values $V$, which are a function of two
+variables: the personal characteristics $C$ of Alice
+and other general information about the world, $W$.
+
+%\mct{Dummy cite: \cite{gm82security}}
+
+Eve will make a decision $\tilde{D}_e$ based on
+the low-side output of the system, $A_L$.
+Eve's utility $U_e$ depends on this decision and
+an action value function $V'$ that is analogous
+to Alice's action value function $V$, in that
+it depends on $C$ and $W$.
+
+The system in this diagram is
+$\mc{Y} = \{\mc{S}_H, \mc{S}_L, \tilde{D}_b, \mc{A}_H, \mc{A}_L\}$.
+
+The diagram has two dotted edges, $e_1$ and $e_2$
+Each dotted edge may be either included in the graph
+(open) or excluded from the graph (closed).
+The diagram therefore describes four distinct models:
+none open, $e_1$ open, $e_2$ open, and both open.
+We will analyze each case
+in Section \ref{sec:expert-ecs-analysis}.
+
+
+\subsubsection{Analysis}
+\label{sec:expert-ecs-analysis}
+
+First, we can analyze the expert ECS model
+presented in Section \ref{sec:expert-ecs-model} in
+terms of the system design properties introduced in
+Section \ref{sec:design}.
+
+Note that no descendent of $\mc{A}$ is in $\mc{S}$.
+Therefore, the expert ECS model is present if none of
+$\tilde{D}_a, \tilde{D}_e, \breve{U}^+_a, \breve{U}_b, \breve{U}_e,\breve{U}^-_a$
+are in the conditioning set $\mc{C}$.
+
+The system is covered if none of
+$\mc{S}_H, \mc{S}_L, \tilde{D}_b, \mc{A}_H, \mc{A}_L$
+are in the conditioning set $\mc{C}$.
+
+It is plain from observation that the system is orderly.
+It is also clear that the system is origin-restricted
+with respect to the personal characteristics $C$:
+there is one direct path from $C$ to $\mc{S}$ and it goes
+to $\mc{S}_H$.
+
+We are left with several candidates for the conditioning set:
+$W, C, V, V', \tilde{E}_a$.
+Recall that the world is propitious if there are no
+unblocked paths from $\mc{S}_H$ to $\mc{S}_L$.
+There are two ways an unblocked path can happen
+under the conditions discussed so far.
+One is that either $V$ or $V'$ is in the conditioning
+set.
+Another is that the edge $e_1$ is open.
+
+It is clear that the system is safe if edge $e_2$ is closed
+and not safe if edge $e_2$ is open.
+
+Suppose that there are no variables in the conditioning
+set.
+Then by the reasoning above, the following properties
+of the expert ECS system hold:
+\begin{itemize}
+\item If $e_1$ and $e_2$ are closed, then the system is
+  origin secure with respect to $C$ both semantically
+  and by noninterference.
+\item If $e_1$ is open, then the system will be origin
+  secure with respect to $C$ by nonintefernce, but may not
+  be semantically secure.
+\item If $e_2$ is open, then the system may be origin secure
+  with respect to $C$ neither by noninterference nor semantically.
+\end{itemize}
+
+Though we have been able to show that these security
+properties hold on the expert ECS model, this model
+also reveals how these security properties do not
+provide all desireable guarantees a system might
+provide in terms of the incentives of Alice and Bob.
+
+What can be shown is that given that the expert ECS
+system is semantically secure, it is also the case
+that $\tilde{E}_a$ and $\tilde{D}_e$ are tactically
+independent (see Definitoin \ref{dfn:tactical-independence}),
+meaning that for any strategy specifying decision rules
+to each decision variable, in the induced probability
+distribution $\tilde{E}_a$ and $\tilde{D}_e$ are independent.
+In other words, at the level of tactics, Alice's choice to
+reveal her information to the ECS will not depend on Eve's
+choice of how to use the system's low-side outputs
+adversarially.
+
+However, despite these security properties,
+we can show with this model that $\tilde{E}_a$
+may \emph{strategically rely} on $\tilde{D}_e$
+(see Definition \ref{dfn:strategic-reliance}).
+This means that Alice's choice of decision rule 
+at $\tilde{E}_a$ can depend on Eve's choice of
+decision rule at $\tilde{D}_e$.
+This can be a problem for system designers if
+their goal is to guarantee that the presence of
+Eve has no deterring effect on Alice's choice
+to reveal her data to the ECS.
+
+Further exploration of the relationship between
+system security properties and incentives of
+players in this causal formalism is left to
+future work.
+
+\section{Discussion and future work}
+\label{sec:future}
+
+We have analyzed privacy policies and discovered
+that they variously restrict information based on
+origin and topic.
+We developed an informational ontology that reflects
+the assumptions underlying many of these policies.
+We have shown that this informal ontology can
+be formalized in terms of causal graphical models.
+Under this formalism, we show that the two aspects
+of information flow correspond to precisely defined
+concepts of causal flow and nomic association.
+Using Bayesian networks, which clarify the difference between
+two senses of information flow, we developed a model
+of system security, the ECS model.
+
+This model can
+demonstrate and extend known results in computer security,
+such as those concerning noninterference, semantic security,
+and differential privacy.
+It also allows us to formally define a new privacy property,
+origin privacy, which assumes that system designers have
+some control over the paths through which information enters
+their systems.
+We demonstrate how the ECS model can be used to elucidate
+a case of implementing GDPR compliance on biometric data.
+We demonstrated preliminery results on how the ECS model
+can be extended into game theoretic form to account for
+how strategically acting agents interact with systems
+with or without relevant security properties.
+
+These contributions are suggestive of several lines
+of future work.
+
+\subsection{Specifiability Criterion}
+
+One direction for future work is to question what
+these results mean for the design and interpretation
+of legal policies.
+Are privacy policies based on information topic harder
+for consumers to understand than policies based on
+information origin?
+How do end users interpret ambiguous language in privacy
+policies?
+
+One benefit of using causal models as opposed to
+program analysis for considering information flow
+security of technical systems is that it shows
+that information flow security is not only
+a technical problem.
+Because information leaks based on nomic associations
+may be properties of any mathematically defined causal
+system, these results extend to human institutions
+as well.
+In general, mathematical results about the limits
+of computational enforceability will generalize
+to the possibility of enforceability through
+non-computational means as well.
+Privacy policies and social expectations
+that restrict information
+based on its contents may be unenforceable or ambiguous
+in general.
+
+Concretely, the brittleness of these kinds of
+restrictions is exposed
+by advances in large-scale data analysis, or ``big data'',
+which routinely confound our expectations about what
+information is about.
+Data about a person's purchases of scent-free hand lotion,
+which we might have assumed to be innocuous, has been
+shown to be correlated with sensitive information about
+early-stage pregnancy \cite{hill12forbes}.
+Ad targeting systems that use all available
+correlational information in the data they collect risk
+violating people's privacy due to unexpected discoveries
+from automated learning processes.
+
+By demonstrating the limits of what security properties
+can be enforced, and by whom, this framework can
+shed light on how privacy policies should be written
+and which parties should be held liable in the event
+of a violation.
+This may build on other work in identifying legal
+liability in cases of perceived inappropriate behavior
+of a sociotechnical system \cite{datta2018discrimination}.
+
+\subsection{Observer capabilities}
+
+We have shown that nomic associations between
+system outputs and sensitive environmental variables
+can lead to violations of privacy policies.
+In order for these threats to be material,
+nomic associations must be known to attackers
+as auxiliary information.
+A natural next step in this line of inquiry
+is a more systematic study of how
+observer's capabilities for learning nomic associations
+factor into information flow security considerations.
+
+In our models in this article, we have used
+Bayesian networks as models of the objective
+frequencies of variable outcomes.
+Possible inferences from observed variables
+have been interpreted as those inferences
+possible \emph{in fact} from the causal
+structure of the world.
+Information flow security guarantees were
+possible when the system designer was
+assumed to have some true knowledge about
+the system's environment, such as the
+origin of its inputs.
+
+In practice, most systems will be embedded in
+environments that are only partially known.
+In the cases of fraud and spam detection,
+and other adaptive machine learning systems,
+a model of the origin of inputs is trained
+continuously from collected data.
+Probabilistic graphical models are indeed
+one of the many machine learning paradigms
+used in these applications \cite{bishop2006pattern}.
+
+A direction for future work is developing a
+theory of information flow security and privacy
+under conditions where observer knowledge of
+nomic associations is itself a function of system
+inputs. In simple cases this may reduce
+to single program analyses already established
+in work on use privacy \cite{datta2017use}.
+In cases where multiple systems interact,
+there may be novel problems.
+
+\subsection{Incentives based policy design}
+
+Prior work has been done on game theoretic
+models of information flow policies \cite{barth07csf},
+mechanism design with differential privacy
+\cite{mcsherry2007mechanism}, and 
+semantic interpretations of differential privacy
+framed in terms of the incentives of data subjects
+\cite{kasivisiwanathan14jpc}.
+We see potential to continue this line of work
+using statistical models of systems, their
+internal processes, and their environment,
+including the process that generate their
+input data.
+
+We have shown how Multi-Agent Influence Diagrams
+(MAIDS) \cite{koller2003multi} can be used in
+game theoretic modeling of security problems.
+\cite{feng2014security} have used Bayesian networks
+to model security risks and perform a security
+vulnerability propagation analysis.
+They build their causal model from observed cases
+and domain experts.
+We anticipate
+new frameworks for aligning the incentives
+of system designers and data subjects which
+are sensitive to risk of data misuse (see
+\cite{brooks15nist}).
+Our work in Section \ref{sec:incentives} is
+a first step in developing a new way of assessing
+the value of security properties based on
+their impact on game outcomes.
+
+An application of this work is automated policy
+design for smart buildings and cities, where
+interacting data subjects and control systems
+must share information while minimizing data
+misuse.
+
+\hfill
+\hfill
+
+We have unpacked the assumptions of privacy
+policies to develop a general ontology of systems,
+processes, and information.
+We have then formalized this ontology using the
+assumption that these systems are subject to
+the laws of probability and an interventionist
+account of causation \cite{woodward2005making}.
+Using these simple assumptions, we have
+confirmed well-known results about information
+flow security about programs and systems in
+isolation.
+We have also gone beyond these results by showing
+explicitly what their consequences are when
+systems are embedded in an environment, developing
+a general security modeling framework for this purpose.
+
+We prove the relative effectiveness of
+origin based information flow restrictions over
+association based information flow restrictions
+using the causally embedded system framework.
+We show how origin privacy would be applied in
+a GDPR and Internet of Things use case.
+We anticipate new lines of inquiry extending
+from the intersection of causal modeling
+and information flow security, including
+evaluation of policy enforceability,
+modeling the role of observer knowledge
+in privacy and security, and automated
+policy generation through incentives-based
+design.
+
+\section{Acknowledgements}
+\label{sec:orgheadline39}
+
+We thank Michael Hintze, Helen Nissenbaum, Piotr Mardziel,
+Deirdre Mulligan, 
+and commenters at PLSC 2017 for
+their helpful feedback.
+We gratefully acknowledge funding support 
+from the U.S. Defense Advanced Research Projects
+Agency (DARPA) under
+award FA8750-16-2-0287.
+The opinions in this paper are those of the authors and do not
+necessarily reflect the opinions of any funding sponsor or the United States Government.
+
 
 \end{document}
