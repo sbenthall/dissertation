@@ -353,10 +353,10 @@ Committee in charge:
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}rr} 
    \vspace{\@approvalspace}\\
    \hline
-    \hspace*{.1in}Chair & Date \hspace*{.35in}\\
+    \hspace*{.1in}Co-chair & Date \hspace*{.35in}\\
    \vspace{\@approvalspace}\\
 \hline
-     & Date \hspace*{.35in}\\
+    \hspace*{.1in}Co-chair & Date \hspace*{.35in}\\
    \vspace{\@approvalspace}\\
 \hline
      & Date \hspace*{.35in}\\
@@ -436,8 +436,8 @@ by\par
 {\@degree} in \@field\par
 \vspace{.1in}
 University of California, {\@campus}\par
-%\vspace{.1in}
-{\@chairA}, Co-chair
+\vspace{.1in}
+{\@chairA}, Co-chair\par
 {\@chairB}, Co-chair
 }\vspace{.1in}
 \end{center}}
@@ -452,7 +452,11 @@ University of California, {\@campus}\par
 \vspace{1.7cm}
 \rule{3.2in}{.5pt}\\
 \@chairA\\
-Dissertation Committee Co-Chair
+Dissertation Committee Co-chair\\
+\vspace{1.7cm}\\
+\rule{3.2in}{.5pt}\\
+\@chairB\\
+Dissertation Committee Co-chair
 \end{minipage}}
 
 
