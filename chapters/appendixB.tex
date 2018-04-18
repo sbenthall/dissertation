@@ -1,0 +1,311 @@
+ \documentclass[../thesis.tex]{subfiles}
+ \begin{document}
+
+Multi-Agent Influence Diagrams (MAIDs) are a game-theoretic
+extension of Bayesian networks developed by Koller and Milch
+\cite{koller2003multi}.
+A MAID is defined by:
+\begin{enumerate}
+\item A set $\mc{A}$ of agents 
+\item A set $\mc{X}$ of chance variables
+\item A set $\mc{D}_a$ of decision variables for each agent $a \in \mc{A}$,
+  with $\mc{D} = \bigcup_{a \in \mc{A}} \mc{D}_a$
+\item A set $\mc{U}_a$ of utility variables for each agent $a \in \mc{A}$,
+  with $\mc{U} = \bigcup_{a \in \mc{A}} \mc{U}_a$
+\item A directed acyclic graph $\mc{G}$ that defines the parent function
+  $Pa$ over $\mc{V} = \mc{X} \cup \mc{D} \cup{U}$
+\item For each chance variable $X \in \mc{X}$, a CPD $Pr(X \vert Pa(X))$
+\item For each utility variable $U \in \mc{U}$, a CPD $Pr(U \vert Pa(U))$
+\end{enumerate}
+
+The decision variables represent moments where agents can
+make decisions about how to act given only the information
+provided by the variable's parents.
+
+\begin{dfn}[Decision rules]
+  \label{dfn:decision-rule}
+  A \emph{decision rule} $\delta$ is a function that maps each instantiation
+  $\vec{pa}$ of $Pa(D)$ to a probability distribution over $dom(D)$.
+\end{dfn}
+
+\begin{dfn}[Strategy]
+  \label{dfn:strategy}
+  An assignment of decision rules to every decision $D \in \mc{D}_a$
+  for a particular agent $a \in \mc{D}_a$ for a particular agent
+  $a \in \mc{A}$ is called a \emph{strategy}.
+\end{dfn}
+
+\begin{dfn}[Strategy profile]
+  An assignment $\sigma$ of decision rules to every decision
+  $D \in \mc{D}$ is called a \emph{strategy profile}.
+  A \emph{partial strategy profile} $\sigma_\mc{E}$ is
+  an assignment of decision rules to a subset $\mc{E} \subset \mc{D}$.
+  $\sigma_{-\mc{E}}$ refers to a restriction of $\sigma$ to variables
+  not in $\mc{E}$.
+\end{dfn}
+
+Decision rules are of the same form as CPDs, and so a MAID
+can be transformed into a Bayes network by replacing every
+decision variable with a random variable with the CPD of the
+decision rule of a strategy profile.
+
+\begin{dfn}
+  If $\mc{M}$ is a MAID and $\sigma$ is a strategy profile for
+  $\mc{M}$, then the \emph{joint distribution for $\mc{M}$
+    induced by $\sigma$}, denoted $P_{\mc{M}[\sigma]}$, is the
+  joint distribution over $\mc{V}$ defined by the Bayes
+  net where:
+  \begin{itemize}
+  \item the set of variables is $\mc{V}$;
+  \item for $X, Y \in \mc{V}$, there is an edge $X \rightarrow Y$
+    if and only if $X \in Pa(Y)$;
+  \item for all $X \in \mc{X} \cup \mc{U}$, the CPD for $X$ is $Pr(X)$;
+  \item for all $D \in \mc{D}$, the CPD for $D$ is $\sigma(D)$.
+  \end{itemize}
+\end{dfn}
+
+\begin{dfn}
+  Let $\mc{E}$ be a subset of $\mc{D}_a$ and let $\sigma$ be a strategy
+  profile.
+  We say that $\sigma*_\mc{E}$ is \emph{optimal for the strategy profile}
+  $\sigma$ if, in the induced MAID $\mc{M}[\sigma_{-\mc{E}}]$,
+  where the only remaining decisions are those in $\mc{E}$,
+  the strategy $\sigma*_{\mc{E}}$ is optimal, i.e., for all
+  strategies $\sigma'_{\mc{E}}$:
+  $$EU_a((\sigma_{-\mc{E}},\sigma*_{\mc{E}})) \geq EU_a((\sigma_{\mc{E}}, \sigma'_{\mc{E}}))$$
+\end{dfn}
+
+A major contribution of \cite{koller2003multi} is their analysis
+of how to efficiently discover Nash Equilibrium strategy profiles
+for MAIDs.
+Their method involves analyzing the qualitative graphical
+structure of the MAID to discover the \emph{strategic reliance}
+of decision variables.
+When a decision variable $D$ strategically relies on $D'$,
+then in principle the choice of the optimal decisionr rule for
+$D$ depends on the choice of the decision rule for $D'$.
+
+\begin{dfn}[Strategic reliance]
+  \label{dfn:strategic-reliance}
+  Let $D$ and $D'$ be decision nodes in a MAID $\mc{M}$.
+  $D$ \emph{strategically relies on} $D'$ if there exist
+  two strategy profiles $\sigma$ and $\sigma'$ and a
+  decision rule $\delta$ for $D$ such that:
+  \begin{itemize}
+  \item $\delta$ is optimal for $\sigma$;
+  \item $\sigma'$ differs from $\sigma$ only at $D'$;
+  \end{itemize}
+  but no decision rule $\delta*$ that agrees with $\delta$ on
+  all parent instantiations $\vec{pa} \in dom(Pa(D))$
+  where $P_{\mc{M}[\sigma]}(\vec{pa}) > 0$ is optimal for $\sigma'$.
+\end{dfn}
+
+\begin{dfn}[s-reachable]
+  \label{dfn:s-reachable}
+  A node $D'$ is \emph{s-reachable} from a node $D$ in a MAID
+  $\mc{M}$ if there is some utility node $U \in \mc{U}_D$ such
+  that if a new parent $\widehat{D'}$ were added to $D'$, there would
+  be an active path in $\mc{M}$ from $\widehat{D'}$ to $U$ given
+  $Pa(D) \cup \{D\}$, where a path is active in a MAID if it
+  is active in the same graph, viewed as a BN.
+\end{dfn}
+
+\begin{thm}
+  \label{thm:strategic-non-reliance}
+  If $D$ and $D'$ are two decision nodes in a MAID $\mc{M}$
+  and $D'$ is not s-reachable from $D$ in $\mc{M}$, then D
+  does not strategically rely on $D'$.
+\end{thm}
+
+\subsection{Tactical independence}
+
+In our analysis in this paper, we will not compute
+equilibrium strategies for MAIDs.
+Rather, we will focus on a newly defined property
+of MAIDs, tactical independence.
+
+\begin{dfn}[Tactical independence]
+  \label{dfn:tactical-independence}
+  For decision variables $D$ and $D'$ in MAID $\mc{M}$,
+  $D$ and $D'$ are \emph{tactically independent} for
+  conditioning set $\mc{C}$ iff
+  for all strategy profiles $\sigma$ on $\mc{M}$,
+  in $P_{\mc{M}[\sigma]}$, the joint distribution for
+  $\mc{M}$ induced by $\sigma$,
+  $$D \independent D' \vert C$$
+\end{dfn}
+
+Because tactical independence depends on the
+independence of variables on an induced probability
+distribution that is representable by a Bayesian
+network, the d-separation tests for independence
+apply readily.
+
+\begin{thm}
+  For decision variables $D$ and $D'$ in MAID $\mc{M}$,
+  and for conditioning set $\mc{C}$, if
+  $D$ and $D'$ are d-separated given $\mc{C}$ on
+  $\mc{M}$ considered as a Bayesian network,
+  then $D$ and $D'$ are tactically independent
+  given $\mc{C}$.
+\end{thm}
+
+\begin{proof}
+  Suppose $D$ and $D'$ are d-separated given $\mc{C}$
+  on $\mc{M}$ considered as a Bayesian network.
+
+  For any strategy profile $\sigma$,
+  the joint distribution for $\mc{M}$
+  induced by $\sigma$, $P_{\mc{M}[\sigma]}$
+  has the same graphical structure as $\mc{M}$
+  considered as a Bayesian network.
+
+  Therefore, $D$ and $D'$ are d-separated given $\mc{C}$
+  in the graph corresponding to $P_{\mc{M}[\sigma]}$
+  for all $\sigma$.
+
+  Because $D$ and $D'$ are d-separated given $\mc{C}$
+  in the Bayesian network, $D \independent D' \vert C$.
+\end{proof}
+
+% Utility CPDs are deterministic
+% Utility nodes have to be leaves (I bend this in my models!)
+
+\subsection{Notation}
+\label{sec:maid-notation}
+
+We will use a slightly different graphical notation than that used by
+\cite{koller2003multi}
+
+In the models in this paper, we will denote random variables
+with undecorated capital letters, e.g. $A, B, C$.
+I will denote strategic nodes with a tilde over a capital
+letter, e.g. $\tilde{A}, \tilde{B}, \tilde{C}$.
+The random variable defined by the optimal strategy at a
+decision node, when such a variable is well-defined,
+will be denoted with a hat, e.g. $\hat{A}, \hat{B}, \hat{C}$.
+Nodes that represent the payoff or utility to an
+agent will be denoted with a breve, e.g.
+$\breve{A}, \breve{B}, \breve{C}$.
+Particular agents will be identified by a lower case
+letter and the assignment of strategic and utility nodes
+to them will be denoted by subscript.
+E.g., $\tilde{A}_q$ and $\breve{U}_q$ denote an action
+taken by agent $q$ and a payoff awarded to $q$,
+respectively.
+
+A dotted arrow in a diagram indicates an optional arrow.
+They indicate that two separate models, one including the
+arrow and one without, are being considered.
+When considering an instantiation of the model with the dotted
+edge present, we will say the model or edge is \emph{open}.
+When the edge is absent, we'll say it's \emph{closed}.
+
+\subsection{Value of Data}
+\label{sec:value-of-data}
+
+Using the MAID framework, we can develop a
+the tools to analyze the value of data.
+
+We proceed with several considerations.
+First, we note that the meaning of data depends
+on the context in which is flows.
+This is a consequence of the fact that information
+flow consists of both causal flow and the nomic
+associations of the information, which are due
+to the causal structure in which the flow takes
+place.
+Similarly, we cannot determine the value of data
+except in the context of a system of causal relations
+that give data its meaning.
+
+Second, data is valuable not primarily as a good to
+be consumed but as a resource for determining
+correct actions.
+The value of data is in its strategic and/or tactical
+value.
+This means that data is valuable only in so far as it
+is available to an active agent.
+The value of the data to that agent will be the value
+of the strategic or tactical advantage that the data
+provides.
+
+Third, as a consequence of the second point,
+the effect of data on an agent's action may or may
+not effect outcomes for other agents.
+The value of a particular flow of data to an agent
+may have negative value \emph{to other agents}.
+
+These three points can be seen by an analysis of the MAID
+framework we have introduced in this section.
+In this framework, the flow of data is represented by
+an edge in the causal graph.
+The value of a data flow can be computed as the difference
+in utility to each agent between the open and closed cases
+in the game.
+
+\subsubsection{Strategic and tactical value}
+
+As we have distinguished between strategic reliance and
+tactical independence, we can distinguish between the
+strategic and tactical value of information.
+
+The strategic value of an information flow to an agent
+is the difference in utility to that agent in the open
+and closed conditions of the game, given each game
+is at strategic equilibrium for all players.
+
+\begin{dfn}[Strategic value of information]
+  \label{dfn:strategic-value}
+  Given two MAID diagrams $\mc{M}_{o}$ and $\mc{M}_{c}$
+  that differ only by a single edge, $e$,
+  and a strategic profile for each diagram, $\sigma_{o}$
+  and $\sigma_{c}$, the \emph{strategic value of $e$ to $a$}
+  is the difference in expected utility to $a$ under the
+  two respective induced joint distributions:
+
+  $$E(P_{\mc{M}_{o}[\sigma_{o}]}(U_a)) - E(P_{\mc{M}_{c}[\sigma_{c}]}(U_a))$$
+\end{dfn}
+
+*** This is a sketch definition.
+It is has some notational problems, and it does
+not match the descriptive text above it because there
+is not yet a definition of an equilibrium strategy ***
+
+In contrast with the strategic value of information,
+the tactical value of information is the value of
+the information to an agent given an otherwise fixed
+strategy profile.
+We allow the agent receiving the data to make a tactical
+adjustment to their strategy at the decision variable
+at the head of the new information flow.
+
+\begin{dfn}[Best tactical response to information]
+  Given two MAID diagrams $\mc{M}_{o}$ and $\mc{M}_{c}$
+  differing only in optional edge $e$ with head in decision
+  variable $D$,
+  the \emph{best tactical response to $e$} given
+  strategy profile $\sigma$, $\hat{\delta}_{\sigma,e}$
+  is the decision rule $\delta$ for $D$ such
+  that $\delta$ is optimal for $\sigma$
+\end{dfn}
+
+*** Problem: this definition assumes a unique best $\delta$
+which may not exist.***
+
+\begin{dfn}[Tactical value of information]
+  \label{def:tactical-value}
+  Given two MAID diagrams $\mc{M}_{o}$ and $\mc{M}_{c}$
+  differing only in optional edge $e$ with head in decision
+  variable $D$,
+  the \emph{tactical value of $e$} to agent $a$ given
+  strategy profile $\sigma$
+  is the difference in expected utility of
+  the open condition with the best tactical response to $e$
+  and the close condition using the original strategy:
+
+  $$EU_a((\sigma_{-D},\hat{\delta}_{\sigma,e}) - EU_a(\sigma)$$
+\end{dfn}
+
+ 
+\end{document}

@@ -1,0 +1,2574 @@
+\documentclass[twocolumn]{article}
+
+\input{preamble}
+\pagestyle{plain}
+
+% Use autocite to get footnotes.
+% This requires switching to biber from bibtex
+\usepackage[natbib=true,backend=biber]{biblatex}
+\addbibresource{no-edit.bib}
+\addbibresource{new.bib}
+
+% fnpct converts things like "bah\footnote{bah}." into "bah.\footnote{bah}.
+\usepackage{fnpct}
+\setfnpct{add-punct-marks=!?:;} % . and , included by default
+
+\usepackage{amssymb}
+
+\newenvironment{claim}[1]%
+{\smallskip\noindent\textbf{{#1}:}}%
+{\smallskip}
+
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+
+%\newenvironment{claim}[1]%
+%{\renewtheorem*{MCTTHM}{#1:}\begin{MCTTHM}}
+%{\end{MCTTHM}}
+
+\begin{document}
+
+\title{Chapter 3: Games and Rules of Information Flow}
+\author{Sebastian Benthall}
+\date{}
+
+\maketitle
+
+In this chapter, I build on the prior sections to
+develop a general, formal model of economic information
+flow.
+This builds on prior work identifying the gaps in
+social theoretical understanding of privacy (Chapter 1)
+and advancing a formal definition of information flow
+compatible with concepts of security and privacy
+in computer science (Chapter 2).
+I argue that this model is well suited to capturing
+the economic impact of information flows through
+mechanism design, which can inform both regulation
+and privacy by design.
+
+Section \ref{sec:limitations} considers the social
+theory of privacy and notes, based on prior work
+in Chapter 1 of this dissertation, that cross-context
+information flows remain an unresolved theoretical problem
+in privacy.
+When societal expectations are organized according
+the boundaries of social contexts, they cannot easily
+anticipate flows that violate those contexts.
+In particular, the kinds of information flows in
+technical infrastructure and their impact on society
+are difficult to conceptualize and therefore
+difficult to regulate socially.
+
+Section \ref{sec:law} outlines the legal frameworks
+for data protection.
+These do offer rationales for preventing cross-context
+information flow in particular contexts, such as
+health and legal advice, through confidentiality.
+These sectoral privacy laws have not prevented
+cross-context flows that fall through the gaps
+of the law, such as those facilitated by data brokers.
+These flows are driven by actors who, unregulated
+by the law of society or the law of the state,
+are beholden instead by the law of the market.
+
+Section \ref{sec:economics} addresses the existing
+economic of privacy and information.
+This literature is also organized into analysis
+of single economic contexts.
+I argue that this is due to a lack of formal modeling
+tools for addressing the complex reality of economic
+information flow.
+Drawing on the formal model of information flow in
+Chapter 2 based on Dretske, Pearl, and Nissenbaum,
+and multi-agent influence models \cite{koller2003multi},
+I develop a framework for mechanism design of games
+involving information flows.
+
+Section \ref{sec:single-context} uses the framework
+developed in Section \ref{sec:economics} to economic
+games of information flow.
+This section includes models of: a principal hiring
+and agent of uncertain quality; price differentiation
+based on personal information; and the provision
+of expert advice to a client.
+These models demonstrate the expressivity of the
+modeling framework.
+
+Section \ref{sec:cross-context} builds on the prior
+sections to model a case of cross-context information
+flow and its social effects.
+The model shows how one firm purchasing an information
+flow from another firm can have a negative impact
+on consumers who are otherwise not involved in that
+transaction.
+This shows that the cross-context information flows
+can have market externalities, suggesting that
+the economy of information flow is prone to market failure.
+
+Section \ref{sec:discussion} concludes the chapter
+with a discussion of broader implications and future
+work.
+
+\section{The limitiations of contextualized privacy}
+\label{sec:limitations}
+
+Privacy is a many-meaninged term
+difficult \cite{solove2005taxonomy} to concisely define.
+\cite{mulligan2016privacy} argues that privacy is an
+essentially pluralistic and contestable
+concept that should be defined at the 'retail' rather
+than ‘wholesale’ level.
+We will call a theory of privacy that maintains
+that the term has many distinct and perhaps irreconciliable
+meanings a \emph{particularist} account.
+
+The field of contextual integrity \cite{nissenbaum09book}
+accounts for variety of meanings of the term by
+(1) defining privacy
+as \emph{appropriate information flow} and
+(2) noting
+that what is ``appropriate'' depends on socially situated
+expectations or \emph{norms}, that are indexed to social
+contexts.
+According to this theory, privacy refers to these
+social expectations that vary from context
+to context.
+This theory of privacy both stands up to empirical tests
+\cite{martin2016measuring} and has been useful in
+privacy engineering (e.g. \cite{shvartzshnaider2016learning},
+\cite{benthall2017contextual}).
+We will refer to this kind of theory, in which
+privacy has a single meaning that is parameterized
+by social context a \emph{contextualized} account.
+
+Both particularist and contextualist accounts have trouble addressing legal,
+ethical, and technical privacy challenges arising from
+social platforms, technologies
+that mediate multiple different contexts.
+\cite{benthall2017contextual}.
+The commonly felt awkwardness of social media due to
+the unexpected participation of different audiences
+known as \emph{context collapse}
+\cite{marwick2011tweet} \cite{davis2014context}
+is a symptom of the more general problem
+that the digital infrastructure mediating so many
+of our social and commercial interactions
+is often indifferent to our contextualized social
+expectations because it is not ``in'' any one
+social context.
+In many cases technology makes our \emph{situation}
+much more complex and interconnected in ways that
+go beyond any social expectations of our social
+\emph{spheres}.
+
+Contextual Integrity is socially meaningful and
+psychologically compelling.
+For most people, our ubiquitous and complex
+technical infrastructure, in actuality, is neither.
+It is perhaps for precisely this reason that social
+norms are not enough to regulate privacy in our
+technical infrastructure.
+
+Beyond society's expecations of privacy, there
+are also legal limits to the collection and use
+of personal data.
+
+
+
+
+
+\section{Information in the Law}
+\label{sec:law}
+
+This section will briefly survey relevant
+legal positions on information and data protection.
+
+\subsection{Information as property}
+
+There is a sense of the word ``information'' that
+corresponds to physical records--papers on file,
+patterns recorded electrically in databases.
+This sense of information as a \emph{thing} perhaps encourages
+privacy solutions that frame personal information as a
+good that could be protected by property rights and
+thereby allocated more efficiently. 
+\cite{murphy1995property, samuelson2000privacy}
+Private property rights create a legal relationship between
+a person and a thing that generally transcends
+social spheres; robbery of private property is illegal
+in almost all social contexts.
+
+The closest existing legal framework for property rights
+in information are intellectual property rights laws.
+However, intellectual property rights such as those
+for copyright, patents, and trade secrets are motivated
+by the economic incentivization of innovation, not
+by privacy.
+They are not designed to protect ownership of data
+in general.
+For example, copyright specifically does
+not pertain to mere data or the organization
+of facts. \footnote{Feist v. Rural, 499 U.S. 340 (1991)}
+So a data subject does not by default own facts
+about themselves.
+Databases may be protected as a compilation if
+the selection of the data constitute individual,
+creative expression.
+
+Data in general presents a conceptually more
+difficult case than the kinds of intellectual
+goods considered in intellectual property law.
+I will make the case that this is due to data's
+ontological slipperiness, a slipperiness that
+makes it difficult to reason about it economically.
+
+\subsection{Confidentiality and sectoral privacy law}
+\label{sec:confidentiality}
+
+United States law has many provisions for the
+confidentialiality of personal information gathered
+in specific professional contexts.
+For example, HIPAA has special provisions for
+psychotherapy notes that do not apply to personal health
+information more generally.
+Attorney-client privilege, which protects personal information
+disclosed to ones lawyer, is another example of strongly
+protected confidentiality \cite{hazard1978historical} 
+\cite{allen1990positive} \cite{richards2007privacy}.
+Confidentiality in these domains is meant to ensure
+that the protected client can freely divulge personal
+information to the service provider without concern
+that their information may be used in a secondary way
+that harms them.
+This is necessary for the effective execution of
+these services.
+It is notable that in all these cases of expert services,
+data protection is mandated by law, not left for market
+selection or self-regulation.
+
+These confidentiality cases are perhaps the clearest
+cut examples of contextual privacy.
+These are examples of \emph{sectoral} privacy laws,
+meaning laws that apply only to a single business sector.
+This indexes them into a particular social context, the
+one defined by that sector's activity.
+In the language of Contextual Integrity,
+it is clear to which abstract social \emph{sphere}
+each law applies.
+Notably, these laws generally do not apply to
+data collection performed by online services.
+
+Furthermore, confidentiality is a restriction on
+information flow.
+Restrictions on information flow, when observed,
+prevent the collapse of otherwise separate
+social \emph{situations} in a more complex and
+perhaps conflicted one.
+Contextual integrity is specific about
+how information norms need not be restrictive,
+and sectoral privacy laws indeed do recognize
+cases where some kind of information flow
+is mandatory (for example, when a hospital
+must comply with law enforcement).
+But it may be that throttling
+information flow between situations that
+keeps sphere or sector based information flow
+rules enforceable.
+
+\subsection{Notice and consent}
+
+On-line services that do
+not fall under the rubric of any sectoral privacy
+laws are regulated in the United States by the
+Federal Trade Commission (FTC).
+The FTC has encouraged a self-regulatory regime
+of ``notice and consent'' whereby on-line services
+must transparently describe how they will use
+personal data and get consent before collecting it.
+The company must abide by the terms of the notice,
+even in the case of a corporate merger \cite{hine_2015},
+or risk being in violation of the FTC Act Section 5
+prohibitions against unfair or deceptive practices. 
+
+The effectiveness of the notice and consent framework
+has been widely panned \cite{barocas2009notice}
+\cite{reidenberg2015privacy}, as empirically users do
+not read legal notices, which are often written in
+dense and complex legal and technical language.
+This complex language may indeed reflect the complexity
+with which collected personal data may be used
+\cite{schaub2015design} in practice.
+Nevertheless, the scholarly consensus is that
+the notice and consent framework does little to
+protect privacy in practice
+
+\subsection{GDPR and purpose-binding}
+\label{sec:GDPR}
+
+The European Union's General Data Protection Regulation,
+which at the time of this writing has not yet gone into
+effect, promises to set a significant new standard for
+data protection in on-line services.
+While it protects only EU citizens, its extraterritorial
+enforcement means that many companies that are not based in
+the EU must still take significant steps to be compliant
+or risk facing heavy fines.
+
+A notable feature of the GDPR is its use of ``purpose binding''
+\cite{hildebrandt2013slaves} \cite{herrmann2016privacy}:
+data subjects must consent to particular purposes of use
+by data processors before the data may be collected.
+Exceptions to this rule are also framed in terms of purposes
+(such as the purpose to protect the ``vital interests''
+of the data subject).
+Purpose binding is combined with \emph{data minimization},
+the requirement
+that data may not be held or processed in excess of what
+is needed for the original purposes of collection.
+
+The efficacy of this regulation is still untested.
+However, it compares favorably with existing U.S. law.
+Narrowing the complexity of notices to be about particular
+purposes may be an improvement over the
+more complex legal and technical conditions in onotices
+typical under the FTC's notice and comment framework.
+While some U.S. sectoral privacy policies include
+purpose restrictions on information use
+\cite{tschantz2012formalizing}, the fact that
+the GDPR is an omnibus law means that its purpose
+restrictions apply even to those businesses that
+fall through the gaps of sectoral regulation.
+Truly, the GDPR formalizes new privacy \emph{rights},
+which are akin to but unlike other rights like
+property rights.
+
+
+\section{Economics and mechanism design}
+\label{sec:economics}
+
+Privacy is a complex social phenomenon and the
+importance of nuanced social theories like
+contextual integrity cannot be overstated.
+However, it is also a fact that technical
+infrastructure that spans social contexts
+is most often developed by private companies that are more
+responsive to economic principles than social norms.
+Having motivated the inquiry by reflecting on
+philosophical and legal theories of privacy,
+I will now turn to the economics of privacy,
+as economics are at the core of the social and
+legal questions that have concerned other scholars.
+Though narrower in scope, the field of economics
+has provided a rich
+literature on privacy that lends precision to
+claims about how interests
+or incentives shape outcomes.
+
+Modern economics of privacy concerns itself mainly with
+concerns about the economics of personal information
+as it is used by businesses employing
+information technology.
+Specially, it most often addresses what Acquisti,
+ Taylor, and Wagman \cite{acquisti2016economics} 
+call \emph{tangible} impacts of privacy, those impacts that
+have objectively measurable and modelable costs and
+benefits and effects on market structure.
+While others acknowledge the possible importance
+of \emph{intangible} impacts, such as a psychological
+concern about how ones personal information may be
+used (which may be modeled as a subjective preference
+for privacy \cite{calo2011boundaries} 
+\cite{cofone2017dynamic}) and other more global
+social effects, we will limit the discussion in this
+paper to tangible impact.
+
+Even so narrowly scoped, there are many different
+economic contexts in which the presence or absence 
+of personal information is critically relevant. 
+There are so many different contexts, each represented
+in their own sophisticated scholarly literatures,
+some \cite{acquisti2016economics} argue that a comprehensive
+economics of privacy cannot be achieved.
+Essentially, this is an argument that the economics
+of privacy should be contextualized, echoing
+the contextualized account of privacy outlined
+in Section \ref{sec:limitations}.
+But what if we want to understand the economic impact of
+information flowing \emph{between economic contexts}?
+In order to accomplish this, we need an economic framework
+that can model many different kinds of economic contexts,
+as well as a the ways in which they may interact.
+
+More concretely, economics has so far failed to come up
+with a theory explaining why people \emph{buy and sell data},
+and how they price it.
+Such a question is critical for explaining the way personal
+information transfers from business to business in the case
+of, say, online behavioral advertising.
+I posit that this is in part because of the slippery
+ontological properties of data: it is not a thing that
+one can hold as property and its main economic value is
+informing the actions of other agents (such as pricing
+decisions).
+In other words, the value of data is often the value
+of the strategic advantage provided by the data.
+This may help explain why often companies are often
+more interested in buying and selling
+flows of data, such as those provided by a web-based
+Application Programming Interface (API), than any particular
+piece of data.
+
+One tool in the economics toolkit for understanding
+policy decisions is mechanism design. \cite{hurwicz2006designing}
+\cite{nisan2007introduction}
+Mechanism design is an ``inverted game theory'',
+wherein the designer defines a range of possible
+economic games and chooses the structure of the game
+that maximizes some predetermined goal or objective
+function.
+The objective is a function of the outcome of the
+game assuming the players are operating according
+to strategies that are rationally optimized for their
+self interest, such as the strategies of a Nash Equilibrium.
+This in turn provides insight about what kind of rules
+can be imposed on an economic transaction such that socially
+prefered outcomes result, even when the economic actors
+are self-interested.
+
+In this section, I will develop a framework for mechanism
+design of economic situations involving information flows.
+This framework will extend the Multi-Agent Influence Diagram
+(MAID) framework \cite[koller2003multi], which is a
+game-theoretic extension of Bayesian Networks.
+This framework, which was briefly introduced in Chapter 2,
+models information flow in a social context as information
+is understood by engineers and economists.
+For regulatory regimes to be most effective, they must
+be reducible, in the scientific sense, to something like
+this model. In Section ???, I will reflect back on whether
+and how this model can reflect the restrictions of information
+law.
+
+
+\subsection{Formalizing information flow mechanisms}
+\label{sec:formalizing}
+
+We have motivated the need for a general framework
+for mechanism design for economics contexts involving
+(personal) information flow.
+In this section, I will specify that framework.
+Summarizing prior work (see \emph{Dissertation Chapter 2},
+\cite{benthall2017origin}), I synthesis a formal representation
+of information flow from Nissenbaum,
+Dretske \cite{dretske1981knowledge},
+Shannon,
+and Pearl \cite{pearl1988probabilistic}.
+In this representation, information flow is a causal flow
+that carries nomic associations, which can be represented
+precisely using Bayesian networks.
+I then propose the use of Multi-Agent Influence Diagrams,
+a game theoretic extension to Bayesian networks, as
+a framework for mechanism design in privacy economics.
+\cite{koller2003multi}
+
+\subsection{Formal theory of information flow}
+
+An upshot of CI is that it identifies privacy as a 
+property of information flows, which when unpacked proves
+to be a more substantive claim than it may first appear.
+When we speak about "consumer information" or 
+"personal information", we are faced with the ambiguity
+of the meaning of the word "information", which can mean
+alternatively either a medium of representation (such as
+paper or electronic records, "data") or a mathematical
+relationship between events or objects such that one
+is sufficient for inferences about the other
+\cite{nunberg1996farewell}.
+
+\cite{benthall2017origin} provides an mathematical
+analysis of the concept of \emph{information flow}
+on robust foundations: Dretske's philosophical theory
+of information flow and Pearl's account of statistical
+causation.
+
+Dretske's \cite{dretske1981knowledge} formulation
+that a message carries information about something it represents
+if and only if it messages of its kind carry a regular or ``nomic''
+relationship with what is represented.
+Dretske develops this philosophical account of information flow
+to be consistent with classical information theory
+\cite{shannon1948mathematical}, in which an information channel
+establishes a correspondence between the probability distributions
+of two random events.
+The emphasis on the regularity of the probabilistic relationship
+suggests the need for an account of how messages can flow
+in a structured way.
+
+Just such a theory of structured probabilistic relationships
+can be found in Pearl's theory of statistical probability and causation 
+\cite{pearl1988probabilistic}, and more generally theory
+around Bayesian networks.
+Bayesian networks provide a formulation of precisely how
+causally linked events can be correlated without being
+directly caused by each other. For example, two events that
+share a common cause can be correlated.
+This means that the nomic associations of a message depend
+not just on who sent the message but how the message
+is situated in a larger context of messages.
+
+Information flow therefore decomposes into two related parts,
+\emph{causal flow} of events and their relationship to each
+other, and \emph{nomic associations} between events.
+Both of these properties of information flow can be
+deduced from a model of information's context as a
+Bayesian network.
+
+A fully specified Bayesian network, complete with
+conditional probability distributions at every
+node, will determine not just the existence of
+a nomic assocation (or, equivalently, a conditional
+independence), but also the strength fo the association.
+Many measures of associative strength are possible,
+but one useful measure that is very well understood is
+Shannon's \emph{mutual information}:
+
+\begin{dfn}[Mutual information]
+  The mutual information of two discrete random variables
+  $X$ and $Y$ is
+
+  $$I(X,Y) = \sum_{x \in X} \sum_{y \in Y} p(x,y) log \frac{p(x,y)}{p(x)p*y)}$$
+  In particular, $I(X,Y) = 0 \iff X \independent Y$.
+\end{dfn}
+
+See Appendix \ref{appendix:information-theory-theorems} for
+theorems concerning the ways bounds on mutual information
+between variables can be read off of Bayesian networks.
+
+\subsection{MAIDs and Mechanism Design}
+
+Introduced briefly in Chapter 2, the Multi-Agent Influence Diagram
+(MAID) framework developed by \cite{koller2003multi} provides
+a game-theoretic extension to Bayesian networks.
+As a formalism, it is well suited for modeling how
+information flows, which we have detailed as causal
+flows with nomic associations, play a role in strategic
+games.
+A full account of the formalism is in the
+Appendix \ref{appendix:maid}.
+
+MAIDs extend Bayesian networks with two new node types:
+decision variables, and utility variables.
+Chance variables are much like the nodes in a Bayesian
+network: a CPD is defined for each chance variable
+that conditions on its parent nodes.
+
+Utility variables are much like chance variables,
+but they are each assigned to an agent $a \in \mc{A}$
+and they may not have children.
+The utility for each player in the game defined by
+the MAID is the sum of the values of the utility
+nodes assigned to them.
+
+Decision variables are assigned to an agent $a \in \mc{A}$.
+Their CPD functions are not defined as part of the MAID.
+Rather, the choice of CPD function for each decision variable
+is a strategic choice of the agent. The strategy profile $\sigma_a$
+for each agent is their assignment of a CPD to each decision variable.
+Taken to together, the strategy $\sigma$ of all the players
+induces a MAID into a Bayesian network, from which the
+expected utilitites of all players may be computed.
+
+In this work we have extended the MAID framework in a few
+respects.
+
+First, we have introduced the mechanic of an \emph{optional edge},
+represented in our diagrams as a dotted edge.
+
+\begin{center}
+\begin{tikzcd}
+  A \arrow[r, dotted] & B \\
+\end{tikzcd}
+\end{center}
+
+A dotted edge represents a potential information flow
+whose value is the focus of the study.
+An optional edge means a diagram represents two
+distinct MAIDs, one with the edge ``open'' or present
+in the graph, and one with the edge ``closed''.
+We will look at the outcomes of the open and closed
+cases and evaluate them
+according to values like efficiency and equity.
+
+Intuitively, there's a difference between information that
+becomes suddenly available, as in a data breach, and
+well-establish information flows to which everyone is
+accustomed, such as security cameras in malls.
+In both cases the information flow will have an effect on
+outcomes, but the cases are subtly different.
+I try to capture this difference by distinguishing between the
+tactical and strategic
+value of information (this is formalized in Appendix
+\ref{sec:value-of-information}).
+The tactical value of information is its value to an agent
+assuming all other agent's strategies remain fixed.
+The strategic value of information is the difference
+in an agent's utilities in the open and closed cases,
+consider a strategic equilibrium of all players in each case.
+
+In the cases discussed in this chapter, I will consider
+the strategic value of information flow except when specifically
+stated otherwise.
+
+\section{Single Context Economic models}
+\label{sec:single-context}
+
+In this section, I will demonstrate ...
+... using simple economic models of well-known
+phenomena in privacy economics.
+
+The innovation in these models is that they
+use MAIDs to model the strategic decisions,
+and that this makes explicit the relationship
+between information flow and contextual outcomes.
+
+\subsection{Agent quality uncertainty}
+\label{sec:agent-quality}
+
+One of the first contexts studied under the
+term ``privacy economics'' was labor
+markets \cite{posner1981economics}.
+In labor, insurance, and credit markets,
+a firm must evaluate natural persons
+for their individual capacities (to perform a certain kind
+of work, to avoid risk, or to repay a loan) and decide
+whether to invest resources in them.
+The firm generally benefits from having more information
+about the persons under consideration.
+The effect of privacy, or lack of it, is uneven across
+the population being considered by the firm.
+Paradigmatically, more suitably employees are benefited
+if their suitability is known to potential employers,
+while conversely less suitable employees are harmed
+by the same.
+Analogous results hold for credit and insurance.
+
+We can model this interaction with the following graph:
+
+\begin{center}
+\begin{tikzcd}
+  & V \arrow[d, dotted] \arrow[ddr, bend left = 20] & \\
+  & \tilde{B_p} \arrow[dr] \arrow[dl] &\\
+  \breve{U_a} & & \breve{U_p}\\
+\end{tikzcd}
+\end{center}
+
+In this model, $V$ represents the value to a principal
+of a service or contract with an agent.
+For simplicity, in the model $V$ is normalized
+with a predetermined price, so the value of $V$
+may be negative.
+At $\tilde{B_p}$, the principal decides whether or not to buy
+the contract; $dom(\tilde{B_p}) = \{0,1\}$.
+
+The utility awarded to the principal is the normalized
+value of the contract if the principal buys and zero
+otherwise.
+
+$$U_p = \begin{cases}
+               V & \text{if } \tilde{B_p} = 1 \\
+               0, & \text{otherwise}\\
+\end{cases} = \tilde{B_p} V$$
+
+The utility for the agent is, for simplicity, 
+a fixed amount (for example $1$) if the principal buys the contract,
+and zero otherwise; so $U_a = \tilde{B_p}$.
+
+This model affords some simplifications through backwards 
+induction.
+The optimal strategy for the principal is 
+to buy the contract if the expected value of it is positive.
+iIf the dotted edge is open, then the principal is able to use
+the know $V$ to make this decision.
+
+If the dotted edge is closed, then the optimal
+decision $\hat{B_p}$ depends only on
+the distribution of $V$.
+
+\begin{equation}
+  \begin{split}
+    \hat{B_p} & = \argmax_{b_p \in {0,1}} \E(U_p) \\
+      & = \argmax_{b_p \in {0,1}} b_p \E(V) = \begin{cases}
+      1 & \text{if } \E(V) \geq 0 \\
+      0, & \text{otherwise}\\
+    \end{cases}
+  \end{split}
+\end{equation}
+
+
+If the dotted edge is open, then the decision to buy
+the contract will be better informed.
+
+\begin{equation}
+  \begin{split}
+    \hat{B_p \vert V = v} & = \begin{cases}
+      1 & \text{if } v \geq 0 \\
+      0, & \text{otherwise}
+    \end{cases} \\
+    & = [v \geq 0]
+  \end{split}
+\end{equation}
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+  $\E(\cdot)$ & Open & Closed \\
+ \hline
+ $U_p$ & $\E(V \vert V \geq 0) P(V \geq 0)$ & $[\E(V) \geq 0] V_E$  \\ 
+ $U_a$ & $P(V \geq 0)$ & $[\E(V) \geq 0]$  \\
+ $U_a \vert V \geq 0$ & $1$ & $[\E(V) \geq 0]$  \\
+ $U_a \vert V < 0$ & $0$ & $[\E(V) \geq 0]$  \\
+ \hline
+\end{tabular}
+\end{center}
+where $V_E = \E(V)$
+
+\begin{exm}
+  Let $V$ range over $\{-1,1\}$ with even odds.
+    $V_E = 0$, $[\E(V) \geq 0] = 1$.
+    So the utility to the agent in the closed case, whatever their quality,
+    is $1$, and the expected utility to the principal is $0$.
+    In the open case, the principal's utility is
+    $\E(V \vert V \geq 0) P(V \geq 0) = 1 * (.5) = .5$.
+    The high-quality agents get utility $1$, and the low
+    quality agent gets utility $0$.
+\end{exm}
+
+From this example, we can see that principals and agents
+who can offer more valuable contracts benefit from more
+openness, while agents with low-value contracts suffer.
+
+
+\subsubsection{Values}
+
+Early work on privacy economics reasoned that
+flow of personal information in labor markets
+leads to greater economic efficiency. \cite{posner1981economics}
+The MAID model in Section \ref{sec:agent-quality}
+does reflect this reasoning.
+More flow of personal information (the open condition)
+brings greater utility to the principal
+on average, and this is a form of market surplus.
+
+It must also be noted that personal information flow
+has an unequal effect on the contract agents.
+Less valuable contract agents are negatively impacted
+by the flow of their personal information.
+In this narrowly considered economic context there 
+is a global tradeoff between economic productivity,
+lubricated by flows of personal information, and
+equality.
+
+This model is general enough to extend to cases where
+agents are not natural persons but rather firms.
+Indeed, the situation may be flipped: a single
+natural person may have to choose among many firms
+in order to, for example, contract an improvement to
+their home.
+The model therefore generalizes from cases of privacy
+economics to other cases where there is quality uncertainty
+and the buyer has market power.
+A question for policy designers is whether individual
+privacy is any more worthy of protection than
+information about firms to those who would
+hire their services, and why.
+
+One reason to be wary of a hiring or other contract
+choice depending on personal information is indirect
+discrimination.
+If contract value is negatively correlated with membership
+in a protected class of persons, choosing contracts solely
+on the basis of value might compound an injustice, which
+Hellman argues there is a duty to avoid doing.
+\cite{hellman2017indirect}
+Modeling historical injustice with MAIDs is a problem
+left for future work.
+
+\subsection{Price differentiation}
+\label{sec:price-differentiation}
+
+It is well known that personal information
+is used by on-line retailers for price differentiation 
+\cite{shapiro1998information, varian2001economics}.
+According the classic economic theory,
+when a firm charges all consumers at the same price
+it leaves
+some unserved by the market (because the price
+exceeds their demand) and some accruing a
+consumer surplus (because their demand exceeds
+the price).
+With differentiated prices, a firm can charge
+individual or groups of consumers
+closer to their reservation prices. 
+This reduces deadweight loss by
+charging consumers with very low willingness to pay
+a price they can afford, while transforming consumer
+surplus formerly accrued by those with high reservation
+price to the firm as producer surplus.
+
+We can model this context graphically like so:
+
+\begin{center}
+\begin{tikzcd}
+  & V \arrow[d, dotted] \arrow[dd, bend left = 40] \arrow[dddl, bend right = 20] & \\
+  & \tilde{R}_f \arrow[d] \arrow[ddl, bend right = 20] \arrow[ddr, bend left = 20] & \\
+  & \tilde{B_c} \arrow[dr] \arrow[dl] &\\
+  \breve{U_c} & & \breve{U_f}\\
+\end{tikzcd}
+\end{center}
+
+In this model, $V$ represents a consumer's demand for a product.
+$\tilde{R}_F$ is the price offered by the firm for the product
+(costs normalized out) based on the available information $S$.
+At $\tilde{B_c}$, the consumer decides whether or not to buy
+the product; $dom(\tilde{B_c}) = \{0,1\}$.
+
+The firm's utility is the offered price of the product if
+it is bought and zero otherwise; $U_f = B_c R_p$.
+
+The consumer's utility is their demand minus the price if
+they buy the product and zero otherwise; $U_c = B_c (V - R_p)$.
+
+Once again, we can consider two cases.
+In the ``closed'' case,
+the firm does not know the demand of the individual
+consumer.
+They only know the general distribution.
+The consumer will buy the product if and only if
+the price is lower than their demand or reservation price;
+$\hat{B} = [V > R]$.
+The firm must choose $\hat{R}$ that maximizes their expected
+revenue:
+
+$$\hat{R} = \argmax_{r \in \R} \E(r [V > r])$$
+
+If $V \geq \hat{R}$, then the consumer will find the
+price agreeable and purchase the good, accruing $V - \hat{R}$
+utility.
+Otherwise, they will not purchase the good.
+
+In the ``open'' case, the producer knows the reservation price
+$V = v$ when deciding their price $\hat{R}$.
+
+$$\hat{R} = \argmax_{r \in \R} r [v > r]) = v - \epsilon$$
+
+This value approaches $v$ from below, and for simplicity of
+presentation we will use $\epsilon$ to represent a vanishingly
+small value.
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+  $\E(\cdot)$ & Open & Closed  \\
+ \hline
+ $U_f$ & $V_E - \epsilon$ & $\hat{R} P(V \geq \hat{R})$ \\ 
+ $U_c$ & $\epsilon$ & $(V - \hat{R}) [V \geq \hat{R}]$  \\
+ $U_c \vert V \geq V_E$ & $\epsilon$ & $V - \hat{R}$  \\
+ $U_c \vert V < V_E$ & $\epsilon$ & 0  \\
+ \hline
+\end{tabular}
+\end{center}
+
+where $V_E = \E(V)$
+
+\begin{exm}
+  Let $V$ be a uniform distribution ranging $[0,1]$.
+  
+  In the closed condition, $U_f = r (1 - r) = r - r^2$,
+  implying the $\hat{R} = .5$ and $U_f = .25$.
+  $\E(U_c) = .125$.
+
+  In the open condition, $\hat{R} = V - \epsilon$
+  and $\E(U_f) = .5 - \epsilon$.
+  Consumer utility is $\epsilon$.
+\end{exm}
+
+In this price differentiation case, the strategic
+value of information to the producer is positive.
+The strategic value of the information to the consumer
+depends on the consumers' reservation price: it may
+be negative, or it may be very slightly positive.
+In general, allowing information flow for price
+differentiation is better for producers than for
+consumers.
+
+\subsubsection{Values}
+
+This model shows the tradeoffs of allowing information
+flow in the economic context of price differentiation.
+The outcomes for different agents can be inferred from
+the model.
+It's clear that information flow for the purpose of
+price differentiation primarily serves the firm
+selling a good or service.
+Arguably, this is valuable because it allows firms
+to recoup fixed costs for product development with
+greater sales.
+
+However, this model shows that price differentiation
+is on the whole bad for consumers.
+While it's true that consumers with low willingness
+to pay have access to the good with price differentiation,
+they are charged a price that makes them almost
+indifferent to the transaction.
+Meanwhile, consumer surplus has drained from those
+who valued to the good highly.
+
+This is a case where the purpose of a market context
+may be hotly contested by different actors within it.
+If the contextual purpose of the market
+transaction is to satisfy as much consumer demand as
+possible while rewarding productive suppliers,
+then allowing information flow for price differention
+is wise policy.
+But this may be contested by consumer advocates who
+would argue that consumer satisfaction is more important
+than economic growth.
+This context is so raw with economic intent it may be
+that not societal consensus is possible.
+
+\subsection{Expertise}
+\label{sec:expertise}
+
+Doctors, lawyer, and financial services professionals
+all have something in common.
+Their clients consult them for their expertise.
+In the schematic interaction we'll consider in this
+section, we'll consider the case where these clients
+must divulge personal information to an expert in
+order to get a personalized recommendation or response.
+
+In many of these domains, there are already strong data
+protection laws in place in the United States. 
+HIPAA in health care,
+GLBA in personal finance, and FERPA in education all
+place restrictions on institution's ability to disclose personal
+information that's collected as a part of that instition's
+normal professional service. (See Section \ref{sec:confidentiality}.)
+Notably, there is no similar data protection law for search
+engine queries, which may also be considered a kind of expert
+recommendation service.
+
+The MAID modeling tool we have been using can capture
+the difference in knowledge between the client and
+the expert and the consequences that has for the service
+market.
+
+\begin{center}
+  \begin{tikzcd}
+    & W \arrow[ddl, bend right = 40] \arrow[ddr, bend left = 40]& \\
+    & C \arrow[dl] \arrow[dd] \arrow[dr, bend left = 20, dotted]& \\
+    V \arrow[dd] \arrow[ddr, bend right = 20] &  & \tilde{R}_e \arrow[dl] \\
+    & \tilde{A}_c \arrow[dl] \arrow[d] &\\
+     \breve{U_e} & \breve{U_c} &\\
+  \end{tikzcd}
+\end{center}
+
+In this model, $W$ are facts about the world that
+determines the relationship between personal qualities
+of clients and the best course of action taken by them.
+For example, this may be thought of as parameters in
+a function from symptoms of illness to appropriate prescribed
+remedies.
+Its domain is some flavor of $n$-by-$m$ matrices, where
+$n$ is the number of personal characteristics or types in the model,
+$m$ is the number of actions available to the client,
+and $W_{i,j}$ is the reward to a client with of type $i$
+of action $j$.
+
+The variable $C$ encodes those personal qualities known to
+and communicable by the client.
+The domain of this variable is an integer from 1 to $n$.
+
+The variable $V$ encodes the value of a particular to the client
+of a variety of courses of action that they might take.
+It depends on $W$ and $C$, and in the simple version of the
+model considered here is a deterministic function: $V$
+is the row of $W$ indexed by $C$.
+
+$\tilde{R}_e$ is the strategically determined decision of
+the expert to recommend a course of action based on their
+knowledge of $W$ and optionally $C$. Its domain is an
+integer from 1 to $m$.
+$\tilde{A}_c$ is the decision of which action the client takes.
+It also has domain from 1 to $m$.
+$U_c$ and $U_e$ are the utilities awarded to the client and expert,
+respectively, which take their value from the vector $V$ indexed
+by the value of $\hat{A}_c$.
+
+Perhaps idealistically, we have modeled the utility
+of the expert as depending only on the utility of the
+client.
+We imagine that the client pays for the expertise
+up front, that this is normalized into the value
+of the action taken $V$, and that the expert
+benefits from the positive recommendations of
+satisfied clients.
+Future work and other models may explore other
+possible configurations of incentives.
+For an action taken $a \in A$, we will
+specify that $U_c = V(a)$.
+
+We will once again consider two cases.
+In the closed case, there is no edge from
+$C$ to $\tilde{R}_e$.
+In this case, the expert still has specialized knowledge
+(the value of $W$), but no personal information about the
+client with which to tailor their recommendation.
+Their best recommendation is the action that would
+benefit a random client the most in expectation.
+
+$$\hat{R}_{closed} = \argmax_{a \in A} \E(V(a) \vert W)$$
+
+The client, on the other hand, has access to information
+about their symptoms $C$ but not the expert knowledge $W$.
+By the assumption of the model, the client does have access
+to the expert's recommendation, $\hat{R}_{closed}$.
+So their choice of action is:
+
+$$\hat{A}_{closed} = \argmax_{a \in A} \E(V(a) \vert C, \hat{R}_{closed})$$
+
+In the alternative ``open'' condition, there is an edge between
+$S$ and $\tilde{R}$.
+
+$$\hat{R}_{open} = \argmax_{a \in A} \E(V(a) \vert W,C)$$
+
+$$\hat{A}_{open} = \argmax_{a \in A} \E(V(a) \vert C, \hat{R}_{open})$$
+
+The specific utility outcomes depend heavily on the parameters of
+the model.
+We can make a few general observations about bounds.
+If the model is such that individual symptoms carry no
+information about the value of actions taken even with expert
+knowledge taken into account ($V \independent C \vert W$,
+$V \independent C$),
+then the welfare outcomes in the closed case and the open case will
+be the same.
+
+If the expert knowledge $W$ has information
+about the action values given the symptoms ($I(W;V \vert C) > 0$),
+then the expert recommendation $\hat{R}_{open}$ will generally be better
+in expectation than $\hat{A}_{closed}$ and indeed
+$\hat{A}_{open} = \hat{R}_{open}$.
+
+Note that there is an interaction between the strategies of the
+expert and the client.
+The optimality of the expert's strategy at $\tilde{R}_e$ depends
+on how its signal will be ``interpreted'' at $\tilde{A}_c$.
+Interpreting $\tilde{R}_e$ as a recommendation implies some
+correspondence between the value taken at that variable and
+the values of actions according to $V$.
+But in some cases an alternative encoding of the information
+in $W$ (and $C$) may be more efficient.
+
+An example of the instantiated model will illustrate these points.
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+  $\E(\cdot)$ & Open  & Closed \\
+ \hline
+ $U_e$ & $\E(V(\hat{A}_{open}))$ & $\E(V(\hat{A}_{closed}))$ \\ 
+ $U_c$ & $\E(V(\hat{A}_{open}))$ & $\E(V(\hat{A}_{closed}))$  \\
+ \hline
+\end{tabular}
+\end{center}
+
+\begin{exm}
+  Let $n$ and $m$ both equal 2.
+  Let the domain of $W$ be binary 2-by-2 matrices with
+  the restriction that each row contains one 0 and one 1.
+  Let the distribution of $W$ be uniform over the four
+  possible matrices in its domain.
+
+  In the closed case, $\tilde{R}_e$ does not depend on $C$.
+  $\tilde{R}_e$ is therefore a strategically chosen encoding
+  of only the information in $W$.
+  Notably, whereas the random variable has 2 bits of information,
+  $\tilde{R}_e$ ranges over 0 and 1 and can carry at most 1 bit of
+  information.
+
+  One such encoding, communicating one bit from $W$, is:
+
+  $$\hat{R}_{closed} \vert (W = w) = \begin{cases}
+    1 & \text{if } w_{0,1} = 1 \\
+    0, & \text{otherwise}\\
+  \end{cases}$$
+
+  At $\tilde{A}_c$, the client knows both $C$ and $\tilde{R}_e$
+  and must choose an action that optimizes their expected utility. 
+  At this node the client knows if they are of type 0 or 1.
+  If they are of type 0, they know the recommendation applies 
+  to them, with certainty of a reward of 1 if they take the suggested action. 
+
+  $$\hat{A}_c \vert (C = 0) = \hat{R}_c$$
+
+  But if the client knows they are of type 1 (probability $.5$),
+  then the recommendation
+  does not encode information about the value of their action.
+  Whatever action they take has an even chance of having utilty of 0 or 1.
+  Expected utility in the closed case is $.5 * 1 + .5 * .5 = .75$.
+  
+  In the open case, the expert's recommendation $\tilde{R}_e$
+  depends on both $W$ and $C$.
+  From this information, the expert can deduce the one bit of
+  information relevant to the client's decision, which is
+  $V$.
+
+  $$\hat{R}_{open} \vert (W = w, C = c) = \begin{cases}
+    1 & \text{if } w_{c,1} = 1 \\
+    0, & \text{otherwise}\\
+  \end{cases}$$
+
+  In this case, when $\hat{A} = \hat{R}_{open}$,
+  the value of the action is guaranteed to be $1$,
+  which implies that the expected utility in the
+  open case is $1$.
+
+  The strategic value of the information flow from
+  $C$ to $R$ is the difference in expected utilities
+  in the two cases, which in this example is $1 - .75 = .25$.
+\end{exm}
+
+In this example, the expert chooses a strategic at
+$\tilde{R}$ that maximizes the flow of information,
+in the Shannon sense of the term,
+to $\tilde{A}$ about another variable of interest,
+$V$. Or, formally:
+
+$$\hat{R} = \arg \max_{R} I(R;V)$$
+
+In the closed case, the limited domain of $\tilde{R}$,
+which permits the flow of at most one bit of information,
+restricts the expert's ability to provide an adequate
+recommendation to the client.
+If the number of bits in $R$ was greater than or
+equal to the number of bits in $W$, the expert would
+be able to communicate the entirety of their expertise
+to the client, who could then make a perfect judgment
+of action taking $C$ into account.
+
+This information theoretic lens provides a new view
+into personalized expert advice.
+Personalization is useful to the client only because
+the client lacks expertise, but this lack of expertise
+is due in part because the expert cannot communicate
+all the information they know to the client.
+Personalization allows the expert to provide the highest
+value information through the narrow bandwidth of
+communication.
+The constraints on information flow are due mathematically
+to the Data Processing Inequality and its consequences
+for Bayesian networks, which are discussed at length in
+\ref{appendix:information-theory-theorems}.
+
+\subsubsection{Values}
+
+This model of expert services has been simplified
+to exclude cases of expert conflicts of interest
+that might engage societal values in mechanism
+design.
+We accomplished this simplification by directly
+aligning client and expert incentives.
+Despite this simplification, the model
+shows some of the difficulty in modeling
+the welfare outcomes of expert services.
+The principle difficulty is that the outcomes
+depend on general facts and the quality of
+expertise in a particular domain.
+Because it is hard to encode an actual field
+of expertise into a simple model we can prove only
+very general properties of
+such a field.
+
+Despite these difficulties, this simple model
+shows that when expert and client incentives
+are aligned, greater flow of information
+from client to expert enables better outcomes
+for both parties.
+In a later section, we will elaborate
+on this model by introducing the possibility
+of a breach of confidentiality.
+
+\section{Cross-context information flow and secondary use of personal data}
+\label{sec:cross-context}
+
+In the above models, we have shown how in
+a variety of economic contexts the flow of information
+can have tangible effects on welfare outcomes.
+What these models have in common is that they show
+that the relevance of information on outcomes depends
+on the process by which it is generated and how
+elements of that process affect outcomes.
+While we have provided narrative cover stories for
+each example where we have described the information
+flows in terms of particular types of documents or events
+(job applications, symptoms, etc.), what really gives
+information its semantics are its associational
+relationships with other variables.
+These are given by the conditional probability
+distribution governing the model.
+
+A reason for modeling games with information flow in
+this way is to begin to model the challenges of modeling
+the economic impact of the \emph{secondary use} of data.
+It is the cases where data collected for one purpose or context
+is used in another that are often presented as alarming.
+
+\subsection{Cooperating Firms: Price differentiation and agent quality}
+\label{sec:cooperating-firms}
+
+Consider the following model, constructed as a combination
+of the agent quality uncertainty and price differentiation
+models.
+Here $c$ is a natural person who is \emph{both} potentially
+a consumer of firm $f$'s products and potentially involved
+in a contract with principal $p$.
+The value of this person's contract $V^1$ and their
+willingness to pay for the product $V^2$ both depend on
+a prior variable $W$ that encapsulates many factors about
+the background of the person.
+
+\begin{center}
+  \begin{tikzcd}
+    & & W \arrow[dl] \arrow[dr] & & \\
+  & V^1 \arrow[d] \arrow[dddl, bend right = 20] \arrow[dddl, bend right = 20] \arrow[dd, bend left = 40] & & V^2 \arrow[dddr, bend left = 20]&  \\
+  &  \tilde{R}_f \arrow[d] \arrow[drr, dotted] \arrow[ddl, bend right = 20] \arrow[dd, bend left = 40]  &  & & \\
+  & \tilde{B_c} \arrow[d] \arrow[dl] &  & \tilde{B_p} \arrow[dr] \arrow[d] &\\
+  \breve{U_f} & \breve{U_c^1} & & \breve{U_c^2} & \breve{U_p}\\
+\end{tikzcd}
+\end{center}
+
+As before, $V^1 \rightarrow \tilde{R}_f$ represents the ability of
+the firm to known the customer's demand before choosing their
+price.
+There is also a principal that decides at $\tilde{B}_p$
+whether or not to buy a contract with the customer, who
+in this case is also an agent for hire.
+In this model, the principal cannot know the value
+of the contract $V^2$ directly.
+Rather, there is a new edge $\tilde{R}_f \rightarrow \tilde{B}_p$
+that represents
+the option of the product-selling firm $f$ to share its
+pricing information with the contract principal $p$.
+
+Why would two companies ever interact in this way?
+If the principal does \emph{not} know the value of
+a potential contract $V^1$ directly, then the pricing
+information $\hat{R}_f$ potentially contains information
+about $V^1$ in a way that the principal $p$ can use
+Here, ``contains information about'' can be read to
+mean ``has mutual information with'', i.e.
+$I(\hat{R}_f, V^1) \geq 0$.
+This information may be valuable for the principal
+by allowing them to avoid bad contracts.
+
+Since the principal and the producing firm's utility's
+do not interact directly in any other way, we can
+imagine that the principal would be willing to
+purchase the pricing data from the producing firm
+for the \emph{value of the data to the principal}.
+Though this data relates directly to
+a natural person, it is not data collected from that
+person; it is data derived from the producing firm's
+pricing algorithm.
+Nevertheless, sharing this data has a function analogous
+to sharing personal data that could be used in a hiring decision
+or in offering a loan.
+
+In this situation, the firm's incentives are the same
+as in the simple price differention
+case in Section \ref{sec:price-differentiation}.
+By assumption, the firm knows the customer's demand
+$V^1$, and therefore prices at $\hat{R} = V^1 - \epsilon$.
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+  $\E(\cdot)$ & Open & Closed  \\
+ \hline
+ $U_f$ & $V^1_E - \epsilon$ & $V^1_E - \epsilon$ \\
+ $U^1_c$ & $\epsilon$ & $\epsilon$ \\
+ $U_p$ & $\E(V^2 \vert V^2 \geq 0) P(V^2 \geq 0 \vert \hat{R})$ & $[\E(V^2) \geq 0] V^2_E$  \\
+ $U_c^2$ & $P(V^2 \geq 0)$ & $[\E(V^2) \geq 0]$  \\
+ $U_c^2 \vert V^2 \geq 0$ & $1$ & $[\E(V^2) \geq 0]$  \\
+ $U_c^2 \vert V^2 < 0$ & $0$ & $[\E(V^2) \geq 0]$  \\
+ \hline
+\end{tabular}
+\end{center}
+
+where $V^1_E = \E(V^1)$ and $V^2_E = \E(V^2)$.
+
+\begin{exm}
+  Let $W$ vary over $\{0,1\}$ with even probability,
+  with the value corresponding to one of two socioeconomic
+  classes, \emph{low} and \emph{high}.
+
+  In this example, we will assume that higher class people
+  have access to better education and wealth, and therefore
+  both have higher reservation prices and offer higher value
+  contracts to creditors, employers, and insurance providers.
+
+  $$V^1(w) = \begin{cases}
+    10 & \text{if } w  = 1 \\
+    1, & \text{otherwise}\\
+  \end{cases}$$
+  
+  $$V^2 = \begin{cases}
+    1 & \text{if } w  = 1 \\
+    -1, & \text{otherwise}\\
+  \end{cases}$$
+
+  The firm has access to the reservation price $V^1$
+  at $\tilde{R}_f$ and so will maximize their utility
+  by pricing at slightly below the customer's willingness
+  to pay.
+
+  $$\hat{R}(v) = v - \epsilon$$
+
+  The optional edge being considered in this case runs
+  from $\tilde{R}$ to $\tilde{B}$.
+  In the closed case, the principal has no information
+  about $V^2$ on which to decide except the base rate
+  provided by the game structure.
+  The expected value to the principal of providing the contract
+  is $0$.
+
+  In the open case, $\tilde{B}$ is conditional on $\tilde{R}$.
+  Crucially, $V^2$ is conditionally dependent on $\hat{R}$.
+  In particular:
+
+  $$P(V^2 = 1 \vert \hat{R} > 1) = 1$$
+  $$P(V^2 = 0 \vert \hat{R} \leq 1) = 1$$
+
+  The optimal strategy for the principal is to hire
+  the agent when the firm reveals to them that they offered
+  a high price for the good, and to reject the agent otherwise.
+  The high quality contract is purchase half the time with reward
+  $1$ to the principal.
+  So the strategic value of the information flow from $\tilde{R}$
+  to $\tilde{B}$ to the principal is $.5$.
+  The strategic value to the average customer/agent of this information flow
+  is negative, as it results in many customer/agents not getting hired.
+\end{exm}
+
+In this simple example, in strategic equilibrium the firm's offered
+price and the customer/agent's contract quality
+are highly correlated.
+This means that a \emph{causal flow} between the firm's price and
+the principal's hiring decision carries a \emph{nomic association}
+with the contract value.
+That association has strategic value for the principal similar to
+the value of having the contract value's causally flowing directly
+to the hiring decision.
+
+The secondary use of data to determine the social class of
+natural persons is not an academic hypothetical.
+Facebook has filed a patent to use information about
+user's hardware specifications, presumabely collected originally
+to optimize service performance, to predict social class, presumably useful
+for targeting advertisements \cite{cb_insights_research_2018}.
+The cross-context use of personal data for targetted advertising
+is arguably the fundamental business proposition of on-line
+advertising companies like Facebook and Google.
+
+The strategic value of the information to the principal can
+be interpreted as the price at which the principal would
+be willing to purchase this information flow from the firm.
+This price depends on the causal structure of the environment,
+including the distribution of qualities of natural persons.
+Even though natural persons are on average worse off as a result
+of this information flow, this is not a factor in its
+value or price to the principal.
+This can be considered a market externality, though
+because it involves a new flow of information, it
+may also correct a market inefficiency.
+
+\subsubsection{Values}
+
+The outcomes of this game are similar to the outcomes
+in the simple principal agent case.
+The difference is that the information flow
+runs between two cooperating firms.
+This models the flow of information from one
+economic context (price differentiation on a consumer good)
+to another (a principal-agent hiring decision).
+Because the two contexts are part of a shared
+causal environment, the data from from one context
+can carry meaningful information relevant to another.
+
+It's notable that the natural person in this example,
+who is both a customer and an agent to be hired,
+is (on average) disadvantaged by the hypothetical
+transaction taking place between two firms.
+This is a market externality, though the
+flow of information corrects a market inefficiency
+in the second economic context.
+There is a tradeoff between market efficiency,
+which is good for firms,
+and the privacy of natural persons, and especially
+the most vulnerable natural persons.
+
+\subsection{Secondary use of queries to experts}
+
+Section \ref{sec:cooperating-firms} detailed the
+potential negative impact on vulnerable natural persons from
+an information flow that crosses economic contexts.
+It is possibly because of the potential negative impact
+of secondary uses of information that so many market segments
+are protected by sectoral privacy and confidentiality laws.
+HIPAA in health care,
+GLBA in personal finance, and FERPA in education all
+place restrictions on firm's ability to disclose personal
+information. (See Section \ref{sec:confidentiality}.)
+What these sectors all have in common is that they do not
+function without significant disclosures of personal
+information to firms because the provide personalized
+service unavailable to the consumer.
+The expertise model in Section \ref{sec:expertise}
+captures why personal information is necessary for
+the functioning of these services in fundamental
+mathematical and economic terms: personalization
+allows expert service providers to deliver more
+value to clients given a tight information bottleneck
+relative to the body of knowledge of the expert.
+
+Section \ref{sec:cooperating-firms} provides a template
+for understanding why disclosure of sensitive information
+from the context of expert services into other domains
+could have negative externalities for natural persons.
+Indeed, information we provide our doctors, lawyers,
+financial advisors, and search engines is sensitive
+precisely because this information is potentially
+impactful in other contexts in ways that are surprising
+and/or unwelcome.
+
+Whereas the firms in \ref{sec:cooperating-firms} both benefit
+from the sale of personal information, the sale of personal
+information from expert services may have secondary effects
+that negatively impact experts.
+If clients are aware of a harmful information flow, they
+may be reluctant to engage the expert.
+In the the terminology introduced earlier, an expert
+may get tactical value from selling personal information
+of its clients, but if clients can adjust their behavior
+according to new expectations, the strategic value of
+this information flow to experts will be negative.
+
+\section{Discussion}
+\label{sec:discussion}
+
+This chapter has developed a framework for modeling
+economic games with information flow.
+This framework expands MAIDs with optional edges,
+which results in a system for modeling mechanism
+design with Bayesian Networks.
+This framework can model well understood cases of
+privacy economics (principal agent, price differentiation)
+as well as the lesser understood case of expert services.
+The framework makes it clear how the fundamental limits
+of information theory, as well as the nature of information
+flow as causal flow with nomic associations,
+relates to the economics of information
+services.
+The models show that sometimes personal information flow
+improves market efficiency at the expense of consumers
+and riskier agents.
+These models allow for a direct comparision between social
+values and the outcomes of policies allowing or disallowing
+personal information flows. (Section \ref{sec:single-context}.)
+
+This framework can also model cases where information
+flows between economic contexts
+(Section \ref{sec:cross-context}.)
+In particular, secondary use of personal information can
+play an economic role similar to primary use of personal
+information if and when the processes that generate
+the data result in reliable and useful statistical correlations.
+These correlations can occur when society is stratified into
+socioeconomic classes, as they are in reality.
+
+Central to this modeling system is a conceptual shift in
+how to understand the role of information flow in economics.
+In a framework like Contextual Integrity, information flow
+gets its meaning from its social context, or the way
+the information plays a role in an abstractly and normatively
+understood social sphere.
+This captures social expectations well, but not the reality
+of information flow when businesses develop infrastructure
+technologies that span social contexts.
+For this, we need a model of information flow that is more
+realistic.
+We accomplish this by modeling information flows as situated
+within larger causal structures.
+These causal structures give each individual flow its
+nomic associations, which are what make the information
+strategically useful.
+
+The model makes clear that the strategic choices of agents
+in the economy is one of
+the elements that determines the causal structure that gives
+information its meaning.
+This indicates a major source of confusion in economics of information.
+Information is not a good that is bought and sold for consumption.
+Information is a strategic resource, part of the social and economic fabric.
+When information flows are bought and sold, it changes the
+strategic landscape of the economy.
+Market externalities abound as information flows effect many parties
+who are not party to transactions.
+
+Beyond these general conclusions, there are a number
+of more specific implications of these models which
+indicate directions of future work.
+
+\subsection{Privacy concerns and privacy competence}
+
+A robust empirical result is that there are
+different segments of the general population that have different
+privacy concerns.
+These are often presented as the marginally concerned, pragmatic majority,
+and privacy fundamentalists.
+\cite{ackerman1999privacy} \cite{berendt2005privacy}
+\cite{sheehan2002toward}
+This matches expectations from economic model:
+some populations are more vulnerable than others to the
+negative effects of personal information flow.
+Further work is needed to test to what extent
+different preferences or concerns about information
+flow are determined by the economic situation
+of data subjects.
+Class differences may have significant effects,
+with implications for value-driven policy design.
+
+There is also evidence that consumers are generally not making
+privacy decisions in rational and informed
+self-interest but, rather,
+become much more concerned with their privacy
+when told facts
+about how personal information is
+used \cite{hoofnagle2014alan}.
+There is a disconnect between consumer
+expectations and fact.
+This may be because the most prominent
+privacy threats are beyond user comprehension.
+
+Many serious privacy threats, whether they be Big
+Data analytics drawing conclusions from
+aggregating for an unforeseen business end,
+a network of companies engaged in secondary uses of data
+shared between them, or an illicit dark web of hackers
+and fraudsters, are due to cross-context inforamation
+flows in which the data subject plays little active role.
+Section \ref{sec:cross-context} shows the mechanics
+of how companies can gain strategic advantage by
+reusing personal data to the detriment of consumers.
+However, if consumer privacy expectations are tied to
+the normative expectations in specific social spheres,
+perhaps because these expectations are encoded as mental
+models or causally structured frames, then consumers
+can not be expected to be competent stewards of their
+own personal information.
+Consumers cannot act strategically in their interest,
+individually let alone collectively, unless they
+are aware of how their information is being used.
+
+The true mechanics of information flow, represented here
+by Bayesian networks, are opaque and largely unknown.
+The framework provided here can be extended to take into
+account different degrees of knowledge about the causal
+structure that gives information flow its meaning.
+Further work is needed to understand the implications
+of knowledge and information assymetry in data economy
+market equilibria.
+
+\subsection{Market failure}
+
+By the preceding argument, consumers are not competent
+to make decisions about how to control their personal
+information because their privacy expectations are
+tied to contexts that are routinely violated in practice.
+Potential secondary uses of personal data depend on
+associational properties of the data that are beyond
+users comprehension.
+In the case of large, data-rich firms,
+these associational properties are
+discovered through aggregation and data mining by the
+very firms that attract consumer interaction through
+expert services that they offer.
+This data is then used in two-sided markets, which
+act as intermediaries in many other economic contexts,
+further complicating any prediction of the benefits
+and harms of disclosure.
+Quantitative, let alone qualitative, prediction of
+these harms and benefits is beyond what an individal
+can accomplish.
+
+In the absence of a more concrete culprit for privacy threats,
+security considerations raise a general case for needing
+to limit secondary use of personal information.
+On the one hand, we can consider security to be another
+context where personal information is used, perhaps in a
+secondary way.
+Uses of personal information which are
+harmful to all affected consumers include those that facilitate
+security threats like spearphishing (when attackers use
+personal information to manipulate a person to reveal 
+security-related information or otherwise be a vector
+for a further attack) and identity theft.
+On the other hand, it is the possibility of harmful secondary
+use \emph{across all potential contexts} that makes security of
+personal information so important in the first place.
+Security in this sense is necessary for an implementation of 
+confidentiality.
+
+The conditions appear to be ripe for classic market failure,
+or else there would be if there were a market to begin
+with.
+As has been mentioned, property rights for
+personal data are weak if not nonexistant (see Section \ref{sec:law}).
+Personal data is not a good being produced by anybody
+in the privacy economics ecosystem.
+It is rather information in the \emph{strategic} sense of
+allowing some market actors to perform more effectively.
+There is no sense in which the market of personal information
+has the properties that would lead us to believe the
+market would allocate resources efficiently.
+Perhaps rather than ask if there is a market failure,
+we should be asking what is happening, if not a market at all?
+
+As an alternative to regulating personal data as a kind of property,
+some have proposed regulating personal data through tort
+\cite{posner1981economics, cofone2017dynamic}.
+Certainly some meanings of "privacy", such as those that refer
+to protection from libel, are enforceable in this way.
+To the extent that considering personal data to be a /thing/
+is misleading, it may more more
+effective to craft data protection regulation through
+the framework of dignitary privacy. \cite{post2017data}
+However, as we have discussed it seems unlikely that the scope
+of consumer harm or benefit can be adequately assessed given the
+scale of the empirical problems involved.
+
+A another alternative is strengthened
+data protection laws for two-sided markets involving targeting,
+such as advertising in social media platforms.
+As we have noted, in most expert service sectors, including
+health care, finance, education, and so on, there are existing
+sectoral data protection laws ensuring confidentiality.
+The existence of these laws is an indication that without
+them, these expert service markets would implode in market failure.
+If protecting confidential information from secondary use
+(through austere prohibitions on disclosure and security
+investments) is a form of service \emph{quality}, and this quality
+is difficult for consumers to assess independently, then
+this information assymetry about service quality would result
+in a market failure along the lines of Akerlof's market for
+"lemons". \cite{akerlof1970market}
+Since unregulated two-sided markets are in the senses described
+above equivalent to providing unrestricted secondary use to
+other firms, perhaps present economic conditions are just such
+a market failure.
+
+\subsection{Purposes}
+
+As discussed in Section \ref{sec:GDPR},
+the EU's GDPR attempts to limit the kinds of privacy
+violations due to secondary use of personal information
+through \emph{purpose restrictions},
+which place restrictions on the goals for which collected
+data may be used.
+Personal data may be processed only for purposes to which
+the data subjects consent (with some exceptions).
+Further data minimization requirements reduce the amount
+to which data is unintendedly exposed to other unintended purposes.
+As a way of creating agreement between the expectations of data
+subjects and the activities of data processors, this can be
+seen as a refinement of the notice-and-consent framework.
+It may be argued that purposes are easier to understand
+than the complexity of legal and technical reality.
+
+The rising importance of purpose binding as a privacy requirement
+raises the question of how the purpose of data processing can
+be formalized to facilitate privacy engineering.
+Tschantz, Datta, and Wing (2012, 2013) do formalize purpose
+in order to provide the basis of
+automatic enforcement of privacy policies.
+In their approach, ``an action is for a purpose if the
+action is part of a plan for achieving that purpose.''
+They then go on to formalize this in terms of
+a Markov Decision Process (MDP), a way of modeling the relationship between actions,
+environment, policies, and outcomes that allows for a formal definition of optimal policy.
+A promising direction for future work is to formalize
+purpose binding in terms of Bayesian causality and incentives,
+extending the mechanism design framework introduced in
+this chapter.
+
+\section{Acknowledgements}
+
+This work draws on collaboration with Michael Tschantz,
+Helen Nissenbaum, and Anupam Datta.
+I thank John Chuang as well as Ignacio Cofone, Yafit Lev-Aretz,
+Helen Nissenbaum, John Nay, Julia Powles,
+Madelyn R. Sanfilippo, Yan Shvartzshnaider, Katherine
+Strandberg, Bendert Zevenberger,  
+and other members of the Privacy Research Group at
+the NYU School of Law for their helpful comments.
+
+I gratefully acknowledge funding support 
+from the U.S. Defense Advanced Research Projects Agency (DARPA) under
+award FA8750-16-2-0287.
+The opinions in this paper are those of the author and do not
+necessarily reflect the opinions of any funding sponsor or the United
+States Government.
+
+
+\printbibliography
+
+
+\appendix
+
+
+\section{Information theory theorems}
+\label{appendix:information-theory-theorems}
+
+This appendix contains proofs for several theorems extending
+the well-known Data Processing Inequality in information theory
+to configurations of random variables beyond a triplet Markov Chain.
+The motivation for these theorems is the desire to model information
+flow through a world modeled as a Bayesian network, where information
+flow is determine by causal flows and nomic associations.
+Nomic association here is measured as mutual information between two variables.
+The Chain rule for mutual information and the Markov properties of
+a Bayesian network make it possible to prove several theorems that are
+as far as we know new.
+
+\subsection{Triplet Structures}
+
+The Data Processing Inequality is a standard theorem in information theory.
+It concerns the mutual information of three variables arranged in a
+Markov Chain.
+
+\begin{dfn}
+  Random variables $X, Y, Z$ are said to \emph{form a Markov chain in that order}
+  (denoted $X \rightarrow Y \rightarrow Z$) if the conditional distribution
+  of $Z$ depends only on $Y$ and is conditionally independent of $X$.
+  Specifically, $X,Y,Z$ form a Markov chain $X \rightarrow Y \rightarrow Z$
+  if the joint probability mass function can be written as
+  \begin{equation}
+    p(x,y,z) = p(x)p(y \vert x)p(z \vert y)
+  \end{equation}
+  \cite{cover2012elements}
+\end{dfn}
+
+\begin{thm}[Data Processing Inequality]
+  Given a probability model defined by the following (Markov Chain):
+  \begin{center}
+    \begin{tikzcd}    
+      X \arrow[r] & Y \arrow[r] & Z \\
+    \end{tikzcd}
+  \end{center}
+  where $X \independent Z \vert Y$, then it must be that $I(X;Y) \geq I(X;Z)$.
+\end{thm}
+\begin{proof}
+  From \cite{cover2012elements}. By the Chain Rule, mutual information
+  can be expanded in two different ways:
+  \begin{equation}
+    \begin{split}
+    I(X;Y,Z) & = I(X;Z) + I(X;Y \vert Z) \\
+    & = I(X;Y) + I(X;Z \vert Y)
+    \end{split}
+  \end{equation}
+  Since X and Z are conditionally independent given Y, we have
+  $I(X;Z \vert Y) = 0$. Since $I(X;Y \vert Z) \geq 0$, we have
+  \begin{equation}
+    I(X;Y) \geq I(X;Z)
+  \end{equation}
+  We have equality if and only if $I(X;Y \vert Z) = 0$
+  (i.e. $X \rightarrow Z \rightarrow Y$ forms a Markov Chain).
+  Similarly, one can prove that $I(Y;Z) \geq I(X;Z)$.
+\end{proof}
+
+Bayesian networks are a generalization of Markov chains.
+A Bayesian network models the probability distribution
+between many random variables as a directed acyclic
+graph. The conditional probability distribution of
+each variable is defined in terms of the graphical
+parents $pa(\dot)$ of each variable, i.e. $P(X_i) = P(X_i \vert pa(X_u))$.
+The joint distribution is
+
+\begin{equation}
+  P(X_1, X_2, ..., X_n) = \prod_{i=1}^{n}P(X_i \vert pa(X_i))
+\end{equation}
+
+We can now prove several theorems that are similar to the
+Data Processing Inequality but for other probabilistic
+structures besides Markov chains.
+
+\begin{thm}[Data Sourcing Inequality]
+  Given a probability model defined by the following (Common Cause):
+  \begin{center}
+    \begin{tikzcd}    
+         & Y \arrow[dl] \arrow[dr] & \\
+      X  &                         & Z
+    \end{tikzcd}
+  \end{center}
+  then it must be that $I(X;Y) \geq I(X;Z)$.
+\end{thm}
+\begin{proof}
+  The implication of the common cause structure is that
+  \begin{equation}
+    p(x,y,z) = p(x \vert y )p(y)p(z \vert y).
+  \end{equation}
+  It follows that $X \independent Z \vert Y$.
+  The rest of the proof is identifical to the previous proof.
+\end{proof}
+
+\begin{thm}[Unobserved common effect inequality]
+  Given variables $X,Y,Z$ with
+the common cause structure
+\begin{center}
+  \begin{tikzcd}
+    X \arrow[dr] &   & \arrow[dl] Z \\
+    & Y &                        &   
+  \end{tikzcd}
+\end{center}
+  then it must be that $I(X,Y) \geq I(X,Z) = 0$.
+\end{thm}
+\begin{proof}
+  The implication of the structure is that
+  \begin{equation}
+    p(x,y,z) = p(x) p(y \vert x,z) p(z).
+  \end{equation}
+  It follows that $X \independent Z$, therefore $I(X;Z) = 0$.
+  Because the mutual information of two variables is always
+  nonnegative, 
+  $$I(X,Y) \geq I(X;Z)$$
+\end{proof}
+
+We note that while a similar property holds for a
+``collider'' or common effect structure, it's proof is different
+from the chain and common cause cases because, in general,
+it is not the case that $X \independent Z \vert Y$ for
+a common effect structure.
+For example, when $X$ and $Z$ are both fair coin tosses
+and $Y = X \oplus Z$, $X$ and $Z$ are independent from each other
+but not when conditioned on $Y$.
+
+When a common effect is in the conditioning set,
+the two causes depend probabilistically on each other.
+The extent to which these dependencies are limited can
+be characterized by a few equations.
+
+\begin{lem}
+  \label{lemma:common-effect-1}
+  Given variables $X_1,X_2,Y$ with
+  the common effect structure $X_1 \rightarrow Y \leftarrow X_2$,
+  then $I(X_1;X_2,Y) = I(X_1,Y \vert X_2)$.
+\end{lem}
+\begin{proof}
+  By the Chain Rule for mutual information,
+  $$I(X_1;X_2,Y) = I(X_1;X_2) + I(X_1;Y \vert X_2)$$
+  Because of the common effect structure, $I(X_1;X_2) = 0$.
+  Therefore, $I(X_1;X_2,Y) = I(X_1;Y \vert X_2)$.
+\end{proof}
+
+\begin{lem}
+  \label{lemma:common-effect-2}
+  Given variables $X_1,X_2,Y$ with
+  the common effect structure $X_1 \rightarrow Y \leftarrow X_2$,
+  then
+  \begin{equation}
+    \begin{split}
+      I(Y; X_1, X_2) & = I(X_1;X_2,Y) + I(X_2;Y) \\
+      & = I(X_2;X_1,Y) + I(X_1;Y)
+    \end{split}
+  \end{equation}
+\end{lem}
+\begin{proof}
+  \begin{equation}
+    \begin{split}
+      & I(X_1;X_2,Y) \\
+      & = I(X_1;Y \vert X_2) \\
+      & = H(Y \vert X_2) - H(Y \vert X_1, X_2)\\
+      & = H(Y \vert X_2) - H(Y) + I(Y ; X_1, X_2)\\
+      & = I(Y ; X_1, X_2) - I(X_2;Y)
+    \end{split}
+  \end{equation}
+  which implies that
+  $$I(X_1;X_2,Y) + I(X_2;Y) = I(Y ; X_1, X_2)$$
+  The proof works symmetrically for
+  $I(X_2;X_1,Y) + I(X_1;Y) = I(Y ; X_1, X_2)$
+\end{proof}
+
+\begin{lem}
+  \label{lemma:common-effect-3}
+  Given variables $X_1,X_2,Y$ with
+  the common effect structure $X_1 \rightarrow Y \leftarrow X_2$,
+  then $I(X_1,X_2 \vert Y) \leq I(X_1;X_2,Y)$.
+\end{lem}
+\begin{proof}
+  \begin{equation}
+    \begin{split}
+      & I(X_1,X_2 \vert Y) \\
+      & = H(X_1 \vert Y) - H(X_1 \vert X_2, Y) \\
+      & = H(X_1) - I(X_1;Y) - H(X_1) + I(X_1;X_2,Y)\\
+      & = I(X_1;X_2,Y) - I(X_1;Y) \\
+      & \leq I(X_1;X_2,Y) \\
+    \end{split}
+  \end{equation}
+\end{proof}
+
+\begin{thm}
+  \label{thm:common-effect-inequality}
+  Given variables $X_1,X_2,Y$ with
+  the common effect structure $X_1 \rightarrow Y \leftarrow X_2$, then
+  $$I(X_1,X_2 ; Y) \geq I(X_1;X_2,Y) = I(X_1 ; Y \vert X_2) \geq I(X_1;X_2 \vert Y)$$
+\end{thm}
+\begin{proof}
+  Follows from Lemmas \ref{lemma:common-effect-1},
+  \ref{lemma:common-effect-2}, and \ref{lemma:common-effect-3}.
+\end{proof}
+
+
+\subsection{Quartet Structures}
+
+While triplet structures (chain, common effect, and common cause)
+are the building blocks of larger paths in Bayesian networks,
+an analysis of larger, quarter structures will help us develop
+general theorems about the mutual information along paths.
+
+Recall that a both with a common effect is not blocked
+if \emph{either} the common effect \emph{or} a descendant of
+the effect is in the conditioning set.
+Let's look at the following structure,
+which we will call a \emph{wishbone} structure.
+
+\begin{center}
+  \begin{tikzcd}
+    X_0 \arrow[dr] &   & \arrow[dl] X_1 \\
+    & Y \arrow[d] & \\
+    & Z & 
+  \end{tikzcd}
+\end{center}
+
+Here, $Y$ is a common effect of $X_0$ and $X_1$,
+and $Z$ is a descendant of $Y$.
+How much information flows from $X_0$ to $X_1$
+when $Z$ is known?
+
+\begin{thm}
+  \label{thm:wishbone}
+  For variables $X_0, X_1, Y, Z$ in a wishbone structure,
+  $$I(X_0;X_1 \vert Z) \leq I(Y;Z)$$
+\end{thm}
+\begin{proof}
+  Consider the quantity $I(X_0, Y; X_1, Z)$,
+  expanded by the Chain Rule.
+  One expansion is:
+  \begin{equation}
+    \begin{split}
+      & I(X_0, Y; X_1, Z) \\
+      & = I(Y;Z) + I(X_0;Z \vert Y) + I(Y; X_1 \vert Z) + I(X_0, X_1 \vert Y,Z) \\
+      & = I(Y;Z) + I(X_0,Y;X_1)
+    \end{split}
+  \end{equation}
+  Another expansion is:
+  \begin{equation}
+    \begin{split}
+      & I(X_0, Y; X_1, Z) \\
+      & = I(X_0;Z) + I(Y;X_1 \vert X_0) + \\
+      & I(X_0; X_1 \vert Z) + I(Y; X_1 \vert X_0,Z) \\
+      & \geq I(Y; X_1 \vert X_0) + I(X_0; X_1 \vert Z) 
+    \end{split}
+  \end{equation}
+
+  By Theorem \ref{thm:common-effect-inequality},
+  we know that $I(Y;X_1 \vert X_0) = I(X_0,Y;X_1)$
+  for three variables in a common effect structure,
+  as they are for these variables in the wishbone structure.
+
+  So we can set the two expansions equal to each other and reduce:
+  \begin{equation}
+    \begin{split}
+      I(Y; X_1 \vert X_0) + I(X_0; X_1 \vert Z) & \leq I(Y;Z) + I(X_0,Y;X_1) \\
+      I(X_0, Y; X_1) + I(X_0; X_1 \vert Z) & \leq I(Y;Z) + I(X_0,Y;X_1) \\
+      I(X_0; X_1 \vert Z) & \leq I(Y;Z)
+    \end{split}
+  \end{equation}
+\end{proof}
+\subsection{Paths}
+
+We can now look at mutual information of nodes connected
+by longer paths.
+We start with an arbitrariliy long Markov chain.
+
+\begin{center}
+  \begin{tikzcd}    
+    X_0  \arrow[r] & X_1 \arrow[r] & ... \arrow[r] & X_{n-1} \arrow[r] & X_n
+  \end{tikzcd}
+\end{center}
+
+\begin{thm}[Chain Data Processing Inequality]
+  \label{cdpi-thm}
+  Given a Markov chain of variables $X_1, ..., X_n$
+  such that $X_1 \rightarrow ... \rightarrow X_n$.
+  It must be the case that
+  $$I(X_1,X_n) \leq \min_i I(X_i,X_{i+1}).$$
+\end{thm}
+\begin{proof}
+  \label{cdpi-prf}
+  For all $i$, by the Chain rule for mutual information
+  and the independence properties of the Markov chain,
+  \begin{equation}
+    \label{cdpi-prf-eq1}
+    \begin{split}
+      I(X_0, ..., X_{i} ; X_{i+1},...,X_n) = \\
+      \sum_{j=i+1}^{n} I(X_0,...,X_{i}; X_j \vert X_{i+1},...,X_j) = \\
+      I(X_0,...,X_{i}; X_{i+1}) = \\
+      \sum_{j=i}^{1} I(X_{i+1}; X_{j} \vert X_i,...X_j) = \\
+      I(X_i;X_{i+1}) + \sum_{j=i-1}^{1} I(X_{i+1}; X_{j} \vert X_i,...X_j) = \\
+      I(X_i;X_{i+1})
+    \end{split}
+  \end{equation}
+  The Chain rule can expand the variables in arbitary order.
+  So we can also derive (using the fact that mutual information
+  is always nonnegative):
+  \begin{equation}
+    \label{cdpi-prf-eq2}
+    \begin{split}
+      & I(X_0, ..., X_{i} ; X_{i+1},...,X_n) \\
+      &= I(X_0, .., X_{i} ; X_n) + \sum_{j=n-1}^{i+1} I(X_{0}..,X_{i}; X_j \vert X_{j+1}..,X_j) \\
+      &\geq I(X_0, ..., X_{i} ; X_n) \\
+      &= \sum_{j = 0}^{n-1} I(X_n ; X_j \vert X_{j-1}, ... , X_0) \\
+      &= I(X_n; X_0) + \sum_{j=1}^{n-1} I(X_n; X_j \vert X_{j-1}, ..., X_0) \\
+      &\geq I(X_n; X_0)
+    \end{split}
+  \end{equation}
+  Combining these two results and generalizing across all $i$,
+  \begin{equation}
+    \forall i, I(X_0;X_n) \leq I(X_i,X_{i+1})
+  \end{equation}
+  which entails that which is to be proven,
+  \begin{equation}
+    I(X_0;X_n) \leq \min_i I(X_i,X_{i+1})
+  \end{equation}
+\end{proof}
+
+Our goal is to generalize this theorem to Bayesian paths
+with other structures, just found as in the previous section
+we found equivalents to the Data Processing Inequality in
+other triplet structures.
+
+\begin{dfn}[Path]
+A \emph{path} between two nodes \(X_1\) and \(X_2\) in a graph 
+to be a sequence of nodes starting with \(X_1\) and ending with \(X_2\)
+such that successive nodes are connected by an edge (traversing
+in either direction).
+\end{dfn}
+
+In this section, we will only consider paths isolated from
+any other variables.
+We are interested in how to derive useful bounds on the
+mutual information of a path based on the mutual information
+of links within the path.
+
+\begin{dfn}[Mutual information of a path]
+  The \emph{mutual information of a path} between two nodes \(X\) and \(Y\)
+  is $I(X,Y)$.
+\end{dfn}
+
+\begin{thm}[Unobserved Path Data Processing Inequality]
+  \label{thm:updpi}
+  Given a path between $X_0$ and $X_n$
+  of variables $X_0, ..., X_n$, with no other connected variables.
+  It must be the case that
+  $$I(X_1,X_n) \leq \min_{i} I(X_i,X_{i+1}).$$
+\end{thm}
+\begin{proof}
+  This proof mirrors the proof of Theorem \ref{cdpi-thm}.
+  For any $i$, consider $I(X_0,...X_i;X_{i+1},...,X_n)$.
+
+  By the logic of Equation \ref{cdpi-prf-eq1},
+  $I(X_0,...X_i;X_{i+1},...,X_n) = I(X_i,X_{i+1})$.
+
+  By the logic of Equation \ref{cdpi-prf-eq2},
+  $I(X_0,...X_i;X_{i+1},...,X_n) \geq I(X_0,X_n)$.
+
+  Therefore, $\forall i, I(X_0;X_n) \leq I(X_i,X_{i+1})$
+  and $I(X_0;X_n) \leq \min_i I(X_i,X_{i+1})$.
+\end{proof}
+
+Theorem \ref{thm:updpi} applies to any paths on the condition
+that none of the variables are observed.
+Its proof is identical to the proof for Markov chains because
+isolated, unobserved paths are Markov equivalent to Markov chains.
+
+Some proofs extending this result follow from theory of Bayesian
+networks. Recall that there are two conditions under which a
+path betweent two variables is blocked.
+First, an unobserved head-to-head connection on the
+path blocks the path and makes the terminal nodes conditionally
+independent. Second, an observation of a head-to-tail or tail-to-tail
+node blocks the path and makes the terminal nodes conditionally
+independent.
+If the only paths between two variables are blocked, then they
+are d-separated and therefore independent, with zero mutual information.
+
+\begin{thm}[Blocked Path Mutual Information]
+  \label{thm:bpmi}
+  For any blocked paths between $X_0$ and $X_n$
+  of variables $X_0, ..., X_n$ with no other connected
+  variables, $I(X_0,X_n) = 0$.
+\end{thm}
+\begin{proof}
+  If the only path between $X_0$ and $X_n$ is blocked,
+  then $X_0$ and $X_n$ are d-separated and 
+  conditionally independent. If $X_0$ and $X_n$ are
+  conditionally independent,
+  then $I(X_0, X_n) = 0$.
+\end{proof}
+
+The difficult case for determining the mutual information
+of a path is the case where there are observed common
+effects on the paths.
+This breaks the conditions for the proof of Theorem \ref{updpi-thm}.
+It is possible for $I(X_i,X_{i+1}) = 0$ but
+$I(X_{i-1},X_{i+1} \vert X_i) > 0$.
+As a simple example, consider again the case where
+$X_{i-1}$ and $X_{i+1}$ are fair coin tosses and
+$X_i = X_{i-1} \oplus X_{x+1}$.
+
+If there are many common effect nodes on the path and
+only some of them are observed, then the path is
+blocked and the mutual information is solved using
+Theorem \ref{thm:bpmi}; the mutual information of the
+path is zero.
+Similarly, if there are common cause or chain triplets
+on the path and the central node of the triplet is observed,
+the mutual information of the path is trivially ze
+So we need consider only the case where there's
+a path where \emph{all and only} the common effect
+nodes are observed.
+
+\begin{thm}[Path Mutual Information Theorem (PMIT)]
+  \label{thm:path-mutual-information}
+  Given a path between $X_0$ and $X_n$
+  of variables $\{X_0, ..., X_n\} = \mathcal{X}$ with no other connected
+  variables.
+  Let $\mathcal{X}_E$ be the common effect nodes, meaning only those
+  nodes $X_i$ such that the edge structure of the path is
+  $X_{i-1} \rightarrow X_i \leftarrow X_{i+1}$.
+  The mutual information of the path when all the common effects
+  are observed is is:
+  
+  $$I(X_0; X_n \vert \mathcal{X}_E) \leq min_{i} 
+  \begin{cases}
+    I(X_i,X_{i+1}) & \text{if} X_i,X_{i+1} \notin \mathcal{X}_E \\
+    I(X_{i-1},X_{i+1}) & \text{if} X_i \in \mathcal{X}_E\\
+  \end{cases}$$
+  
+\end{thm}
+\begin{proof}
+  For any $i$, consider
+  $$I(X_0,..., X_i;X_{i+1},..., X_n \vert \mathcal{X}_E)$$
+  By the Chain Rule for mutual information, this can be expanded as
+  $$\sum_{j=0}^i I(X_j;X_{i+1},..., X_n \vert X_0,..., X_{j-1},\mathcal{X}_E)$$
+
+  Consider two cases.
+
+  In the first case, $X_i \notin \mathcal{X}_E$
+  and $X_{i+1} \notin \mathcal{X}_E$.
+
+  By logic similar to Equation \ref{cdpi-prf-eq1}
+  and Equation \ref{cdpi-prf-eq2}, then as before
+  $I(X_0;X_n) \leq I(X_i,X_{i+1})$.
+  
+  In the second case, $X_i$ is a common effect node,
+  i.e $X_i \in \mathcal{X}_E$.
+  It is not possible to have two common
+  efffect nodes adjacent on a path.
+  So in any case where either $X_{i-1}$ or $X_{i+1}$ is
+  in the conditioning set, the path is blocked.
+  We can therefore compute the mutual information and its Chain Rule
+  expansion as:
+  
+  \begin{equation}
+    \begin{split}
+      I(X_0,..., X_{i-1};X_{i+1},..., X_n \vert \mathcal{X}_E) \\
+      = \sum_{j=i-1}^0 I(X_j;X_{i+1},..., X_n \vert X_{i-1},..., X_{j-1},\mathcal{X}_E) \\
+      = I(X_{i-1};X_{i+1},..., X_n \vert \mathcal{X}_E)\\
+      = I(X_{i-1};X_{i+1} \vert \mathcal{X}_E)\\
+      = I(X_{i-1};X_{i+1} \vert X+i)
+    \end{split}
+  \end{equation}
+
+  Since once again by the logic of Equation \ref{cdpi-prf-eq2}
+  this value is greater than or equal to the mutual information of
+  the path, we have
+  $$I(X_0;X_n) \leq I(X_{i-1},X_{i+1} \vert X_i)$$
+  for the cases when $X_i \in \mathcal{X}_E$.
+
+  Combining these results, we get the bound on the mutual
+  information of the path.  
+\end{proof}
+
+Note that Theorem \ref{thm:updpi} is a special case of PMIT,
+or Theorem \ref{thm:path-mutual-information}, where the
+set of common effects on the path $\mathcal{X}_E$ is empty.
+
+%*** What about if there is a common effect node,
+%and a descendent of it is observed? ***
+%
+%\begin{center}
+%  \begin{tikzcd}    
+%    X_0  \arrow[dr] & & & &  \\
+%      & Y_0 \arrow[r] & ... \arrow[r] & Y_n \arrow[r] & Z \\
+%    X_1 \arrow[ur] & & & &
+%  \end{tikzcd}
+%\end{center}
+%
+%\emph{TODO: Proof for this case}
+%
+%
+%Note that Theorem \ref{thm:wishbone} generalizes to any
+%variables such that the Markov
+%properties implies by the wishbone structure hold.
+%This can be the case even when the variables are
+%part of a larger, more complex structure.
+%For example, consider the structure:
+%
+%
+%The inequality $I(X_0;X_1 \vert Z) \leq I(Y;Z)$
+%still holds in this case.
+%The difference is that $I(Y;Z)$ depends
+%on the mutual information of the intermediate
+%connections between $Y$ and $Z$.
+%This brings us to our study of the mutual information
+%along Bayesian network paths in general.
+%
+
+\section{Multi-Agent Influence Diagrams (MAIDs)}
+\label{appendix:maid}
+
+Multi-Agent Influence Diagrams (MAIDs) are a game-theoretic
+extension of Bayesian networks developed by Koller and Milch
+\cite{koller2003multi}.
+A MAID is defined by:
+\begin{enumerate}
+\item A set $\mc{A}$ of agents 
+\item A set $\mc{X}$ of chance variables
+\item A set $\mc{D}_a$ of decision variables for each agent $a \in \mc{A}$,
+  with $\mc{D} = \bigcup_{a \in \mc{A}} \mc{D}_a$
+\item A set $\mc{U}_a$ of utility variables for each agent $a \in \mc{A}$,
+  with $\mc{U} = \bigcup_{a \in \mc{A}} \mc{U}_a$
+\item A directed acyclic graph $\mc{G}$ that defines the parent function
+  $Pa$ over $\mc{V} = \mc{X} \cup \mc{D} \cup{U}$
+\item For each chance variable $X \in \mc{X}$, a CPD $Pr(X \vert Pa(X))$
+\item For each utility variable $U \in \mc{U}$, a CPD $Pr(U \vert Pa(U))$
+\end{enumerate}
+
+The decision variables represent moments where agents can
+make decisions about how to act given only the information
+provided by the variable's parents.
+
+\begin{dfn}[Decision rules]
+  \label{dfn:decision-rule}
+  A \emph{decision rule} $\delta$ is a function that maps each instantiation
+  $\vec{pa}$ of $Pa(D)$ to a probability distribution over $dom(D)$.
+\end{dfn}
+
+\begin{dfn}[Strategy]
+  \label{dfn:strategy}
+  An assignment of decision rules to every decision $D \in \mc{D}_a$
+  for a particular agent $a \in \mc{D}_a$ for a particular agent
+  $a \in \mc{A}$ is called a \emph{strategy}.
+\end{dfn}
+
+\begin{dfn}[Strategy profile]
+  An assignment $\sigma$ of decision rules to every decision
+  $D \in \mc{D}$ is called a \emph{strategy profile}.
+  A \emph{partial strategy profile} $\sigma_\mc{E}$ is
+  an assignment of decision rules to a subset $\mc{E} \subset \mc{D}$.
+  $\sigma_{-\mc{E}}$ refers to a restriction of $\sigma$ to variables
+  not in $\mc{E}$.
+\end{dfn}
+
+Decision rules are of the same form as CPDs, and so a MAID
+can be transformed into a Bayes network by replacing every
+decision variable with a random variable with the CPD of the
+decision rule of a strategy profile.
+
+\begin{dfn}
+  If $\mc{M}$ is a MAID and $\sigma$ is a strategy profile for
+  $\mc{M}$, then the \emph{joint distribution for $\mc{M}$
+    induced by $\sigma$}, denoted $P_{\mc{M}[\sigma]}$, is the
+  joint distribution over $\mc{V}$ defined by the Bayes
+  net where:
+  \begin{itemize}
+  \item the set of variables is $\mc{V}$;
+  \item for $X, Y \in \mc{V}$, there is an edge $X \rightarrow Y$
+    if and only if $X \in Pa(Y)$;
+  \item for all $X \in \mc{X} \cup \mc{U}$, the CPD for $X$ is $Pr(X)$;
+  \item for all $D \in \mc{D}$, the CPD for $D$ is $\sigma(D)$.
+  \end{itemize}
+\end{dfn}
+
+\begin{dfn}
+  Let $\mc{E}$ be a subset of $\mc{D}_a$ and let $\sigma$ be a strategy
+  profile.
+  We say that $\sigma*_\mc{E}$ is \emph{optimal for the strategy profile}
+  $\sigma$ if, in the induced MAID $\mc{M}[\sigma_{-\mc{E}}]$,
+  where the only remaining decisions are those in $\mc{E}$,
+  the strategy $\sigma*_{\mc{E}}$ is optimal, i.e., for all
+  strategies $\sigma'_{\mc{E}}$:
+  $$EU_a((\sigma_{-\mc{E}},\sigma*_{\mc{E}})) \geq EU_a((\sigma_{\mc{E}}, \sigma'_{\mc{E}}))$$
+\end{dfn}
+
+A major contribution of \cite{koller2003multi} is their analysis
+of how to efficiently discover Nash Equilibrium strategy profiles
+for MAIDs.
+Their method involves analyzing the qualitative graphical
+structure of the MAID to discover the \emph{strategic reliance}
+of decision variables.
+When a decision variable $D$ strategically relies on $D'$,
+then in principle the choice of the optimal decisionr rule for
+$D$ depends on the choice of the decision rule for $D'$.
+
+\begin{dfn}[Strategic reliance]
+  \label{dfn:strategic-reliance}
+  Let $D$ and $D'$ be decision nodes in a MAID $\mc{M}$.
+  $D$ \emph{strategically relies on} $D'$ if there exist
+  two strategy profiles $\sigma$ and $\sigma'$ and a
+  decision rule $\delta$ for $D$ such that:
+  \begin{itemize}
+  \item $\delta$ is optimal for $\sigma$;
+  \item $\sigma'$ differs from $\sigma$ only at $D'$;
+  \end{itemize}
+  but no decision rule $\delta*$ that agrees with $\delta$ on
+  all parent instantiations $\vec{pa} \in dom(Pa(D))$
+  where $P_{\mc{M}[\sigma]}(\vec{pa}) > 0$ is optimal for $\sigma'$.
+\end{dfn}
+
+\begin{dfn}[s-reachable]
+  \label{dfn:s-reachable}
+  A node $D'$ is \emph{s-reachable} from a node $D$ in a MAID
+  $\mc{M}$ if there is some utility node $U \in \mc{U}_D$ such
+  that if a new parent $\widehat{D'}$ were added to $D'$, there would
+  be an active path in $\mc{M}$ from $\widehat{D'}$ to $U$ given
+  $Pa(D) \cup \{D\}$, where a path is active in a MAID if it
+  is active in the same graph, viewed as a BN.
+\end{dfn}
+
+\begin{thm}
+  \label{thm:strategic-non-reliance}
+  If $D$ and $D'$ are two decision nodes in a MAID $\mc{M}$
+  and $D'$ is not s-reachable from $D$ in $\mc{M}$, then D
+  does not strategically rely on $D'$.
+\end{thm}
+
+\subsection{Tactical independence}
+
+In our analysis in this paper, we will not compute
+equilibrium strategies for MAIDs.
+Rather, we will focus on a newly defined property
+of MAIDs, tactical independence.
+
+\begin{dfn}[Tactical independence]
+  \label{dfn:tactical-independence}
+  For decision variables $D$ and $D'$ in MAID $\mc{M}$,
+  $D$ and $D'$ are \emph{tactically independent} for
+  conditioning set $\mc{C}$ iff
+  for all strategy profiles $\sigma$ on $\mc{M}$,
+  in $P_{\mc{M}[\sigma]}$, the joint distribution for
+  $\mc{M}$ induced by $\sigma$,
+  $$D \independent D' \vert C$$
+\end{dfn}
+
+Because tactical independence depends on the
+independence of variables on an induced probability
+distribution that is representable by a Bayesian
+network, the d-separation tests for independence
+apply readily.
+
+\begin{thm}
+  For decision variables $D$ and $D'$ in MAID $\mc{M}$,
+  and for conditioning set $\mc{C}$, if
+  $D$ and $D'$ are d-separated given $\mc{C}$ on
+  $\mc{M}$ considered as a Bayesian network,
+  then $D$ and $D'$ are tactically independent
+  given $\mc{C}$.
+\end{thm}
+
+\begin{proof}
+  Suppose $D$ and $D'$ are d-separated given $\mc{C}$
+  on $\mc{M}$ considered as a Bayesian network.
+
+  For any strategy profile $\sigma$,
+  the joint distribution for $\mc{M}$
+  induced by $\sigma$, $P_{\mc{M}[\sigma]}$
+  has the same graphical structure as $\mc{M}$
+  considered as a Bayesian network.
+
+  Therefore, $D$ and $D'$ are d-separated given $\mc{C}$
+  in the graph corresponding to $P_{\mc{M}[\sigma]}$
+  for all $\sigma$.
+
+  Because $D$ and $D'$ are d-separated given $\mc{C}$
+  in the Bayesian network, $D \independent D' \vert C$.
+\end{proof}
+
+% Utility CPDs are deterministic
+% Utility nodes have to be leaves (I bend this in my models!)
+
+\subsection{Notation}
+\label{sec:maid-notation}
+
+We will use a slightly different graphical notation than that used by
+\cite{koller2003multi}
+
+In the models in this paper, we will denote random variables
+with undecorated capital letters, e.g. $A, B, C$.
+I will denote strategic nodes with a tilde over a capital
+letter, e.g. $\tilde{A}, \tilde{B}, \tilde{C}$.
+The random variable defined by the optimal strategy at a
+decision node, when such a variable is well-defined,
+will be denoted with a hat, e.g. $\hat{A}, \hat{B}, \hat{C}$.
+Nodes that represent the payoff or utility to an
+agent will be denoted with a breve, e.g.
+$\breve{A}, \breve{B}, \breve{C}$.
+Particular agents will be identified by a lower case
+letter and the assignment of strategic and utility nodes
+to them will be denoted by subscript.
+E.g., $\tilde{A}_q$ and $\breve{U}_q$ denote an action
+taken by agent $q$ and a payoff awarded to $q$,
+respectively.
+
+A dotted arrow in a diagram indicates an optional arrow.
+They indicate that two separate models, one including the
+arrow and one without, are being considered.
+When considering an instantiation of the model with the dotted
+edge present, we will say the model or edge is \emph{open}.
+When the edge is absent, we'll say it's \emph{closed}.
+
+\subsection{Value of Data}
+\label{sec:value-of-data}
+
+Using the MAID framework, we can develop a
+the tools to analyze the value of data.
+
+We proceed with several considerations.
+First, we note that the meaning of data depends
+on the context in which is flows.
+This is a consequence of the fact that information
+flow consists of both causal flow and the nomic
+associations of the information, which are due
+to the causal structure in which the flow takes
+place.
+Similarly, we cannot determine the value of data
+except in the context of a system of causal relations
+that give data its meaning.
+
+Second, data is valuable not primarily as a good to
+be consumed but as a resource for determining
+correct actions.
+The value of data is in its strategic and/or tactical
+value.
+This means that data is valuable only in so far as it
+is available to an active agent.
+The value of the data to that agent will be the value
+of the strategic or tactical advantage that the data
+provides.
+
+Third, as a consequence of the second point,
+the effect of data on an agent's action may or may
+not effect outcomes for other agents.
+The value of a particular flow of data to an agent
+may have negative value \emph{to other agents}.
+
+These three points can be seen by an analysis of the MAID
+framework we have introduced in this section.
+In this framework, the flow of data is represented by
+an edge in the causal graph.
+The value of a data flow can be computed as the difference
+in utility to each agent between the open and closed cases
+in the game.
+
+\subsubsection{Strategic and tactical value}
+
+As we have distinguished between strategic reliance and
+tactical independence, we can distinguish between the
+strategic and tactical value of information.
+
+The strategic value of an information flow to an agent
+is the difference in utility to that agent in the open
+and closed conditions of the game, given each game
+is at strategic equilibrium for all players.
+
+\begin{dfn}[Strategic value of information]
+  \label{dfn:strategic-value}
+  Given two MAID diagrams $\mc{M}_{o}$ and $\mc{M}_{c}$
+  that differ only by a single edge, $e$,
+  and a strategic profile for each diagram, $\sigma_{o}$
+  and $\sigma_{c}$, the \emph{strategic value of $e$ to $a$}
+  is the difference in expected utility to $a$ under the
+  two respective induced joint distributions:
+
+  $$E(P_{\mc{M}_{o}[\sigma_{o}]}(U_a)) - E(P_{\mc{M}_{c}[\sigma_{c}]}(U_a))$$
+\end{dfn}
+
+*** This is a sketch definition.
+It is has some notational problems, and it does
+not match the descriptive text above it because there
+is not yet a definition of an equilibrium strategy ***
+
+In contrast with the strategic value of information,
+the tactical value of information is the value of
+the information to an agent given an otherwise fixed
+strategy profile.
+We allow the agent receiving the data to make a tactical
+adjustment to their strategy at the decision variable
+at the head of the new information flow.
+
+\begin{dfn}[Best tactical response to information]
+  Given two MAID diagrams $\mc{M}_{o}$ and $\mc{M}_{c}$
+  differing only in optional edge $e$ with head in decision
+  variable $D$,
+  the \emph{best tactical response to $e$} given
+  strategy profile $\sigma$, $\hat{\delta}_{\sigma,e}$
+  is the decision rule $\delta$ for $D$ such
+  that $\delta$ is optimal for $\sigma$
+\end{dfn}
+
+*** Problem: this definition assumes a unique best $\delta$
+which may not exist.***
+
+\begin{dfn}[Tactical value of information]
+  \label{def:tactical-value}
+  Given two MAID diagrams $\mc{M}_{o}$ and $\mc{M}_{c}$
+  differing only in optional edge $e$ with head in decision
+  variable $D$,
+  the \emph{tactical value of $e$} to agent $a$ given
+  strategy profile $\sigma$
+  is the difference in expected utility of
+  the open condition with the best tactical response to $e$
+  and the close condition using the original strategy:
+
+  $$EU_a((\sigma_{-D},\hat{\delta}_{\sigma,e}) - EU_a(\sigma)$$
+\end{dfn}
+
+
+\end{document}

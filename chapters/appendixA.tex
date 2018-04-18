@@ -1,0 +1,521 @@
+ \documentclass[../thesis.tex]{subfiles}
+ \begin{document}
+
+
+This appendix contains proofs for several theorems extending
+the well-known Data Processing Inequality in information theory
+to configurations of random variables beyond a triplet Markov Chain.
+The motivation for these theorems is the desire to model information
+flow through a world modeled as a Bayesian network, where information
+flow is determine by causal flows and nomic associations.
+Nomic association here is measured as mutual information between two variables.
+The Chain rule for mutual information and the Markov properties of
+a Bayesian network make it possible to prove several theorems that are
+as far as we know new.
+
+\subsection{Triplet Structures}
+
+The Data Processing Inequality is a standard theorem in information theory.
+It concerns the mutual information of three variables arranged in a
+Markov Chain.
+
+\begin{dfn}
+  Random variables $X, Y, Z$ are said to \emph{form a Markov chain in that order}
+  (denoted $X \rightarrow Y \rightarrow Z$) if the conditional distribution
+  of $Z$ depends only on $Y$ and is conditionally independent of $X$.
+  Specifically, $X,Y,Z$ form a Markov chain $X \rightarrow Y \rightarrow Z$
+  if the joint probability mass function can be written as
+  \begin{equation}
+    p(x,y,z) = p(x)p(y \vert x)p(z \vert y)
+  \end{equation}
+  \cite{cover2012elements}
+\end{dfn}
+
+\begin{thm}[Data Processing Inequality]
+  Given a probability model defined by the following (Markov Chain):
+  \begin{center}
+    \begin{tikzcd}    
+      X \arrow[r] & Y \arrow[r] & Z \\
+    \end{tikzcd}
+  \end{center}
+  where $X \independent Z \vert Y$, then it must be that $I(X;Y) \geq I(X;Z)$.
+\end{thm}
+\begin{proof}
+  From \cite{cover2012elements}. By the Chain Rule, mutual information
+  can be expanded in two different ways:
+  \begin{equation}
+    \begin{split}
+    I(X;Y,Z) & = I(X;Z) + I(X;Y \vert Z) \\
+    & = I(X;Y) + I(X;Z \vert Y)
+    \end{split}
+  \end{equation}
+  Since X and Z are conditionally independent given Y, we have
+  $I(X;Z \vert Y) = 0$. Since $I(X;Y \vert Z) \geq 0$, we have
+  \begin{equation}
+    I(X;Y) \geq I(X;Z)
+  \end{equation}
+  We have equality if and only if $I(X;Y \vert Z) = 0$
+  (i.e. $X \rightarrow Z \rightarrow Y$ forms a Markov Chain).
+  Similarly, one can prove that $I(Y;Z) \geq I(X;Z)$.
+\end{proof}
+
+Bayesian networks are a generalization of Markov chains.
+A Bayesian network models the probability distribution
+between many random variables as a directed acyclic
+graph. The conditional probability distribution of
+each variable is defined in terms of the graphical
+parents $pa(\dot)$ of each variable, i.e. $P(X_i) = P(X_i \vert pa(X_u))$.
+The joint distribution is
+
+\begin{equation}
+  P(X_1, X_2, ..., X_n) = \prod_{i=1}^{n}P(X_i \vert pa(X_i))
+\end{equation}
+
+We can now prove several theorems that are similar to the
+Data Processing Inequality but for other probabilistic
+structures besides Markov chains.
+
+\begin{thm}[Data Sourcing Inequality]
+  Given a probability model defined by the following (Common Cause):
+  \begin{center}
+    \begin{tikzcd}    
+         & Y \arrow[dl] \arrow[dr] & \\
+      X  &                         & Z
+    \end{tikzcd}
+  \end{center}
+  then it must be that $I(X;Y) \geq I(X;Z)$.
+\end{thm}
+\begin{proof}
+  The implication of the common cause structure is that
+  \begin{equation}
+    p(x,y,z) = p(x \vert y )p(y)p(z \vert y).
+  \end{equation}
+  It follows that $X \independent Z \vert Y$.
+  The rest of the proof is identifical to the previous proof.
+\end{proof}
+
+\begin{thm}[Unobserved common effect inequality]
+  Given variables $X,Y,Z$ with
+the common cause structure
+\begin{center}
+  \begin{tikzcd}
+    X \arrow[dr] &   & \arrow[dl] Z \\
+    & Y &                        &   
+  \end{tikzcd}
+\end{center}
+  then it must be that $I(X,Y) \geq I(X,Z) = 0$.
+\end{thm}
+\begin{proof}
+  The implication of the structure is that
+  \begin{equation}
+    p(x,y,z) = p(x) p(y \vert x,z) p(z).
+  \end{equation}
+  It follows that $X \independent Z$, therefore $I(X;Z) = 0$.
+  Because the mutual information of two variables is always
+  nonnegative, 
+  $$I(X,Y) \geq I(X;Z)$$
+\end{proof}
+
+We note that while a similar property holds for a
+``collider'' or common effect structure, it's proof is different
+from the chain and common cause cases because, in general,
+it is not the case that $X \independent Z \vert Y$ for
+a common effect structure.
+For example, when $X$ and $Z$ are both fair coin tosses
+and $Y = X \oplus Z$, $X$ and $Z$ are independent from each other
+but not when conditioned on $Y$.
+
+When a common effect is in the conditioning set,
+the two causes depend probabilistically on each other.
+The extent to which these dependencies are limited can
+be characterized by a few equations.
+
+\begin{lem}
+  \label{lemma:common-effect-1}
+  Given variables $X_1,X_2,Y$ with
+  the common effect structure $X_1 \rightarrow Y \leftarrow X_2$,
+  then $I(X_1;X_2,Y) = I(X_1,Y \vert X_2)$.
+\end{lem}
+\begin{proof}
+  By the Chain Rule for mutual information,
+  $$I(X_1;X_2,Y) = I(X_1;X_2) + I(X_1;Y \vert X_2)$$
+  Because of the common effect structure, $I(X_1;X_2) = 0$.
+  Therefore, $I(X_1;X_2,Y) = I(X_1;Y \vert X_2)$.
+\end{proof}
+
+\begin{lem}
+  \label{lemma:common-effect-2}
+  Given variables $X_1,X_2,Y$ with
+  the common effect structure $X_1 \rightarrow Y \leftarrow X_2$,
+  then
+  \begin{equation}
+    \begin{split}
+      I(Y; X_1, X_2) & = I(X_1;X_2,Y) + I(X_2;Y) \\
+      & = I(X_2;X_1,Y) + I(X_1;Y)
+    \end{split}
+  \end{equation}
+\end{lem}
+\begin{proof}
+  \begin{equation}
+    \begin{split}
+      & I(X_1;X_2,Y) \\
+      & = I(X_1;Y \vert X_2) \\
+      & = H(Y \vert X_2) - H(Y \vert X_1, X_2)\\
+      & = H(Y \vert X_2) - H(Y) + I(Y ; X_1, X_2)\\
+      & = I(Y ; X_1, X_2) - I(X_2;Y)
+    \end{split}
+  \end{equation}
+  which implies that
+  $$I(X_1;X_2,Y) + I(X_2;Y) = I(Y ; X_1, X_2)$$
+  The proof works symmetrically for
+  $I(X_2;X_1,Y) + I(X_1;Y) = I(Y ; X_1, X_2)$
+\end{proof}
+
+\begin{lem}
+  \label{lemma:common-effect-3}
+  Given variables $X_1,X_2,Y$ with
+  the common effect structure $X_1 \rightarrow Y \leftarrow X_2$,
+  then $I(X_1,X_2 \vert Y) \leq I(X_1;X_2,Y)$.
+\end{lem}
+\begin{proof}
+  \begin{equation}
+    \begin{split}
+      & I(X_1,X_2 \vert Y) \\
+      & = H(X_1 \vert Y) - H(X_1 \vert X_2, Y) \\
+      & = H(X_1) - I(X_1;Y) - H(X_1) + I(X_1;X_2,Y)\\
+      & = I(X_1;X_2,Y) - I(X_1;Y) \\
+      & \leq I(X_1;X_2,Y) \\
+    \end{split}
+  \end{equation}
+\end{proof}
+
+\begin{thm}
+  \label{thm:common-effect-inequality}
+  Given variables $X_1,X_2,Y$ with
+  the common effect structure $X_1 \rightarrow Y \leftarrow X_2$, then
+  $$I(X_1,X_2 ; Y) \geq I(X_1;X_2,Y) = I(X_1 ; Y \vert X_2) \geq I(X_1;X_2 \vert Y)$$
+\end{thm}
+\begin{proof}
+  Follows from Lemmas \ref{lemma:common-effect-1},
+  \ref{lemma:common-effect-2}, and \ref{lemma:common-effect-3}.
+\end{proof}
+
+
+\subsection{Quartet Structures}
+
+While triplet structures (chain, common effect, and common cause)
+are the building blocks of larger paths in Bayesian networks,
+an analysis of larger, quarter structures will help us develop
+general theorems about the mutual information along paths.
+
+Recall that a both with a common effect is not blocked
+if \emph{either} the common effect \emph{or} a descendant of
+the effect is in the conditioning set.
+Let's look at the following structure,
+which we will call a \emph{wishbone} structure.
+
+\begin{center}
+  \begin{tikzcd}
+    X_0 \arrow[dr] &   & \arrow[dl] X_1 \\
+    & Y \arrow[d] & \\
+    & Z & 
+  \end{tikzcd}
+\end{center}
+
+Here, $Y$ is a common effect of $X_0$ and $X_1$,
+and $Z$ is a descendant of $Y$.
+How much information flows from $X_0$ to $X_1$
+when $Z$ is known?
+
+\begin{thm}
+  \label{thm:wishbone}
+  For variables $X_0, X_1, Y, Z$ in a wishbone structure,
+  $$I(X_0;X_1 \vert Z) \leq I(Y;Z)$$
+\end{thm}
+\begin{proof}
+  Consider the quantity $I(X_0, Y; X_1, Z)$,
+  expanded by the Chain Rule.
+  One expansion is:
+  \begin{equation}
+    \begin{split}
+      & I(X_0, Y; X_1, Z) \\
+      & = I(Y;Z) + I(X_0;Z \vert Y) + I(Y; X_1 \vert Z) + I(X_0, X_1 \vert Y,Z) \\
+      & = I(Y;Z) + I(X_0,Y;X_1)
+    \end{split}
+  \end{equation}
+  Another expansion is:
+  \begin{equation}
+    \begin{split}
+      & I(X_0, Y; X_1, Z) \\
+      & = I(X_0;Z) + I(Y;X_1 \vert X_0) + \\
+      & I(X_0; X_1 \vert Z) + I(Y; X_1 \vert X_0,Z) \\
+      & \geq I(Y; X_1 \vert X_0) + I(X_0; X_1 \vert Z) 
+    \end{split}
+  \end{equation}
+
+  By Theorem \ref{thm:common-effect-inequality},
+  we know that $I(Y;X_1 \vert X_0) = I(X_0,Y;X_1)$
+  for three variables in a common effect structure,
+  as they are for these variables in the wishbone structure.
+
+  So we can set the two expansions equal to each other and reduce:
+  \begin{equation}
+    \begin{split}
+      I(Y; X_1 \vert X_0) + I(X_0; X_1 \vert Z) & \leq I(Y;Z) + I(X_0,Y;X_1) \\
+      I(X_0, Y; X_1) + I(X_0; X_1 \vert Z) & \leq I(Y;Z) + I(X_0,Y;X_1) \\
+      I(X_0; X_1 \vert Z) & \leq I(Y;Z)
+    \end{split}
+  \end{equation}
+\end{proof}
+\subsection{Paths}
+
+We can now look at mutual information of nodes connected
+by longer paths.
+We start with an arbitrariliy long Markov chain.
+
+\begin{center}
+  \begin{tikzcd}    
+    X_0  \arrow[r] & X_1 \arrow[r] & ... \arrow[r] & X_{n-1} \arrow[r] & X_n
+  \end{tikzcd}
+\end{center}
+
+\begin{thm}[Chain Data Processing Inequality]
+  \label{cdpi-thm}
+  Given a Markov chain of variables $X_1, ..., X_n$
+  such that $X_1 \rightarrow ... \rightarrow X_n$.
+  It must be the case that
+  $$I(X_1,X_n) \leq \min_i I(X_i,X_{i+1}).$$
+\end{thm}
+\begin{proof}
+  \label{cdpi-prf}
+  For all $i$, by the Chain rule for mutual information
+  and the independence properties of the Markov chain,
+  \begin{equation}
+    \label{cdpi-prf-eq1}
+    \begin{split}
+      I(X_0, ..., X_{i} ; X_{i+1},...,X_n) = \\
+      \sum_{j=i+1}^{n} I(X_0,...,X_{i}; X_j \vert X_{i+1},...,X_j) = \\
+      I(X_0,...,X_{i}; X_{i+1}) = \\
+      \sum_{j=i}^{1} I(X_{i+1}; X_{j} \vert X_i,...X_j) = \\
+      I(X_i;X_{i+1}) + \sum_{j=i-1}^{1} I(X_{i+1}; X_{j} \vert X_i,...X_j) = \\
+      I(X_i;X_{i+1})
+    \end{split}
+  \end{equation}
+  The Chain rule can expand the variables in arbitary order.
+  So we can also derive (using the fact that mutual information
+  is always nonnegative):
+  \begin{equation}
+    \label{cdpi-prf-eq2}
+    \begin{split}
+      & I(X_0, ..., X_{i} ; X_{i+1},...,X_n) \\
+      &= I(X_0, .., X_{i} ; X_n) + \sum_{j=n-1}^{i+1} I(X_{0}..,X_{i}; X_j \vert X_{j+1}..,X_j) \\
+      &\geq I(X_0, ..., X_{i} ; X_n) \\
+      &= \sum_{j = 0}^{n-1} I(X_n ; X_j \vert X_{j-1}, ... , X_0) \\
+      &= I(X_n; X_0) + \sum_{j=1}^{n-1} I(X_n; X_j \vert X_{j-1}, ..., X_0) \\
+      &\geq I(X_n; X_0)
+    \end{split}
+  \end{equation}
+  Combining these two results and generalizing across all $i$,
+  \begin{equation}
+    \forall i, I(X_0;X_n) \leq I(X_i,X_{i+1})
+  \end{equation}
+  which entails that which is to be proven,
+  \begin{equation}
+    I(X_0;X_n) \leq \min_i I(X_i,X_{i+1})
+  \end{equation}
+\end{proof}
+
+Our goal is to generalize this theorem to Bayesian paths
+with other structures, just found as in the previous section
+we found equivalents to the Data Processing Inequality in
+other triplet structures.
+
+\begin{dfn}[Path]
+A \emph{path} between two nodes \(X_1\) and \(X_2\) in a graph 
+to be a sequence of nodes starting with \(X_1\) and ending with \(X_2\)
+such that successive nodes are connected by an edge (traversing
+in either direction).
+\end{dfn}
+
+In this section, we will only consider paths isolated from
+any other variables.
+We are interested in how to derive useful bounds on the
+mutual information of a path based on the mutual information
+of links within the path.
+
+\begin{dfn}[Mutual information of a path]
+  The \emph{mutual information of a path} between two nodes \(X\) and \(Y\)
+  is $I(X,Y)$.
+\end{dfn}
+
+\begin{thm}[Unobserved Path Data Processing Inequality]
+  \label{thm:updpi}
+  Given a path between $X_0$ and $X_n$
+  of variables $X_0, ..., X_n$, with no other connected variables.
+  It must be the case that
+  $$I(X_1,X_n) \leq \min_{i} I(X_i,X_{i+1}).$$
+\end{thm}
+\begin{proof}
+  This proof mirrors the proof of Theorem \ref{cdpi-thm}.
+  For any $i$, consider $I(X_0,...X_i;X_{i+1},...,X_n)$.
+
+  By the logic of Equation \ref{cdpi-prf-eq1},
+  $I(X_0,...X_i;X_{i+1},...,X_n) = I(X_i,X_{i+1})$.
+
+  By the logic of Equation \ref{cdpi-prf-eq2},
+  $I(X_0,...X_i;X_{i+1},...,X_n) \geq I(X_0,X_n)$.
+
+  Therefore, $\forall i, I(X_0;X_n) \leq I(X_i,X_{i+1})$
+  and $I(X_0;X_n) \leq \min_i I(X_i,X_{i+1})$.
+\end{proof}
+
+Theorem \ref{thm:updpi} applies to any paths on the condition
+that none of the variables are observed.
+Its proof is identical to the proof for Markov chains because
+isolated, unobserved paths are Markov equivalent to Markov chains.
+
+Some proofs extending this result follow from theory of Bayesian
+networks. Recall that there are two conditions under which a
+path betweent two variables is blocked.
+First, an unobserved head-to-head connection on the
+path blocks the path and makes the terminal nodes conditionally
+independent. Second, an observation of a head-to-tail or tail-to-tail
+node blocks the path and makes the terminal nodes conditionally
+independent.
+If the only paths between two variables are blocked, then they
+are d-separated and therefore independent, with zero mutual information.
+
+\begin{thm}[Blocked Path Mutual Information]
+  \label{thm:bpmi}
+  For any blocked paths between $X_0$ and $X_n$
+  of variables $X_0, ..., X_n$ with no other connected
+  variables, $I(X_0,X_n) = 0$.
+\end{thm}
+\begin{proof}
+  If the only path between $X_0$ and $X_n$ is blocked,
+  then $X_0$ and $X_n$ are d-separated and 
+  conditionally independent. If $X_0$ and $X_n$ are
+  conditionally independent,
+  then $I(X_0, X_n) = 0$.
+\end{proof}
+
+The difficult case for determining the mutual information
+of a path is the case where there are observed common
+effects on the paths.
+This breaks the conditions for the proof of Theorem \ref{updpi-thm}.
+It is possible for $I(X_i,X_{i+1}) = 0$ but
+$I(X_{i-1},X_{i+1} \vert X_i) > 0$.
+As a simple example, consider again the case where
+$X_{i-1}$ and $X_{i+1}$ are fair coin tosses and
+$X_i = X_{i-1} \oplus X_{x+1}$.
+
+If there are many common effect nodes on the path and
+only some of them are observed, then the path is
+blocked and the mutual information is solved using
+Theorem \ref{thm:bpmi}; the mutual information of the
+path is zero.
+Similarly, if there are common cause or chain triplets
+on the path and the central node of the triplet is observed,
+the mutual information of the path is trivially ze
+So we need consider only the case where there's
+a path where \emph{all and only} the common effect
+nodes are observed.
+
+\begin{thm}[Path Mutual Information Theorem (PMIT)]
+  \label{thm:path-mutual-information}
+  Given a path between $X_0$ and $X_n$
+  of variables $\{X_0, ..., X_n\} = \mathcal{X}$ with no other connected
+  variables.
+  Let $\mathcal{X}_E$ be the common effect nodes, meaning only those
+  nodes $X_i$ such that the edge structure of the path is
+  $X_{i-1} \rightarrow X_i \leftarrow X_{i+1}$.
+  The mutual information of the path when all the common effects
+  are observed is is:
+  
+  $$I(X_0; X_n \vert \mathcal{X}_E) \leq min_{i} 
+  \begin{cases}
+    I(X_i,X_{i+1}) & \text{if} X_i,X_{i+1} \notin \mathcal{X}_E \\
+    I(X_{i-1},X_{i+1}) & \text{if} X_i \in \mathcal{X}_E\\
+  \end{cases}$$
+  
+\end{thm}
+\begin{proof}
+  For any $i$, consider
+  $$I(X_0,..., X_i;X_{i+1},..., X_n \vert \mathcal{X}_E)$$
+  By the Chain Rule for mutual information, this can be expanded as
+  $$\sum_{j=0}^i I(X_j;X_{i+1},..., X_n \vert X_0,..., X_{j-1},\mathcal{X}_E)$$
+
+  Consider two cases.
+
+  In the first case, $X_i \notin \mathcal{X}_E$
+  and $X_{i+1} \notin \mathcal{X}_E$.
+
+  By logic similar to Equation \ref{cdpi-prf-eq1}
+  and Equation \ref{cdpi-prf-eq2}, then as before
+  $I(X_0;X_n) \leq I(X_i,X_{i+1})$.
+  
+  In the second case, $X_i$ is a common effect node,
+  i.e $X_i \in \mathcal{X}_E$.
+  It is not possible to have two common
+  efffect nodes adjacent on a path.
+  So in any case where either $X_{i-1}$ or $X_{i+1}$ is
+  in the conditioning set, the path is blocked.
+  We can therefore compute the mutual information and its Chain Rule
+  expansion as:
+  
+  \begin{equation}
+    \begin{split}
+      I(X_0,..., X_{i-1};X_{i+1},..., X_n \vert \mathcal{X}_E) \\
+      = \sum_{j=i-1}^0 I(X_j;X_{i+1},..., X_n \vert X_{i-1},..., X_{j-1},\mathcal{X}_E) \\
+      = I(X_{i-1};X_{i+1},..., X_n \vert \mathcal{X}_E)\\
+      = I(X_{i-1};X_{i+1} \vert \mathcal{X}_E)\\
+      = I(X_{i-1};X_{i+1} \vert X+i)
+    \end{split}
+  \end{equation}
+
+  Since once again by the logic of Equation \ref{cdpi-prf-eq2}
+  this value is greater than or equal to the mutual information of
+  the path, we have
+  $$I(X_0;X_n) \leq I(X_{i-1},X_{i+1} \vert X_i)$$
+  for the cases when $X_i \in \mathcal{X}_E$.
+
+  Combining these results, we get the bound on the mutual
+  information of the path.  
+\end{proof}
+
+Note that Theorem \ref{thm:updpi} is a special case of PMIT,
+or Theorem \ref{thm:path-mutual-information}, where the
+set of common effects on the path $\mathcal{X}_E$ is empty.
+
+%*** What about if there is a common effect node,
+%and a descendent of it is observed? ***
+%
+%\begin{center}
+%  \begin{tikzcd}    
+%    X_0  \arrow[dr] & & & &  \\
+%      & Y_0 \arrow[r] & ... \arrow[r] & Y_n \arrow[r] & Z \\
+%    X_1 \arrow[ur] & & & &
+%  \end{tikzcd}
+%\end{center}
+%
+%\emph{TODO: Proof for this case}
+%
+%
+%Note that Theorem \ref{thm:wishbone} generalizes to any
+%variables such that the Markov
+%properties implies by the wishbone structure hold.
+%This can be the case even when the variables are
+%part of a larger, more complex structure.
+%For example, consider the structure:
+%
+%
+%The inequality $I(X_0;X_1 \vert Z) \leq I(Y;Z)$
+%still holds in this case.
+%The difference is that $I(Y;Z)$ depends
+%on the mutual information of the intermediate
+%connections between $Y$ and $Z$.
+%This brings us to our study of the mutual information
+%along Bayesian network paths in general.
+%
+
+\end{document}

@@ -1,0 +1,330 @@
+% \usepackage[backend=bibtex,maxcitenames=10,maxbibqnames=10]{biblatex}
+%biblatex issue: http://tex.stackexchange.com/questions/311426/bibliography-error-use-of-blxbblverbaddi-doesnt-match-its-definition-ve
+%\makeatletter
+%\def\blx@maxline{77}
+%\makeatother
+
+% 10pt is allowed only with an ugly font.
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1,T2A]{fontenc}
+%\usepackage[latin1]{inputenc}
+
+
+\usepackage{amsthm}
+%\theoremstyle{plain}
+\theoremstyle{definition}
+\newtheorem{thm}     {Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prp}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{cnj}[thm]{Conjecture}
+%\theoremstyle{definition}
+\newtheorem{dfn}[thm]{Definition}
+\newtheorem{exm}[thm]{Example}
+
+\usepackage{amsfonts}
+
+\newtheoremstyle{taskstyle}% name of the style to be used
+  {.32\baselineskip±.15\baselineskip}% measure of space to leave above the theorem. E.g.: 3pt
+  {.32\baselineskip±.15\baselineskip}% measure of space to leave below the theorem. E.g.: 3pt
+  {\it}% name of font to use in the body of the theorem
+  {}% measure of space to indent
+  {\bf}% name of head font
+  {. }% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {}% Manually specify head
+\theoremstyle{taskstyle}
+\newtheorem{task}{Task}
+%
+% \newcounter{tasknumber}
+% \newcounter{tasklabel}
+% \renewcommand{\thetasklabel}{\textbf{\thetasknumber}}
+% \newenvironment{task}{
+% \begin{list}{\textbf{Task
+%     }\thetasklabel:}{\usecounter{tasklabel}\stepcounter{tasknumber}\item\em}}{\\[-7pt]\end{list}}
+
+\newcounter{subtasknumber}
+\newcounter{subtasklabel}
+\renewcommand{\thesubtasklabel}{\textbf{\thetasknumber}}
+\newenvironment{subtask}{
+\begin{list}{\textbf{Sub-Task }\thesubtasklabel:}{\usecounter{subtasklabel}\stepcounter{subtasknumber}\item\em}}{\\[-7pt]\end{list}}
+
+\usepackage{csquotes}
+\usepackage[normalem]{ulem}
+\usepackage{pifont} % for circled numbers using the ding command
+\usepackage{epsfig,times}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{xspace}
+%\usepackage{pdfpages}
+%\usepackage[hyphens]{url}
+\usepackage[colorlinks]{hyperref}
+\hypersetup{
+  breaklinks=true,
+  linktoc=all,
+  linktocpage,
+  citecolor=blue,
+  filecolor=blue,
+  linkcolor=blue,
+  urlcolor=blue,
+}
+%\usepackage{hyperref}
+\usepackage{afterpage}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage{alphalph}
+%\usepackage{enumerate}
+\usepackage{enumitem}
+
+\usepackage{standalone}
+
+\usepackage{booktabs} % for various \hrules
+%\newcommand{\midrule}{\\[-3.5ex]}
+\usepackage{fancyvrb}
+%\usepackage{subfigure}
+%\usepackage[footnotesize]{subfig}
+
+\usepackage{tabulary}
+
+\usepackage{subcaption}
+\renewcommand{\thesubfigure}{(\alph{subfigure})}
+\captionsetup[subfigure]{labelformat=simple, labelsep=space}
+% By default, subcaption labels subfigures with things like "(a)" and "(b)", but \ref{subfigure-label} produces things like "1a" and "1b".  The makes it produce "1(a)" and "1(b)" instead.
+
+\usepackage{tikz}
+\usetikzlibrary{
+  shapes,calc,arrows,fit,positioning,decorations.pathmorphing,snakes,intersections,shapes.geometric,trees,cd
+}
+
+% % the below lets us define subsubsections without line breaks after
+% % section title:
+% \usepackage{titlesec}
+% \titleformat{\subsubsection} %
+%   [runin]             % shape
+%   {\bfseries}         % format
+%   {\thesubsubsection} % label
+%   {0.5em}             % sep
+%   {}                  % before-code
+%   []                  % after-code
+% 
+%\captionsetup{compatibility=false}
+%\newenvironment{tab}[1]
+{%\let\oldhline=\hline
+\let\oldarraystretch=\arraystretch
+\renewcommand{\arraystretch}{1.2} % make whole row higher
+%\setlength{\extrarowheight}{0.2mm} % put extra space above words to avoid hlines
+% also try bigstrut for really tuning hlines
+
+
+%\setlength{\tabcolsep}{1.25em}
+%%%\begin{tabular}{@{}#1@{}}
+%%%\toprule
+%%%}
+%%%{\bottomrule
+%%%\end{tabular}
+
+
+%\setlength{\extrarowheight}{0mm}
+\renewcommand{\arraystretch}{\oldarraystretch}}
+
+%\newcommand{\href}[1]{{#1}}
+%\newcommand{\href}{\url}
+
+\newcommand{\cons}{{:}}
+
+\makeatletter
+\newcommand{\gobblepars}{\@ifnextchar{\par}{\expandafter\gobblepars\@gobble}{}}
+\makeatother
+\newcommand{\minisec}[1]{\smallskip\par\noindent\textbf{{#1}.}\ \ \gobblepars}
+\newcommand{\subminisec}[1]{\par\textsc{{#1}.}\ \gobblepars}
+\newcommand{\itemizeminisec}[1]{\smallskip\par\noindent\bullet\textbf{{#1}.}\ \gobblepars}
+
+\newcommand*{\filter}[2]{\lfloor{#1}{\downarrow}{#2}\rfloor}
+\DeclareMathOperator{\st}{\,s.t.\,}
+\newcommand{\inn}{\mathrel{\in\hspace{-1ex}\in}}
+\newcommand{\doo}{\mathrm{do}}
+\newcommand{\about}{\mathsf{about}}
+
+
+%\newcommand{\todo}[1]{{\textcolor{red}{[\textbf{Todo:} \emph{#1}]}}}
+%\newcommand{\work}[1]{{\textcolor{blue}{{#1}}}}
+\newcommand{\work}[1]{\emph{#1}}
+%\newcommand{\todo}[1]{}
+%%\newcommand{\cut}[1]{} % considered harmful.  Use % instead please.
+
+
+\newcommand*{\bagleft}{\mbox{$\{\hspace{-0.85ex}\{$}}
+\newcommand*{\bagright}{\mbox{$\}\hspace{-0.85ex}\}$}}
+\newcommand*{\bag}[2]{\bagleft {#1} \given {#2} \bagright}
+%\newcommand*{\emptybag}{\mbox{$\{\!\!\{\}\!\!\}$}}
+%\DeclareMathOperator*{\Cupop}{\Cup}
+%\newcommand*{\bigCup}{\Cupop\limits}
+%\newcommand*{\bigCup}{\Cup}
+%\newcommand*{\bag}[1]{\mathsf{bag}({#1})}
+%\newcommand*{\bagunion}{\uplus}
+%\newcommand*{\bigbagunion}{\textstyle{\biguplus\nolimits}} % will want to over with limits sometimes.
+%\newcommand*{\Bigbagunion}[2]{\mbox{$\biguplus_{#1}^{#2}$}\,}
+
+
+\newcommand{\sref}[1]{\S\ref{#1}}
+
+\newcommand{\mc}{\mathcal}
+\newcommand{\msf}{\mathsf}
+\newcommand{\given}{\mathrel{|}}
+
+%\newcommand*{\set}[2]{\{{#1} \given {#2}\}}
+
+\newcommand{\first}{\emph{(i)}~}
+\newcommand{\second}{\emph{(ii)}~}
+\newcommand{\third}{\emph{(iii)}~}
+\newcommand{\fourth}{\emph{(iv)}~}
+\newcommand{\fifth}{\emph{(v)}~}
+\newcommand{\sixth}{\emph{(vi)}~}
+\newcommand{\perc}{\,\%\xspace}
+
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+\newcommand{\vs}{\vspace*}
+\newcommand{\vsa}{\vspace*{2.0 ex}}
+\newcommand{\vsb}{\vspace*{3.0 ex}}
+
+\newenvironment{linemize}
+{\renewcommand{\item}{\relax}
+\newcommand{\ho}{ho}}
+{}
+
+
+\let\vect=\vec
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbold}{\mathbf{x}}
+\newcommand{\ubold}{\mathbf{u}}
+\newcommand{\infl}{\iota}
+\newcommand{\minfl}{\mu}
+\newcommand{\piexp}{\tilde{\pi}}
+\newcommand{\true}{\mathit{true}}
+\newcommand{\false}{\mathit{false}}
+\newcommand{\tup}[1]{\langle #1 \rangle}
+\newcommand{\SV}{\varphi}
+\newcommand{\banzhaf}{\beta}
+\newcommand{\DP}{\delta}
+\newcommand{\euler}{\mathrm{e}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ind}{\text{ind}}
+\newcommand{\indact}{\text{ind-act}}
+\newcommand{\indav}{\text{ind-avg}}
+\newcommand{\grp}{\text{grp}}
+\newcommand{\disp}{\text{disp}}
+\newcommand{\diffp}{\text{dp}}
+\newcommand{\lr}{\text{lr}}
+%\renewcommand{\Pr}{\text{Pr}}
+\newcommand{\qoi}{Q}
+\newcommand{\Expect}{{\rm I\kern-.3em E}}
+\newcommand{\Indicator}{\mathbbm{1}}
+
+% % *** Use these commands for commenting ***
+% \long\def\authornote#1{%
+%   \leavevmode\unskip\raisebox{-3.5pt}{\rlap{$\scriptstyle\diamond$}}%
+%   \marginpar{\raggedright\hbadness=10000
+%     \def\baselinestretch{0.8}\tiny
+%     \it #1\par}}
+% \newcommand{\yair}[1]{\authornote{Yair: #1}}
+%\newcommand{\anupam}[1]{\authornote{Anupam: #1}}
+
+
+% \newcounter{mynote}[section]
+% \newcommand{\notecolor}{blue}
+% \newcommand{\thenote}{\thesection.\arabic{mynote}}
+% \newcommand*{\authornote}[2]{\refstepcounter{mynote}\textcolor{#1}{[\thenote {#2}]}}
+
+% To remove notes, just uncomment the line below:
+\def\final{}
+
+\ifdefined\final
+  \newcommand{\authornote}[2]{}
+\else
+  \newcommand*{\authornote}[2]{\textcolor{#1}{[#2]}}
+\fi
+\newcommand*{\anupam}[1]{\authornote{purple}  {AD:  {#1}}}
+\newcommand*{\mct}   [1]{\authornote{magenta}{MCT: {#1}}}
+\newcommand*{\shayak}[1]{\authornote{red}    {SS:  {#1}}}
+\newcommand*{\amit}  [1]{\authornote{blue}   {Amit:{#1}}}
+\newcommand*{\matt}  [1]{\authornote{red}    {MF:  {#1}}}
+\newcommand*{\tnote} [1]{\authornote{cyan}   {TomR:{#1}}}
+\newcommand*{\pxm}   [1]{\authornote{teal}   {PM:  {#1}}}
+\newcommand*{\helen} [1]{\authornote{purple} {HN:  {#1}}}
+\newcommand*{\seb} [1]{\authornote{blue} {SB:  {#1}}}
+\newcommand*{\instructions}[1]{\authornote{gray}{#1}}
+%\newcommand{\tnote}[1]{\refstepcounter{mynote}{\bf \textcolor{cyan}{$\ll$TomR~\thenote: {\sf #1}$\gg$}}}
+%\newcommand{\pxm}[1]{\refstepcounter{mynote}{\textcolor{teal}{PM~\thenote: #1}}}
+
+
+\newcommand{\dist}[1]{\mathbb{D}\paren{#1}}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\sparen}[1]{\left[ #1 \right]}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\stacklabel}[1]{\stackrel{\smash{\scriptscriptstyle \mathrm{#1}}}}
+\newcommand{\defeq}{\stacklabel{def}=}
+\newcommand{\defeqq}{\stacklabel{def?}=}
+
+\newcounter{ctr}
+\newcounter{savectr}
+\newcounter{ectr}
+
+\newenvironment{newitemize}{%
+\begin{list}{$\bullet$}{\labelwidth=9pt%
+\labelsep=7pt \leftmargin=16pt \topsep=1pt%
+\setlength{\listparindent}{\saveparindent}%
+\setlength{\parsep}{\saveparskip}%
+\setlength{\itemsep}{1pt} }}{\end{list}}
+
+\newenvironment{newenum}{%
+\begin{list}{{\rm (\arabic{ctr})}\hfill}{\usecounter{ctr} \labelwidth=18pt%
+\labelsep=7pt \leftmargin=25pt \topsep=3pt%
+\setlength{\listparindent}{\saveparindent}%
+\setlength{\parsep}{\saveparskip}%
+\setlength{\itemsep}{2pt} }}{\end{list}}
+
+% \makeatletter
+% \renewcommand{\paragraph}{%
+%   \@startsection{paragraph}{4}%
+%   {\z@}{1.25ex \@plus 1ex \@minus .2ex}{-1em}%
+%   {\normalfont\normalsize\bfseries}%
+% }
+% \makeatother
+
+\newcommand*{\Fr}{\mathrm{Fr}}
+\newcommand*{\Cr}{\mathrm{Cr}}
+\newcommand*{\from}{\colon}
+\newcommand*{\compose}{\circ}
+\newcommand*{\set}[2]{\{{#1}~|~{#2}\}}
+\newcommand{\powerset}[1]{2^{{#1}}}
+\newcommand{\tvar}[1]{$\mathtt{#1}$}
+
+% for fixed width table columns
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+
+\usepackage[T1]{fontenc}
+\newcommand*{\lt}{{\textup{\guilsinglleft}}}
+\newcommand*{\rt}{{\textup{\guilsinglright}}}
+
+\usepackage{stmaryrd}
+\newcommand*{\lbb}{\llbracket}
+\newcommand*{\rbb}{\rrbracket}
+

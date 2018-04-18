@@ -1,4 +1,15 @@
 \documentclass[12pt, oneside]{lib/ucthesis}
+
+\input{preamble}
+\usepackage{amssymb}
+
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+
 \def\ssp{\def\baselinestretch{1.0}\large\normalsize}
 \ssp
 \usepackage{subfiles}
@@ -29,9 +40,9 @@
 % Declarations for Front Matter
 
 % TITLE
-\title{Title Goes Here}
+\title{Context and Causality}
 % Note that this must be exactly as it appears in University records.
-\author{Thesis Author}
+\author{Sebastian Benthall}
 
 % PREVIOUS DEGREES
 % Put each previous degree on its own line in the following format:
@@ -42,24 +53,25 @@
 % Note that degrees are only granted in Fall and Spring at Berkeley.
 % This text will appear on the abstract page.
 % For Berkeley, it should be identical to the graduation month.
-\degreeyear{2016}
-\degreemonth{Fall}
+\degreeyear{2018}
+\degreemonth{Spring}
 \defensemonth{Spring}
-\defenseyear{2016}
+\defenseyear{2018}
 
 \degree{Doctor of Philosophy}
 % COMMITTEE MEMBERS
 % You can have up to 5 members listed separately. 
 %After that, you throw them all into the "other members" category.
-\numberofmembers{3} 
-	\chair{Professor Committee Chair} 
-	\othermemberA{Professor Member 1}
-	\othermemberB{Professor Member 2} 
+\numberofmembers{4} 
+\chair{John Chuang}
+\othermemberA{Deirdre Mulligan, co-Chair}
+\othermemberB{Helen Nissenbaum}
+\othermemberC{David Wagner} 
 	
 % DEPARTMENT/DEGREE PROGRAM
 %Your Department. Make sure this is the department and/or program
 % name that you are enrolled in...
-\field{Engineering - Electrical Engineering and Computer Sciences} 
+\field{Information Management and Systems} 
 
 % CAMPUS NAME
 % Your UC Campus, e.g., "Berkeley"
@@ -85,7 +97,11 @@
 \begin{dedication}
 % Prints the text of the file dedication.tex centered vertically on the page.
 	\vspace*{\fill} 
-	To my parents.
+	To my grandmother, Theodora, who taught me to trust in God
+
+        To my father, Timothy, who taught me that God is logic
+
+        To my mother, Susan, who taught me that it's not worth doing a dissertation if it's bullshit
 	\vspace*{\fill} 
 \end{dedication}
 \end{optionalFrontMatter}
@@ -97,7 +113,7 @@
 
 \begin{acknowledgements}
 \thispagestyle{plain}
-	% \subfile{chapters/acknowledgements} 
+\subfile{chapters/acknowledgements} 
 \end{acknowledgements}
 
 %%%% END FRONT MATTER...
@@ -109,11 +125,13 @@
 
 \begin{dissertationText}
 \chapter{Introduction}
-	\subfile{chapters/chapter1}
-\chapter{Background}~\label{chapter:background}
-	\subfile{chapters/chapter1}
-\chapter[Short Title]{Long Title}
-	\subfile{chapters/chapter1}
+	\subfile{chapters/introduction}
+\chapter{Chapter 1}~\label{chapter:background}
+\subfile{chapters/chapter1}
+\chapter{Chapter 2}~\label{chapter:background}
+	\subfile{chapters/chapter2}
+\chapter[Games and Rules]{Games and Rules of Information Flow}
+	\subfile{chapters/chapter3}
 
 \ssp	% SINGLE SPACE REFERENCES (optional)
 \bibliographystyle{plain}
@@ -121,8 +139,11 @@
 
 % ------------------- OPTIONAL APPENDICES
 \appendix
-\chapter{Appendix Chapter}~\label{sec:appendix-pf}
-	\subfile{chapters/chapter1}
+\chapter[DPI Theorems]{Information theory theorems}~\label{appendix:information-theory-theorems}
+\subfile{chapters/appendixA}
+
+\chapter[MAIDS]{Multi-Agent Influence Diagrams (MAIDs)}~\label{appendix:maid}
+	\subfile{chapters/appendixB}
 
 \end{dissertationText}
 \end{document}
