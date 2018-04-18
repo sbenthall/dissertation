@@ -181,7 +181,11 @@
 \def\prevdegrees#1{\gdef\@prevdegrees{#1}}
 
 % The name of your committee's chair
-\def\chair#1{\gdef\@chair{#1}}
+\def\chairA#1{\gdef\@chairA{#1}}
+
+% The name of your committee's chair
+\def\chairB#1{\gdef\@chairB{#1}}
+
 
 % The names of your other committe members, one per line
 \def\othermemberA#1{\gdef\@othermemberA{#1}}
@@ -296,20 +300,22 @@ Committee in charge:
 
 \vspace{12pt}
 
-{\@chair}, Chair\\
+{\@chairA}, Co-chair\\
+
+{\@chairB}, Co-chair\\
 
 {\@othermemberA}\\
 
 {\@othermemberB}\\
 
-\ifnum \@numberofmembers > 3
+\ifnum \@numberofmembers > 4
 {\@othermemberC}\\
 \fi
-\ifnum \@numberofmembers > 4
+\ifnum \@numberofmembers > 5
 {\@othermemberD}\\
 
 \fi
-\ifnum \@numberofmembers > 5
+\ifnum \@numberofmembers > 6
 {\@othermembers}
 \fi
 
@@ -431,7 +437,8 @@ by\par
 \vspace{.1in}
 University of California, {\@campus}\par
 %\vspace{.1in}
-{\@chair}, Chair
+{\@chairA}, Co-chair
+{\@chairB}, Co-chair
 }\vspace{.1in}
 \end{center}}
 
@@ -444,8 +451,8 @@ University of California, {\@campus}\par
 \addtolength{\baselineskip}{-.5\baselineskip}
 \vspace{1.7cm}
 \rule{3.2in}{.5pt}\\
-\@chair\\
-Dissertation Committee Chair
+\@chairA\\
+Dissertation Committee Co-Chair
 \end{minipage}}
 
 
