@@ -1,16 +1,36 @@
  \documentclass[../thesis.tex]{subfiles}
  \begin{document}
 
- Context.
+ There is dissonance between social and legal expections of information technology and its reality.
+ This dissonance is due in part to expressiveness of social norms and legal language and the formal language of computing and business logic.
+ This dissertation aims the bridge this gap.
 
- Causality.
+ The field of Contextual Integrity accounts for society's expectations pf,
+ disappointments in, and adaptations to information technology by
+ positing that privacy is contextually appropriate
+ information flow.
+ Social contexts are abstract, normatively oriented spheres of social activity
+ that evolve as a consequence of our ends, purposes, and values.
+ A survey of how computer scientists have interpreted and implemented
+ Contextual Integrity reveals both disciplinary blindspots that prevent
+ computer scientists from addressing social expectations as well as theoretical
+ gaps that must be filled to make Contextual Integrity more actionable for
+ technologists.
 
- Information flow.
+ One theoretical gap in Contextual Integrity is that while it assumes that social expectations of information flow depend on the personal attributes that information is about, in fact information flows often defies social expectation when it reveals attributes that we not intended.
+ This observation motivates an investigation in Origin Privacy, the idea that norms of information flow depend on the origin of information, not its content.
+ 
+ To resolve this tension between information's trajectory and its ambiguous meanings,
+ I posit a new conception of information flow that builds on the work of Claude Shannon, Fred Dretske, Judea Pearl, and Helen Nissenbaum. In this conception, information flow
+ is a property of a system of causal relations, and consists of a causal flow (a direct
+ relation between probabilistic events) and nomic associations of the effect, meaning the conditional dependencies of the effect on other variables within the system.
+ This conception reveals why information flows can be revealing in unanticipated ways as well as why information's origin matters to its normative flow. This is done using the well-understood statistical formalism of causal Bayesian networks.
+ Modeling information flow through computational systems with causal Bayesian networks
+ provides a unifying framework for understanding information security and privacy,
+ as is shown by expressing noninterference, semantic security, origin privacy, differential privacy in it.
+ This analysis reveals a particular class of security and privacy failure that results from engineering according to a security criteria defined in terms of a causal intervention on the system inputs.
 
- Privacy engineering.
-
- Security.
-
+ 
  Data economics.
  
 \end{document}
