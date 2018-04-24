@@ -101,9 +101,9 @@
 Privacy is both an elusive moral concept and an essential requirement
 for the design of information systems. The theory of Contextual
 integrity (CI) is a philosophical framework that unifies multiple
-concepts of privacy -{}- as confidentiality, control, and social
-practice [G\"urses and Diaz, 2013] \cite{gurses2013two} -{}- and has potential as a
-systematic approach to privacy by design [Nissenbaum, 2009]. Indeed,
+concepts of privacy -- as confidentiality, control, and social
+practice \citep{gurses2013two} -- and has potential as a
+systematic approach to privacy by design \citep{nissenbaum2009privacy}. Indeed,
 over the last decade, computer scientists in a variety of subfields
 such as security, HCI, and artificial intelligence have approached the
 challenge of technical privacy design by applying CI.
@@ -118,11 +118,12 @@ contextual integrity in privacy research and design. We call this,
 ``making CI more actionable for computer science and
 computer scientists.''
 
-Over the last 20 years, privacy by design [Cavoukian, 2009; Federal
-Trade Commision, 2010; Regulation (EU), 2016] and privacy engineering
-[G\"urses and del Alamo, 2016] have become research topics that span
-multiple sub-disciplines in computer science [Rubinstein, 2010; Danezis
-et al. 2015]. Prior work has shown that computer scientists often stick
+Over the last 20 years, privacy by design \citep{cavoukian2009whole,
+federalprotecting, regulation2016regulation} and privacy engineering
+\citep{gurses2016privacy} have become research topics that span
+multiple sub-disciplines in computer science
+\citep{rubinstein2010privacy, danezis2015privacy}.
+Prior work has shown that computer scientists often stick
 to a single definition of privacy, for example, confidentiality,
 secrecy, or control over personal information. Although reducing
 privacy to a narrow definition has generated interesting work, it has
@@ -140,9 +141,9 @@ recipient), information type, and transmission principles. This
 definition immediately sets it apart from definitions in terms of
 subject control or stoppage of flow. Besides allowing for a more
 expressive framing of privacy threats and solutions than other
-approaches, the additional factors allow for greater specificity -{}-
-hence less ambiguity -{}- in prescribing and prohibiting certain flows.
-\ Because CI allows formal representation of flow constraints, it may
+approaches, the additional factors allow for greater specificity --
+hence less ambiguity -- in prescribing and prohibiting certain flows.
+Because CI allows formal representation of flow constraints, it may
 serve to bridge privacy needs experienced by humans, in situ, with
 privacy mechanisms in digital systems. Although CI's
 account of privacy's ethical importance plays a lesser
@@ -179,10 +180,12 @@ make CI more ``actionable.''
 
 On the other hand, the forays into implementing systems using contextual
 integrity leads to significant innovations and improvisation that we
-believe can inform contextual integrity theory. For example, the papers
+believe can inform contextual integrity theory.
+For example, the papers
 we have surveyed have elaborated on different types of contexts, most
 prominently those that arise as a consequence of interactions (with
-people and machines) or those that come to bear as changes occur in the
+people and machines)
+or those that come to bear as changes occur in the
 environmental conditions surrounding users. In doing so, computer
 scientists tease out different socio-technical situations that may
 impact how informational norms play out in a social sphere.
@@ -211,7 +214,8 @@ single application.
 
 Overall, when authors delegate responsibility of governing CI to
 technical elements that act semi-autonomously in an adaptive
-environment, they also raise novel questions for CI. It is not uncommon
+environment, they also raise novel questions for CI.
+It is not uncommon
 that researchers design agents that reason about contexts, auditing
 mechanisms that ensure informational norms are not violated, or apps
 that take active part in negotiating permissions. Can technical
@@ -221,10 +225,12 @@ are they in a different context? These are some of the hard questions
 revealed by the works we studied, and that require input when
 considering future applications of CI in technical systems.
 
-Just as important to our analysis is what the authors have not attended
+Just as important to our analysis is what the authors have
+not attended
 to in applying the CI framework. We reference here CI's
 account of privacy's ethical legitimacy, which
-identifies stakeholder interests, societal values, and contextual ends,
+identifies stakeholder interests, societal values,
+and contextual ends,
 purposes, and values as the basis for such legitimacy. Although
 omission of this aspect of CI might not be problematic for the
 technical accounts of privacy given by computer scientists, it
@@ -243,8 +249,8 @@ going to be useful to a wider spectrum of computer scientists. These
 include attending to questions such as: how to be more technically
 precise about the nature of contexts in order to relate the definition
 given in CI with more concrete notions used by computer scientists; how
-to advance normative concepts in CI -{}- i.e. ends, purposes, and
-values -{}- by taking advantage of well developed methods in the
+to advance normative concepts in CI -- i.e. ends, purposes, and
+values -- by taking advantage of well developed methods in the
 scientific study of privacy, including user studies, models, threat
 models and threat agents; how to use CI in systems where data not only
 flows, but also persists in a single place; and, how to apply
@@ -264,12 +270,13 @@ inductive result we discovered that this work often drew from different
 conceptions of context as relevant to privacy that came from different
 subdisciplines in CS. In particular, we found computer scientists
 working at the intersection of CI, introduced in computer science
-literature with Barth et al. [2006], and in the tradition of ubiquitous
+literature with \citet{barth06sp}, and in the tradition of ubiquitous
 computing that has given a central place to context and its
-implications for privacy design. [Dey et al., 2001; Dourish, 2004] We
-detail the latter in Section \ref{CI2.2}. We note in Section \ref{CI2.3} how the
+implications for privacy design \citep{dey2001conceptual, dourish2004we}.
+We detail the latter in Section \ref{CI2.2}.
+We note in Section \ref{CI2.2.2} how the
 connection between context and privacy has become recognized by
-policy-makers [White House, 2012; World Economic Forum, 2012]. We
+policy-makers \citep{house2012consumer, wef2012rethinking}. We
 speculate that this policy recognition was responsible for an uptick in
 the interest of computer scientists in context and
 privacy. The resulting creative synthesis
@@ -366,13 +373,13 @@ contextual integrity, are likely to map onto people's
 privacy expectations. Informational norms are well-formed only if
 they refer to five parameters: sender, recipient, and information
 subject, information types (topics, attributes), and transmission
-principle. The \textbf{parameters} of actors and attributes range over
+principle. The parameters of actors and attributes range over
 contextual ontologies, distinctive to respective social contexts, if
 not unique. Thus, in healthcare context, senders, recipients, and
-subjects range over \textbf{agents} acting in the capacities, such as,
+subjects range over agents acting in the capacities, such as,
 \ doctor, nurse, patient, surgeon, psychotherapist, etc. and
-\textbf{topics} may range over symptoms, diagnoses, and drug
-prescriptions. \textbf{Transmission principles} condition the flow of
+topics may range over symptoms, diagnoses, and drug
+prescriptions. Transmission principles condition the flow of
 information from party to party, including those commonly associated
 with privacy, such as, \textit{with permission of data subject},
 \textit{with notice,} or \textit{in confidence, }in addition to those
@@ -469,10 +476,12 @@ that strives for formal rigor contextual integrity has been taken up by
 computer scientists interested in privacy design and engineering. 
 
 Although philosophical versions of contextual
-integrity appeared in articles, dating back to 1998 [Nissenbaum, 1998]
+integrity appeared in articles, dating back to 1998
+\citep{nissenbaum1998protecting}
 and, later, in the book, Privacy in Context, it was not represented in
-computer science literature until [Barth et al., 2006]. This paper,
-which we introduce as one of our survey exemplars in Section \ref{CI3.3.1},
+computer science literature until \citet{barth06sp}. This paper,
+which we introduce as one of our survey exemplars in
+Section \ref{CI3.3.1},
 formalized the fragment of CI known as context-specific (or,
 contextual) information norms. The authors, which include Nissenbaum,
 developed a logical framework for expressing and reasoning about norms
@@ -487,10 +496,10 @@ they conceive of context with respect to privacy. We therefore find in
 computer science loose interpretations of contextual integrity that
 consider these other forms of context. They are: the field ubiquitous
 computing and the Obama White House Bill of Consumer Privacy Bill of
-Rights [White House, 2012] (also the World Economic Forum and FTC
-Reports around a similar time [World Economic Forum, 2012f]).
-\ Grasping these influences has been important in advancing our own
-ability to analyze the articles we have chosen for this survey. \ 
+Rights \cite{house2012consumer} (also the World Economic Forum and FTC
+Reports around a similar time \citep{wef2012rethinking, federalprotecting}.
+Grasping these influences has been important in advancing our own
+ability to analyze the articles we have chosen for this survey.
 
 \subsubsection{Context in ubiquitous computing}
 \label{CI2.2.1}
@@ -509,7 +518,8 @@ environmental context, that is to say,
 `context-aware' computing.
 
 In their ``anchor article'' on
-context-aware computing, Dey et al. [2001] extensively analyze
+context-aware computing, \citet{dey2001conceptual}
+extensively analyze
 definitions of `context' in the
 literature of their field and settle on the following for their own
 work:
@@ -521,7 +531,7 @@ entities (i.e., whether a person, place, or object) that are considered
 relevant to the interaction between a user and an application,
 including the user and the application themselves. Context is typically
 the location, identity, and state of people, groups, and computational
-and physical objects. (Dey et al., 2001)
+and physical objects. \citep{dey2001conceptual}
 \end{quote}
 
 This definition of context, specifically referring to the concrete
@@ -534,12 +544,11 @@ more in common with context-aware computing than with context as
 defined in CI. This has led to interesting synthetic work, in addition
 to incipient disjunctures. 
 
-
 That computer scientists have taken up the tradition of context-aware
 computing in their work on privacy as contextual integrity is not
 surprising. Early in this field, contributors
-Ackerman, Darrell,
-and Weitzner [2001] anticipated that
+\citet{ackerman2001privacy}
+anticipated that
 context-aware
 computing would lead to privacy by design, arguing that technical
 systems and legal frameworks would be co-designed. But hints of the
@@ -557,15 +566,17 @@ to tag captured information may at first seem like an intrusion to
 individual privacy (``I do not want to meet in a room
 that records what I say.''). However, that same
 context can be used to protect the concerns of individuals by providing
-computational support to establish default access control lists to any
-information that has been captured (Lau, Etzioni, \& Weld, 1999),
-limiting distribution to those who were in attendance. (Dey et al.,
-2001)
+computational support to establish default access control
+lists to any
+information that has been captured \cite{lau1999privacy},
+limiting distribution to those who were in
+attendance \cite{dey2001conceptual}.
 
 Most relevant to this
 article are the implicit connections these authors draw between the
 design of technology responding to a particular situation
-(certain people meeting in an office room) and a general expectation of
+(certain people meeting in an office room)
+and a general expectation of
 privacy. The norm that literal, unfiltered information about what
 happens in meetings is available only to those who attended could be
 attributed to the abstract social sphere
@@ -577,7 +588,7 @@ implicitly drawing connections between them.
 This early work on context-aware computing reflected the state of the
 art in sensors and the kind of sensing they made possible: explicitly
 representing context as a kind of fixed container in which people could
-act. This was famously critiqued in a paper by Dourish [2004],
+act. This was famously critiqued in a paper by \citet{dourish2004we},
 connecting how `context' is approached
 in ubiquitous computing to broader questions in philosophy of science.
 Dourish argued that representing context (e.g. location or time in
@@ -585,16 +596,19 @@ which an application is used), as a kind of container for activity
 whose boundaries are delineable draws from the \textit{positivist}
 tradition in social science that sees context as stable and separable
 from the activity taking place within it. Dourish contrasts this
-understanding of context with a different one deriving from \ the
-\textit{phenomenological }tradition of social science. According to it,
+understanding of context with a different one deriving from the
+\textit{phenomenological} tradition of social science.
+According to it,
 context is \textit{occasioned}, ``relevant to
 particular settings, particular instances of action, and particular
 parties to that action'', not an abstract category
 that generalizes over settings, actions, and parties. This kind of
 context arises from and is maintained by its activity, sometimes
-dynamically adjusting along with the activities themselves. \ For
-example, a private conversation between friendly colleagues at work can
-shift from a formal, professional discussion into an informal, personal
+dynamically adjusting along with the activities themselves. For
+example, a private conversation between friendly
+colleagues at work can
+shift from a formal, professional discussion into an
+informal, personal
 discussion and back again. These shifts will occur as and through
 changes in the conversational activity, such as changes in tones of
 voice or comments such as, ``Well, we should really
@@ -615,8 +629,8 @@ are always
 co-occurring, often one or the other process is emphasized
 in scholarly
 work. Contextual integrity, in its original articulations
-[Nissenbaum,
-  2004; Nissenbaum, 2009], tends to emphasize the top-down
+\citep{nissenbaum2004privacy, nissenbaum2009privacy},
+tends to emphasize the top-down
 pressure of
 contextual ends, purposes, and values shaping norms that in turn guide
 information flows. In contrast, while Dourish acknowledges the role of
@@ -628,15 +642,15 @@ in the literature that we review, even though we have limited this
 review only to computer science literature that refers to contextual
 integrity. 
 
-\subsection{Context in Privacy Policy}
-\label{CI2.3}
+\subsubsection{Context in Privacy Policy}
+\label{CI2.2.2}
   
 While we were looking specifically for computer science papers that
 referenced contextual integrity, it was interesting to find many papers
 that took ``privacy in context'' as
 an idea (which also happens to be the title of
 Nissenbaum's book about contextual integrity
-[Nissenbaum 2009]), that do not draw from the framework of contextual
+\citep{nissenbaum2009privacy}), that do not draw from the framework of contextual
 integrity.If the direct origin of ``privacy in
 context'' was not contextual integrity, what was it?
 
@@ -645,7 +659,7 @@ context and contextual integrity in the formulation of several policy
 documents from 2010 and later. For example, the White House Report,
 ``Consumer data privacy in a networked world: A
 framework for protecting privacy and promoting innovation in the global
-digital economy`` [White House, 2012], lists
+digital economy`` \citep{house2012consumer}, lists
 ``Respect for Context'' as one of
 its seven principles: ``Consumers have a right to
 expect that companies will collect, use, and disclose personal data in
@@ -659,7 +673,7 @@ interaction'' or else they should make
 similar vein the World Economic Forum's 2012 report,
 Rethinking Personal Data invokes the importance of context for policy
 governing data in numerous places (e.g. pages 5, 10, 15, 16, 17, 19,
-and more.)[World Economic Forum, 2012] 
+and more.) \citep{wef2012rethinking} 
 
 We have found significant variation in how computer scientists have
 interpreted the term ``context'',
@@ -667,7 +681,7 @@ often reflecting their disciplinary background and research agendas.
 Some follow contextual integrity quite closely. Others cite
 `contextual integrity' and
 `privacy in context', possibly to
-situate the privacy - context connection within a scholarly lineage
+situate the privacy-context connection within a scholarly lineage
 without following CI
 substantively. Most of these
 papers were written after the policy arena acknowledged CI theory,
@@ -705,8 +719,9 @@ study as comprehensive and transparent as possible.
 
 In their projects invoking CI, computer scientists have taken on the
 hard task of translating an elaborate philosophical framework into
-computer science research practice -{}- in which different theoretical
-and methodological traditions apply. This renders the translation of CI
+computer science research practice -- in which different theoretical
+and methodological traditions apply.
+This renders the translation of CI
 into technical contexts a non-trivial task. For these reasons alone an
 assessment of current uses of the theory in CS is valuable for
 understanding how well the theory translates, what new questions arise
@@ -719,10 +734,10 @@ who want to use it in the future.
 \label{CI3.1}
 
 Driven by the motivations listed above, we
-decided to focus on the four research questions as we take stock of the
+decided to focus on four research questions as we take stock of the
 use of CI in computer science research and assess it:
 
-\subsubsection{RQ1. For what kind of problems and solutions do computer scientists use}
+\subsubsection{RQ1. For what kind of problems and solutions do computer scientists use CI?}
 
 As an initial question for our inquiry, we wanted to know if there were
 any particularly notable categories of problems being addressed by
@@ -753,13 +768,12 @@ information flow according to norms?
 \subsubsection{RQ3. How have the authors dealt with the normative aspects of CI?}
 
 Contextual integrity is a normative
-framework of privacy. It argues that privacy is an important value
+framework of privacy.
+It argues that privacy is an important value
 because appropriate information flow promotes the data
-subject's interests in balance with others; it is an
-important
-value because it promotes societal and ethical values, and maintains
-the ability of social contexts to fulfill their ends, purposes, and
-values.
+subject's interests in balance with those of others as well
+as societal and ethical values, and maintains
+the ability of social contexts to fulfill their purposes.
 
 We wanted to know if computer scientists
 using contextual integrity take up this normative aspect of the theory.
@@ -785,7 +799,8 @@ they stretch the theory explicitly or implicitly?
 
 In compiling and revising the relevant papers, we followed empirical
 research methodologies recommended for use in software engineering
-studies [Kitchenham et al., 2017]. In order to answer our research
+studies \citep{kitchenham2007guidelines}.
+In order to answer our research
 questions, we conducted the following four steps: 
 
 \liststyleWWNumi
@@ -876,8 +891,8 @@ integrity was coauthored by Helen Nissenbaum and therefore can be said
 to be an authoritative expression of the theory. It is not, strictly
 speaking, a paper about the design of a technological artifact. Rather,
 it is an articulation of a subset of the principles and parameters of
-contextual integrity in a formal logic [something further discussed in
-Section 4.1 under RQ1]. Formalization is a prerequisite to
+contextual integrity in a formal logic (something further discussed in
+Section \ref{CI4.1} under RQ1). Formalization is a prerequisite to
 computational implementation, and so this paper demonstrated the
 potential of contextual integrity as a guide to the design of
 computational systems. For the purposes of our study it is just as
@@ -893,14 +908,17 @@ which is capable of expressing formulae of relationships of variables
 arranged in time. This translation refines the ontology of contextual
 integrity by making explicit that information flows have a temporal
 order. This allows the authors to define specific transmission
-principles that condition appropriate flow on previous flows [further
-discussion under RQ2 in Section 4.2]. The logical specification allows
+principles that condition appropriate flow on previous flows (further
+discussion under RQ4 in Section \ref{CI4.4}). The logical specification allows
 a particular history or trace of information flows to be audited for
 appropriateness according to formal rules.
 
-One of the benefits of having to make the logic of contextual integrity
-explicit is that it brings to light aspects of the theory that are easy
-to take for granted but which have far-reaching implications. The paper
+One of the benefits of having to make the logic of contextual
+integrity
+explicit is that it brings to light aspects of the theory
+that are easy
+to take for granted but which have far-reaching implications.
+The paper
 explicitly models both the knowledge available to each actor at
 different points in time as well as the ways that different attributes
 are related to each other via inference. This paper therefore provides
@@ -916,22 +934,22 @@ through the evolution of social sphere and its ends, purposes, and
 values. Rather, after formalizing the aspects of contextual integrity
 that they are able to, they validate their work by showing that it is
 expressive of United States sectoral privacy laws: HIPAA, GLBA, and
-COPPA (see [Datta et al. 2011] for further work along these lines).
+COPPA (see \citet{datta2011understanding} for further work along these lines).
 They also argue that the expressivity of their formalization compares
 favorably with other proposed access control policy languages such as
 XACML, ECAP, and P3P.
 
 This paper is particularly notable as the first published computer
 science paper concerning contextual integrity. Explicitly only a
-formalization of \textit{part} of CI, [Barth et al., 2006] provide a
+formalization of \textit{part} of CI, \citet{barth06sp} provide a
 way of expressing norms as policies that can be used in computational
 tests for compliance. This sets a precedent for computer science papers
 using contextual integrity to consider
 `context' in a structured, abstracted,
-and normative way [see RQ2 in Section 4.2]. It sets aside parts of
+and normative way (see RQ2 in Section \ref{CI4.2}). It sets aside parts of
 contextual integrity that account for how norms form through adaptive
 social processes. By focusing on regulatory compliance, it brackets the
-social source of privacy norms [RQ3 in Section 4.3]. If there is
+social source of privacy norms (RQ3 in Section \ref{CI4.3}). If there is
 something lost in this usage of contextual integrity in computer
 science, it may be recovered through other uses and understandings of
 social context that have influenced technical research.
@@ -953,11 +971,11 @@ fewer comprehend the complexity that the permissions are loaded with
 the permission to load ads. Prompting users too frequently causes
 ``habituation''. Limiting prompts,
 however, raises questions about which ones to select in order to
-effectively protect user privacy. Wijesekera et al. leverage contextual
+effectively protect user privacy. \citet{wijesekera2015android} leverage contextual
 integrity to approach the usable security and privacy problems that
 arise when interfacing a permission request model to the users (a user
 interface and technical platform problem as discussed in RQ1 in Section
-4.1).
+\ref{CI4.1}).
 
 In their study, the authors examine how applications are currently
 accessing user data and assess whether or not it corresponds to
