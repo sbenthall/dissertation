@@ -1,21 +1,191 @@
  \documentclass[../thesis.tex]{subfiles}
  \begin{document}
 
-Contextual Integrity described most thoroughly in Section \ref{CI2.1}.
+ The following chapters of the dissertation are of
+ a different style from the first.
+ Chapter \ref{chapter:CI-through-CS} is an exposition of social theory and literature survey.
+ The authorial perspective astarts from Contextual Integrity, a social theory, looks at computer science research.
+ In contrast, each of Chapters \ref{chapter:origin-privacy} and
+ \ref{chapter:games-and-rules} is intended to stand alone as a
+ technical article, though they share Appendices
+ \ref{appendix:information-theory-theorems}
+ and \ref{appendix:maid} between them.
+ Though they both draw on Contextual Integrity, the authorial perspective has different assumptions.
+
+ This chapter serves as a disciplinary bridge between these perspectives.
+ As a warning to the reader, this bridge is not meant to sustain heavy intellectual loads, so to speak.
+ It is a rope bridge, scaffolding that may be traversed carefully and built upon more robustly later.
+ Core elements of the argument presented here that are needed for technical arguments that follow will be reproduced tersely in later chapters.
+
+\section{Expanding contextual integrity}
+
+Chapter \ref{chapter:CI-through-CS} concludes in Section \ref{CI5} with both calls to action for computer scientists interested in open problems in privacy by design and pointers to theoretical gaps in contextual integrity.
+ It calls for ``Contextual Integrity theorists'' to fill these gaps, inventing a category of researcher that had not existed before the article's publication.
+ Our intention as authors was to frame Contextual Integrity's blossoming from a bounded theory into an expanding field of inquiry.
  
- CI through CS and the other chapters have very different style.
+ Among the many theoretical gaps identified in contextual integrity,
+ we identified the following:
 
- CI through CS raised several connected concerns.
+ \begin{enumerate}
+ \item In Section \ref{CI5.1.1}, we argue that
+   contextual integrity needs to be expanded to account for
+   social and technologal platforms that span multiple
+   social spheres, perhaps by introducing an ``operator'' context.
+ \item In Section \ref{CI5.2.1}, we call for contextual integrity
+   to expand to account for more of the meanings of `context',
+   that range from abstract social spheres to concrete
+   sociotechnical situations.
+ \item In Section \ref{CI5.3.1}, we call for clarity on how
+   social norms form to reflect ends, purposes, and values in
+   society, and the relationship between these norms and the law.
+ \item In Section \ref{CI5.4.1}, we call for contexutal integrity
+   to address the challenging cases where social contexts collide
+   or clash.
+ \end{enumerate}
 
- Origin Privacy is motivated by a related concern,
- about meaning.
+ There is a reflexive, meta-theoretical irony to these gaps.
+ Contextual integrity is an account of social norms that
+ depends on the idea of a society divided into social spheres.
+ These spheres are characterized by social roles,
+ information attributes, and contextual purposes that robustly
+ coevolve (see Section \ref{CI2.1}).
+ Norms of information flow are defined \textit{within} a context
+ in terms of its internal ontology.
+ The is meant to reflect why and how privacy is socially meaningful:
+ it is necessary for the maintenance of these meaningful social structures.
 
- Meaning is a property of context.
+ The gaps in the theory of contextual integrity reflect changes in society's actual situation: technical and social platforms now literally fill the gaps between previously distinct social spaces.
+ This makes the ways these platforms conform to or violate privacy
+ difficult to conceptualize.
+ If it is true that social norms are indexed to particular social
+ spheres, the fact that technical infrastructure traverses social spheres does not make it \textit{against} social norms so much as it exists \textit{beyond} what society's capacity to regulate itself normatively.
 
- Semantic theories of information.
+ \section{Information in and out of context}
 
- Probability and abstraction.
+ The remainder of this dissertation grapples with the question of how technical and social platforms can be designed and regulated given that many of our socially comfortable expectations of information flow are ontologically mismatched to them.
+ At the heart of this question is a deep theoretical question:
+ what is information flow, and why is it valuable?
+ What does information \textit{mean}?
 
-disciplinary collapse mirroring context collision 
+ It is surprising that such a foundational question has
+ not yet met with a scientific, transdisciplinary answer.
+ It is of great pragmatic concern.
+ The reality is that in practice due to data mining techniques and
+ other innovations, ``data's meaning has become a moving target''
+ \cite{horvitz2015data} because the inferences data enable
+ depend on its sources and what other data it is combined with.
+ These techniques are driving business and technical innovation
+ and legal regulation.
+ Scholarship has perhaps not yet caught up.
 
+ Disciplinary fracturing is part of the problem.
+ A consensus definition of semantic information has eluded
+ philosophers \citep{sep-information-semantic}.
+ Linguistic analysis of the modern use of the word ``information''
+ has concluded that it is a confused creole of distinct and
+ incompatible meanings \citep{nunberg1996farewell}.
+ Library and Information Sciences (LIS) has fruitfully analyzed the
+ term and discovered that information can be both a process
+ and a thing \cite{buckland1991information}. In LIS,
+ \citet{brier2008cybersemiotics} provides a comprehensive account
+ of ``cybersemiotics'' that traces the relationship between
+ levels of information rangign from the basic information theoretic
+ sense developed by \citet{shannon1948mathematical} to
+ social and linguistic meaning based on the social theory of
+ \citet{luhmann1995social}.
+ \citet{brier2008cybersemiotics} argues that the latter, being
+ a property of open systems, will always be to some extent
+ indefinite.
+ However true, this is unsatisfying for those engaged in
+ the practices of privacy engineering, public policy, or
+ business, and surely more can be discovered about the
+ contours and logic of social meaning.
+ Meanwhile, in the natural sciences scholars in physics
+ \citep{wolpert2008physical} and biology \citep{deacon2015steps}
+ have expressed the aspiration to ground an understanding of
+ inference and signification in nature in mathematical information
+ and computational theory.
+ 
+ The approach taken in this dissertation is to take inspiration
+ from contextual integrity and philosophy of information
+ in defining information flow, but
+ to posit an analytically tractable, mathematically specific
+ definition that is grounded in constructs that are well known
+ in computer science, statistics, and social scientific methodology.
+ Specifically, this account of information flow, which is introduced
+ in Section \ref{sec:causality},
+ builds on \citet{dretske1981knowledge}, who argued that an
+ essential characteristic of an information flow is that
+ it enables inference due to regularities in the environment
+ that produces it, which Dretske calls ``nomic associations''.
+
+ Contextual integrity is enriched by a Dretskian view of
+ information flow because this view shows how the practices
+ that maintain the integrity of a social sphere and the
+ meaning of information flows dynamically reinforce each
+ other.
+ If the meaning of information depends on regularities in
+ the system through which it flows, then the fact that
+ actors are exchanging information to fill well-understood
+ roles for well-understood purpose \textit{is} the reason why
+ the information they exchange has the meaning that it does.
+ As a corollary, \textit{when} social practices change, for
+ example due to a new kind of sociotechnical intermediary,
+ the possible inferences from information change, resulting
+ in new and sometimes unexpected meanings.
+
+ The meaning of information flows and the sociotechnical
+ practices around them are mutually constitutive.
+ To make this more specific, it is necessary to define both
+ the regularity of these practices and how they vary.
+ As has been known since \citet{shannon1948mathematical},
+ information only flows when a signal has many different
+ potential values. It is, to paraphrase \citet{bateson1972steps}
+ the difference that makes the difference.
+ The mathematics of probability and statistics, which provide
+ formal tools for understanding the relationships between variables
+ whose values are uncertain, are intimately connected to the
+ mathematics of information for precisely this reason.
+
+ \citet{pearl2009causality} provides a robust and widely used
+ formal account of structural flows of probabilistic influence
+ through causal relationships.
+ The position of this dissertation is that Pearlian causation
+ and Bayesian networks can provide a useful and tractable
+ formalism for understanding the meaning and value of information
+ flows.
+ The advantage of this formalism is that it can model the
+ relationships between both technical components and social
+ practices in an apples-to-apples way.
+ This is illustrated first in Chapter \ref{chapter:origin-privacy}
+ by applying the framework to computer security in embedded systems
+ and then in Chapter \ref{chapter:games-and-rules} by modeling
+ information economics.
+ In order to model how social practices, and in particular strategic
+ practices, change the meaning of
+ information flows, I draw on \citet{koller2003multi} who expand
+ Bayesian networks into a game theoretic formalism: 
+ Multi-Agent Influence Diagrams (MAIDs).
+
+ The aspiration of this work is to develop a scientific definition
+ of information flow that is useful for understanding the
+ interaction of the different modalities of cyberspace regulation
+ (social norms, the market, the law, and technology).
+ In order to achieve this, it's necessary to develop the definition
+ in a way that is both precise and general.
+ Mathematical formulations accomplish this precision and generality,
+ and mathematical analysis of information flows and MAIDs are
+ provided in Appendices \cite{appendix:information-theory-theorems}
+ and \cite{appendix:maid}.
+ These mathematics, which are objectively and proveably true,
+ are intended to transcend any particular
+ narrowly defined scholarly discipline.
+ This aim of this work is a contribution to computational social
+ science \citep{benthall2016philosophy} under conditions of
+ disciplinary collapse \citep{benthall2015designing}.
+
+ Shortcomings of this model and room for development
+ are discussed in the Conclusion of this
+ dissertation, Chapter \ref{chapter:conclusion}.
+ 
  \end{document}
