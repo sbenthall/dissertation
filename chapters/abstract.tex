@@ -1,73 +1,57 @@
  \documentclass[../thesis.tex]{subfiles}
  \begin{document}
 
-The creators of technical infrastructure are under social and legal pressure to comply with expectations that can be difficult to translate into the practice of engineering.
-This dissertation aims to bridge this gap by progressively working at the tensions between social theory, law, computer science, and economics.
-The three projects of the dissertation focus on privacy engineering, information security, and data economics, respectively.
-The projects logically follow on each other and culminate in a new way of modeling problems and solutions in each of these domains.
-This new modeling framework hinges on a specific conception of information flow in a causal context that builds on the theoretical contributions of Claude Shannon, Fred Dretske, Judea Pearl, Daphne Koller, and Helen Nissenbaum.
+ The creators of technical infrastructure are under social and legal pressure to comply with expectations that can be difficult to translate into computational and business logics.
+ This dissertation bridges this gap through three projects that focus on privacy engineering, information security, and data economics, respectively.
+ These projects culminate in a new formal method for evaluating the strategic and tactical value of data.
+ This method relies on a core theoretical contribution building on the work of Shannon, Dretske, Pearl, Koller, and Nissenbaum: a definition of information flow as causal flow in a system
+ causal relations and strategic choices.
 
-The first project included in this dissertation concerns the use
-of Contexual Integrity in the discipline of computer science.
-The field of Contextual Integrity accounts for society's expectations of,
-disappointments in, and adaptations to information technology by
-positing that privacy is contextually appropriate
-information flow.
-Social contexts are abstract, normatively oriented spheres of social activity
-that evolve as a consequence of our ends, purposes, and values.
-A survey of how computer scientists have interpreted and implemented
-Contextual Integrity reveals both disciplinary blindspots that prevent
-computer scientists from fully engaging with Contextual Integrity
-as well as theoretical
-gaps that must be filled to make Contextual Integrity more actionable for
-technologists. This work was done in collaboration with Seda G{\"u}rses
-and Helen Nissenbaum.
+ The first project studies privacy engineering's use of
+ Contextual Integrity theory (CI), which defines
+ privacy as appropriate information flow according to norms
+ specific to social contexts or spheres.
+ Computer scientists using CI
+ have innovated as they have implemented the theory and
+ blended it with other traditions, such as context-aware
+ computing. This survey examines
+ computer science literature using Contextual Integrity and
+ discovers, among other results, that technical and social platforms
+ that span social contexts challenge CI's current commitment
+ to normative social spheres.
+ Sociotechnical situations can and do defy social expectations
+ with cross-context clashes, and privacy engineering
+ needs its normative theories to acknowledge and address this
+ fact.
+ 
+ This concern inspires the second project, which addresses the
+ problem of building computational systems that comply with data
+ flow and security restrictions such as those required by law.
+ Many privacy and data protection policies stipulate
+ restrictions on the flow of information based on that
+ information's original source.
+ We formalize this concept of privacy as Origin Privacy.
+ This formalization shows how information flow security
+ can be represented using causal modeling.
+ Causal modeling of information security leads to
+ general theorems about the limits of privacy by design
+ as well as a shared language for representing specific
+ privacy concepts such as noninterference, differential
+ privacy, and authorized disclosure.
 
-While social expectations and legal requirements assume that the semantics of information is fixed an narrowly identifiable, in reality data often carries a broader semantics that is discoverable using machine learning techniques.
-The second project explores the efficacy of data protection
-rules based on information origin, or Origin Privacy, as
-a complement to data protection rules based on information
-semantics.
-A new conception of information flow that builds on the
-work of Claude Shannon, Fred Dretske, Judea Pearl, and
-Helen Nissenbaum is proposed.
-In this conception, information flow is a property of a
-system of causal relations, and consists of a causal flow
-(a direct relation between probabilistic events) and nomic
-associations of the effect, meaning the conditional dependencies
-of the effect on other variables within the system.
-This conception reveals why information flows can be revealing
-in unanticipated ways as well as why information's origin matters
-to its normative flow.
-This is done using the well-understood statistical formalism
-of causal Bayesian networks.
-
-Modeling information flow through computational systems with
-causal Bayesian networks provides a unifying framework for
-understanding information security and privacy,
-as is shown by expressing noninterference, semantic security,
-origin privacy, differential privacy in it.
-This analysis reveals a particular class of security and privacy
-failure that results from engineering according to a security
-criteria defined in terms of a causal intervention on the system
-inputs.
-
-The first project revealed that an adequate theory of privacy
-must take into account cross-context information flows
-and the implications this has for for design of technical
-infrastructure.
-The second project introduced a new model of information flow
-as a property of a causal system.
-The third project builds on these results and considers the
-problem of modeling the impact of strategic economic decisions
-involving information flow.
-The earlier model of information is extended into a framework
-for mechanism design by building on Koller and Milch's
-Multi-Agent Influence Diagram formalism.
-This framework can capture the strategic dynamics and consequences
-of well-known information economic situations such as
-principal-agent contracts and price differentiation, as
-well as new economic models such as expert services and
-cases of cross-context information flow.
-These models have *****
-\end{document}
+ The third project uses the causal modeling of information
+ flow to address gaps in current theory of data economics.
+ Like CI, privacy economics has focused on individual
+ economic contexts and so has been unable to comprehend
+ an information economy that relies on the flow of
+ information across contexts.
+ Multi-Agent Influence Diagrams, a game theoretic extension
+ of Bayesian Networks, are used to model the well known
+ economic contexts of principal-agent contracts and
+ price differentiation as well as new contexts
+ such as personalized expert services and data reuse.
+ This work reveals that information flows are not
+ goods but rather strategic resources involving
+ many market externalities.
+ 
+ \end{document}
