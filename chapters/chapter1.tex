@@ -992,7 +992,7 @@ connectivity (the wifi connection state); location (the
 user's last known coordinates); the UI elements that
 were exposed to the user during the request; history of interactions
 with applications; and, the path to the specific content that was
-requested\footnote{ For example, if Spotify requests a wi-fi scan while
+requested\footnote{For example, if Spotify requests a wi-fi scan while
 the user is playing Solitaire, then visibility is set to false, the
 history shows that prior to the Spotify prompt, the user had viewed
 Solitaire, the screen status was on etc.}. After the week, study
@@ -1015,7 +1015,7 @@ information can be accessed (e.g., there are multiple ways to access
 location). They argue that due to invisibility, frequency and exposure,
 what the authors' have dubbed as users'
 contextual integrity -- meaning what they expect from apps and their
-permission behavior -- is violated\footnote{
+permission behavior -- is violated.\footnote{
 The user study provides greater insights
 as to when users feel that their expectations are not met which is
 worth reading but too detailed for the study at hand. 
@@ -1043,7 +1043,7 @@ users' contextual expectations. They complete the study
 of this classifier with a short evaluation of its accuracy.
 
 In their reading of contextual integrity,
-the authors abstract away the social contexts of apps [RQ2]. They are
+the authors abstract away the social contexts of apps (see RQ2). They are
 not concerned with the information norms an app may be subject to due
 its social context, e.g., is it appropriate for a health app to collect
 user location? Rather, they equate privacy violations with occurrences
@@ -1060,7 +1060,7 @@ with their apps and mobile devices. This sets this study apart from
 typical context-aware computing papers that have a more static view of
 what counts as context. A more detailed discussion on how contexts are
 handled in the different papers can be found in Section
-4.2.
+\ref{CI4.2}.
 
 While the authors lean on CI, they do not make explicit use of the
 parameters part of the conceptual framework nor invoke its normative
@@ -1073,7 +1073,7 @@ However, by evaluating appropriateness of information flows with
 respect to an app, rather than the social context that the app serves,
 the study also falls short of understanding user expectations with
 respect to information flows that may be initiated by the organization,
-be it sharing user data with other companies or users [RQ3]. In
+be it sharing user data with other companies or users (see RQ3). In
 general, relying on users expectation as a normative source leaves out
 other potential sources of information norms which may have been very
 useful in further pruning those prompts that request permissions for
@@ -1083,7 +1083,7 @@ conceptual premises only in our interpretation.
 
 Foregrounding apps does reveal interesting
 results that go beyond what is typically in the scope of a CI analysis
-[RQ4]. First, the authors find that users wanted to accept some
+(see RQ4). First, the authors find that users wanted to accept some
 permissions because they were convenient and others they wanted to
 reject because they requested access to privacy sensitive information
 (e.g., SMS messages) regardless of the social context. Second, users
@@ -1111,7 +1111,7 @@ detailed version published in the Information Sciences Journal 325
 mechanisms that address issues related to
 ``inappropriate exchanges and undesired
 disseminations'' that happen due to lack of effective
-privacy controls in OSNs [RQ1]. Pointing to numerous studies in
+privacy controls in OSNs (see RQ1). Pointing to numerous studies in
 computer science, the authors argue that contextual integrity, a model
 upon which effective computational mechanisms can be built, is the
 right framework for developing effective controls for OSN users.
@@ -1191,7 +1191,7 @@ information; and, they minimize the burden on the users by avoiding
 raising unnecessary alerts.
 
 This paper mostly remains faithful both to the definition of CI as well
-as its parameters [RQ2]. \ The model includes sender, receiver,
+as its parameters (see RQ2). The model includes sender, receiver,
 messages, topics and context. The authors make no explicit comments
 about the transmission principle, however, one could argue that the
 agent implements transmission principles: information may flow as long
@@ -1201,19 +1201,19 @@ alert which gives her an opportunity to double-check on the
 appropriateness of an information flow.
 
 The authors assume that contexts emerge in interaction, an approach very
-much aligned with Dourish [2004]. Contexts are not predefined, but as
+much aligned with \citet{dourish2004we}. Contexts are not predefined, but as
 communities of users establish connections and communications they are
 detected by the ``community finding
 module''. Hence, users' communication
 patterns, networking patterns as well as the IA-agent become sources of
-normativity [RQ3]. This implies a division of labor between the user
+normativity (see RQ3). This implies a division of labor between the user
 and the agent: the agent plays an active role in maintaining
 informational norms and the user is still able to practice discretion
 when it comes to determining what is considered an appropriate
 information flow in a context.
 
 In addition, the authors introduce a number of distinctions and
-parameters that go beyond those of CI [RQ4]. The distinction between
+parameters that go beyond those of CI (see RQ4). The distinction between
 inappropriate exchange and undesirable dissemination allows the authors
 to express norms with respect to information flows within and
 \textit{across multiple contexts}. This is a pragmatic extension of CI
@@ -1265,28 +1265,32 @@ consolidated these themes into answers to our research questions. We
 discuss those answers in this section.
 
 The papers included in the survey were:
-Barth et al, 2006; Barth et al., 2007;
-Criado and Such, 2015; Datta et al., 2011; Jia et al., 2017; Kayes and
-Iamnitchi, 2013a; Kayes and Iamnitchi,
-2013b; Krupa and Vercouter,
-2012; Netter et al.,
-2011; Omoronyia et al.,
-2012; Omoronyia et al.,
-2013; Salehie et al.,
-2012; Samavi and Consens,
-2012; Sayaf et al.,
-2014; Shih and Zhang,
-2010; Shih et al., 2015; Shvartzshnaider
-et al., 2016; Tierney and Subramanian,
-2014; Wijesekera et al.,
-2015; and Zhang et al.,
-2013.
+Barth et al., 2006 \cite{barth06sp};
+Barth et al., 2007 \cite{barth07csf};
+Criado and Such, 2015 \cite{criado2015implicit};
+Datta et al., 2011 \cite{datta2011understanding};
+Jia et al., 2017 \cite{jia2017contexiot};
+Kayes and Iamnitchi, 2013a \cite{kayes2013aegis};
+Kayes and Iamnitchi, 2013b \cite{kayes2013out};
+Krupa and Vercouter, 2012 \cite{krupa2012handling};
+Netter et al., 2011 \cite{netter2011assisted};
+Omoronyia et al., 2012 \cite{omoronyia2012caprice};
+Omoronyia et al., 2013 \cite{omoronyia2013engineering};
+Salehie et al., 2012 \cite{salehie2012adaptive};
+Samavi and Consens, 2012 \cite{samavi2012l2tap+};
+Sayaf et al., 2014 \cite{sayaf2014mathrm};
+Shih and Zhang, 2010 \cite{shih2010towards};
+Shih et al., 2015 \cite{shih2015privacy};
+Shvartzshnaider et al., 2016 \cite{shvartzshnaider2016learning};
+Tierney and Subramanian, 2014 \cite{tierney2014realizing};
+Wijesekera et al., 2015 \cite{wijesekera2015android};
+and Zhang et al., 2013 \cite{zhang2013no}.
 
 The three categories we derived to
 answer RQ1, RQ3, and RQ4, and the themes within each category as they
-apply to each paper, are in Table \ref{tab:RQX} at the end of Section \ref{CI4.2}. A
+apply to each paper, are in Table \ref{tab:RQX} at the end of Section \ref{CI4.4}. A
 separate table (Table \ref{tab:RQ2}) is provided for our results for RQ2 in Section
-\ref{CI4.2.2}. In Sections \ref{CI4.2.1}-\ref{CI4.2.4}, we detail each
+\ref{CI4.2}. In Sections \ref{CI4.1}-\ref{CI4.4}, we detail each
 set of results and its
 relation to our research questions. Blank fields in the tables stand
 for cases where none of the themes in our taxonomy were applicable to
@@ -1315,10 +1319,9 @@ and \textbf{decentralized} architectures (\ref{CI4.1.3}).
 \subsubsection{4.1.1 User Interfaces and Experiences}
 \label{CI4.1.1}
 
-Four papers surveyed (Shih and Zhang,
-2010; Shih et al., 2015; Zhang et al.,
-2013; Wijesekera et al.,
-2015) studied the experience of users
+Four papers surveyed (\citet{shih2010towards};
+\citet{shih2015privacy}; \citet{zhang2013no};
+\citet{wijesekera2015android}) studied the experience of users
 with applications or with designing user facing interfaces or
 applications. Since contextual integrity theory operates at the level
 of social norms and says little about user interfaces, and user
@@ -1326,7 +1329,7 @@ experience in different situations, these papers raise the question of
 how user-facing apps and their interfaces are related to broader
 normative questions about what is appropriate information flow in
 differentiated socio-technical situations. One paper
-[Zhang et al. 2013] explicitly drew its motivation from
+(\citet{zhang2013no}) explicitly drew its motivation from
 the FTC's view of the importance of
 ``context of interaction'' rather
 than a broader social or normative view of privacy. Nevertheless, these
@@ -1342,7 +1345,7 @@ device in different situations. Situations could be environmental
 conditions (e.g., where the user is located, night or day); social
 situations (e.g., work, home, among friends); or, technical situations
 (e.g., whether an app is in use when it asks for permissions),
-comparable to conceptions of context a la Dey et al. [2001].
+comparable to conceptions of context a la \citet{dey2001conceptual}.
 
 Two themes were common to these papers: they implicitly highlighted that
 in addition to what may be appropriate flow of information in different
@@ -1352,7 +1355,7 @@ information flows they expect or prefer in different
 topic). Second, these papers aspired to generalize their results in
 order to provide recommendations concerning infrastructural design that
 can be implemented to respect contextual integrity. For example,
-Wijesekera et al. [2015] propose
+\citet{wijesekera2015android} propose
 introducing techniques to improve Android permission models to better
 cater to user preferences and expectations in different interactional
 situations.
@@ -1371,7 +1374,7 @@ of challenges to applying CI in practice.
 \paragraph{Social platform:} A social platform is a technology that
 mediates social interaction as an affordance or service. In the papers
 we surveyed, it was used synonymously with online social networks (OSN)
-and social ecosystems [Kayes and Iamnitchi, 2013], examples varying
+and social ecosystems (\citet{kayes2013aegis}), examples varying
 from Facebook, Snapchat, SMS, to Amazon and Google Play store reviews,
 and email.
 
@@ -1392,10 +1395,10 @@ simultaneously, computer scientists are challenged with modeling not
 just the norms within a single social sphere, but contexts in general
 and how they interact. Contexts may be very fluid in social platforms.
 Papers we reviewed looked at scenarios where contexts may collapse;
-multiple contexts may produce conflicting norms [Tierney and
-Subramanian, 2014]; contexts and social norms may change over time
-[Netter et al., 2011; Sayaf et al., 2014]; and, as in the case of
-[Criado and Such, 2015], how contexts may emerge in interaction.
+multiple contexts may produce conflicting norms \citep{tierney2014realizing}; contexts and social norms may change over time
+\citep{netter2011assisted} \citep{sayaf2014mathrm};
+and, as in the case of
+\citet{criado2015implicit}, how contexts may emerge in interaction.
 Contextual integrity scholars have not yet provided much guidance on
 how to deal with the fluidity of social contexts and its impact on how
 to interpret informational norms, leaving computer scientists to come
@@ -1405,32 +1408,38 @@ Note that the definition of a social platform is agnostic about the
 particular implementation or location of the technology that undergirds
 a social service. The technology may be distributed, federated or
 centralized; include apps on a smartphone; web pages in a browser;
-servers hosted in a {\textquotedbl}cloud{\textquotedbl}, and
+servers hosted in a ``cloud'', and
 telecommunications infrastructure supporting information flow via
 Internet protocols. This technical complexity is addressed in what we
 call \textit{technical platforms}.
 
 
-
-\paragraph{Technical platform:} A technical platform is a technology that
+\paragraph{Technical platform:}
+A technical platform is a technology that
 mediates the interactions between other heterogenous technologies
 connecting multiple users. Examples include Android smartphones
-[Wijesekera et al., 2015], Platforms for Smart Things [Jia et al.,
-2017], the Web (and web browsers) and Smart Grids [Salehie et al.,
-2012].
+\cite{wijesekera2015android},
+Platforms for Smart Things \cite{jia2017contexiot},
+the Web (and web browsers)
+and Smart Grids \cite{salehie2012adaptive}.
 
 A difficulty in defining 'technical
 platform' is that the technology in question is often
 designed as a 'stack' with multiple
 layers, each layer being a 'platform'
-on which the next one operates. Hence there are many technologies, such
+on which the next one operates.
+Hence there are many technologies, such
 as Facebook, that are both in a sense
-{\textquotedbl}applications{\textquotedbl} that stand on technical
-platforms and are also technical platforms in their own right as they
-mediate other applications through a developer API. This is in part due
-to a design principle that has influence on the Internet [Clark et al.,
-2002] that recommends having as few controls as possible introduced on
-each layer to allow for a wider range of possibilities at the higher
+``applications'' that stand on technical
+platforms and are also technical platforms in their
+own right as they
+mediate other applications through a developer API.
+This is in part due
+to a design principle that has influence on the
+Internet \cite{clark2002tussle} that recommends having as few controls as possible
+introduced on
+each layer to allow for a wider range of possibilities at
+the higher
 layers.
 
 From the perspective of contextual integrity, the challenge with
@@ -1457,14 +1466,14 @@ raising issues at the logical level that are difficult to surface in
 more empirical work.
 
 Examples include papers on access control models that preserve
-contextual integrity in an enterprise, like Barth et al. [2006] and
-Barth et al. [2007); frameworks that describe and evaluate ontologies
+contextual integrity in an enterprise, like \citet{barth06sp} and
+\citet{barth07csf}; frameworks that describe and evaluate ontologies
 to audit privacy relevant processes in a linked data environment
-[Samavi and Consens, 2012]; or adaptive systems that monitor when new
+\cite{samavi2012l2tap+}; or adaptive systems that monitor when new
 threats arise, reconfiguring information flows to continue matching
-user privacy requirements [Omoronyia et al., 2013], or that identify
-when information norms themselves change [Shvartzshnaider et al.,
-2016]. 
+user privacy requirements \cite{omoronyia2012caprice},
+or that identify
+when information norms themselves change \cite{shvartzshnaider2016learning}. 
 
 \subsubsection{Decentralization}
 \label{CI4.1.3}
@@ -1523,7 +1532,7 @@ factors. \textit{Example: a classroom with a teacher and students is a
 social context. A language education mobile app that prompts the user
 with questions and sends results back to a server for analysis is a
 technical context.}
-\item \textbf{Stability}. We draw on Dourish [2004] for this
+\item \textbf{Stability}. We draw on \citet{dourish2004we} for this
 distinction. Some papers treat context as a \textbf{representational}
 problem, as if they were stable, delineable, and distinct from the
 activity that contained them. Others treat them more as an
@@ -1570,6 +1579,7 @@ have encountered the problem of applying abstract social norms to
 concrete socio-technical situations.
 
 \clearpage
+
 \begin{landscape}
   \begin{table}
     \label{tab:RQ2}
@@ -1584,140 +1594,140 @@ concrete socio-technical situations.
   \textbf{Valence} &
   \textbf{Epistemology} \\
  \hline\hline
-[Bar06] &
+\citet{barth06sp} &
 ABSTRACT &
 SOCIAL &
 REPRESENTATIONAL &
 NORMATIVE &
 MODEL \\
 \hline
-[Bar07] &
+\citet{barth07csf} &
 ABSTRACT &
 BOTH &
 REPRESENTATIONAL &
 NORMATIVE &
 MODEL \\
 \hline
-[Cria15] &
+\citet{criado2015implicit} &
 CONCRETE &
 SOCIAL &
 INTERACTIONAL &
 NORMATIVE &
 EMPIRICAL \tabularnewline
 \hline
-[Dat11] &
+\citet{datta2011understanding} &
 ABSTRACT &
 SOCIAL &
 REPRESENTATIONAL &
 NORMATIVE &
 MODEL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Jia17]} &
+\citet{jia2017contexiot} &
 CONCRETE &
 TECHNICAL &
 REPRESENTATIONAL &
 DESCRIPTIVE &
 EMPIRICAL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Kay13a]} &
+\citet{kayes2013aegis} &
 CONCRETE &
 SOCIAL &
 REPRESENTATIONAL &
 DESCRIPTIVE &
 EMPIRICAL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Kay13b]} &
+\citet{kayes2013out} &
 CONCRETE &
 SOCIAL &
 REPRESENTATIONAL &
 NORMATIVE &
 MODEL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Kru12]} &
+\citet{krupa2012handling} &
 ABSTRACT &
 SOCIAL &
 REPRESENTATIONAL &
 DESCRIPTIVE &
 MODEL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Net11]} &
+\citet{netter2011assisted} &
 CONCRETE &
 SOCIAL &
 REPRESENTATIONAL &
 NORMATIVE &
 EMPIRICAL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Omo12]} &
+\citet{omoronyia2012caprice} &
 ABSTRACT &
 BOTH &
 REPRESENTATIONAL &
 DESCRIPTIVE &
 MODEL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Omo13]} &
+\citet{omoronyia2013engineering} &
 ABSTRACT &
 BOTH &
 REPRESENTATIONAL &
 DESCRIPTIVE &
 MODEL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Sal12]} &
+\citet{salehie2012adaptive} &
 CONCRETE &
 BOTH &
 INTERACTIONAL &
 DESCRIPTIVE &
 EMPIRICAL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Sam12]} &
+\citet{samavi2012l2tap+} &
 ABSTRACT &
 BOTH &
 REPRESENTATIONAL &
 NORMATIVE &
 MODEL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Say14]} &
+\citet{sayaf2014mathrm} &
 CONCRETE &
 SOCIAL &
 INTERACTIONAL &
 DESCRIPTIVE &
 EMPIRICAL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Shi10]} &
+\citet{shih2010towards} &
 BOTH &
 BOTH &
 REPRESENTATIONAL &
 DESCRIPTIVE &
 EMPIRICAL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Shi15]} &
+\citet{shih2015privacy} &
 CONCRETE &
 TECHNICAL &
 INTERACTIONAL &
 DESCRIPTIVE &
 EMPIRICAL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Shv16]} &
+\citet{shvartzshnaider2016learning} &
 ABSTRACT &
 SOCIAL &
 REPRESENTATIONAl &
 NORMATIVE &
 BOTH \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Tie14]} &
+\citet{tierney2014realizing} &
 BOTH  &
 SOCIAL &
 REPRESENTATIONAL &
 NORMATIVE &
 MODEL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Wij15]} &
+\citet{wijesekera2015android} &
 CONCRETE &
 TECHNICAL &
 INTERACTIONAL &
 DESCRIPTIVE &
 EMPIRICAL \tabularnewline
 \hline
-\textcolor[rgb]{0.2,0.2,0.2}{[Zha13]} &
+\citet{zhang2013no} &
 CONCRETE &
 TECHNICAL &
 INTERACTIONAL &
@@ -1729,13 +1739,12 @@ EMPIRICAL \\
 \end{table}
 \end{landscape}
 
-The first paper of our study in publication order is [Barth et al.,
-2006], which we have detailed in Section 3.3.1 of this paper. Helen
+The first paper of our study in publication order is \citet{barth06sp}, which we have detailed in Section \ref{CI3.3.1} of this paper. Helen
 Nissenbaum is a coauthor and the paper includes a summary of contextual
 integrity theory. The technical contribution of the paper focuses on a
 ``fragment'' of contextual
 integrity. It is this technical contribution that we have assessed
-according to the criteria above. The [Barth et al., 2006] technical
+according to the criteria above. The \citet{barth06sp} technical
 presentation of context is as one that is \textbf{abstract, social,
 representational, normative, }and\textbf{ modeled}. Their work models
 the specific normative logic of contextual integrity.. It shows how
@@ -1745,15 +1754,16 @@ automated enforcement.
 This paper is one end of a spectrum. Other papers in our sample drew
 their understandings of context from other traditions, including
 ubiquitous computing (discussed in Section \ref{CI2.2.1} of this paper).
-Following Dourish [2004], some papers eschewed explicit abstract
+
+Following \citet{dourish2004we}, some papers eschewed explicit abstract
 representational modeling of context for what resembles interactional
 views of context derived from empirical data about user behavior or
 human-computer interaction. Several papers considered the narrow
 context of a user and their device, as opposed to social relations more
 generally. Most papers did not see norms as inherent to the contexts
 they studied, but rather saw contexts descriptively. (Some of these
-papers sourced their normativity from other factors, see Section 4.3).
-Our paper exemplars (3.3.1-3.3.3) provide deeper explanations of the
+papers sourced their normativity from other factors, see Section \ref{CI4.3}).
+Our paper exemplars (\ref{CI3.3.1}-\ref{CI3.3.3}) provide deeper explanations of the
 dimensions used to classify contexts here.
 
 What we have discovered in answer to RQ2 is the distribution of papers
@@ -1765,14 +1775,16 @@ descriptive have missed some of the core intent of CI.
 
 To the extent that it sees the formation and maintenance of a social
 context as an adaptive social process, we argue that contextual
-integrity is consistent with the \textbf{interactional }view of
-contexts from Dourish [2004], though in its concrete application it has
+integrity is consistent with the \textbf{interactional} view of
+contexts from \citet{dourish2004we},
+though in its concrete application it has
 a tendency to work from a \textbf{representation} of context. We
 believe this leads to deep sociological questions about how social
 norms and purposes, which can seem \textbf{abstract} and theoretical,
 can form from \textbf{concrete} human interactions. 
 
-We note with special interest Criado and Such [2015], detailed in 4.1.3,
+We note with special interest \citet{criado2015implicit},
+detailed in Section \ref{CI4.1.3},
 which stands out as a paper that addresses a particularly difficult
 challenge. It is the only paper in our sample that manages to be both
 concrete, interactional, and empirical as well as socially normative.
@@ -2805,7 +2817,7 @@ Omoronyia, I., Pasquale, L., Salehie, M., Cavallaro, L., Doherty, G. and
 Nuseibeh, B. (2012, September). Caprice: a tool for engineering
 adaptive privacy. In Proceedings of the 27th IEEE/ACM International
 Conference on Automated Software Engineering (pp. 354-357). ACM.
-\cite{omoronyia2013engineering}
+\cite{omoronyia2012caprice}
 
 \bigskip
 
