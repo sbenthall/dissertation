@@ -1240,21 +1240,21 @@ the background of the person.
 \begin{center}
   \begin{tikzcd}
     & & W \arrow[dl] \arrow[dr] & & \\
-  & V^1 \arrow[d] \arrow[dddl, bend right = 20] \arrow[dddl, bend right = 20] \arrow[dd, bend left = 40] & & V^2 \arrow[dddr, bend left = 20]&  \\
+  & D \arrow[d] \arrow[dddl, bend right = 20] \arrow[dddl, bend right = 20] \arrow[dd, bend left = 40] & & V \arrow[dddr, bend left = 20]&  \\
   &  \tilde{R}_f \arrow[d] \arrow[drr, dotted] \arrow[ddl, bend right = 20] \arrow[dd, bend left = 40]  &  & & \\
   & \tilde{B_c} \arrow[d] \arrow[dl] &  & \tilde{B_p} \arrow[dr] \arrow[d] &\\
   \breve{U_f} & \breve{U_c^1} & & \breve{U_c^2} & \breve{U_p}\\
 \end{tikzcd}
 \end{center}
 
-As before, $V^1 \rightarrow \tilde{R}_f$ represents the ability of
+$D \rightarrow \tilde{R}_f$ represents the ability of
 the firm to known the customer's demand before choosing their
 price.
 There is also a principal that decides at $\tilde{B}_p$
 whether or not to buy a contract with the customer, who
 in this case is also an agent for hire.
 In this model, the principal cannot know the value
-of the contract $V^2$ directly.
+of the contract $V$ directly.
 Rather, there is a new edge $\tilde{R}_f \rightarrow \tilde{B}_p$
 that represents
 the option of the product-selling firm $f$ to share its
@@ -1262,12 +1262,12 @@ pricing information with the contract principal $p$.
 
 Why would two companies ever interact in this way?
 If the principal does \emph{not} know the value of
-a potential contract $V^1$ directly, then the pricing
+a potential contract $V$ directly, then the pricing
 information $\hat{R}_f$ potentially contains information
-about $V^1$ in a way that the principal $p$ can use
+about $V$ in a way that the principal $p$ can use
 Here, ``contains information about'' can be read to
 mean ``has mutual information with'', i.e.
-$I(\hat{R}_f, V^1) \geq 0$.
+$I(\hat{R}_f, V) \geq 0$.
 This information may be valuable for the principal
 by allowing them to avoid bad contracts.
 
@@ -1288,24 +1288,27 @@ In this situation, the firm's incentives are the same
 as in the simple price differention
 case in Section \ref{sec:price-differentiation}.
 By assumption, the firm knows the customer's demand
-$V^1$, and therefore prices at $\hat{R} = V^1 - \epsilon$.
+$D$, and therefore prices at $\hat{R} = D - \epsilon$.
 
+\begin{table}
 \begin{center}
 \begin{tabular}{ |c|c|c| } 
  \hline
   $\E(\cdot)$ & Open & Closed  \\
  \hline
- $U_f$ & $V^1_E - \epsilon$ & $V^1_E - \epsilon$ \\
+ $U_f$ & $D_E - \epsilon$ & $D_E - \epsilon$ \\
  $U^1_c$ & $\epsilon$ & $\epsilon$ \\
- $U_p$ & $\E(V^2 \vert V^2 \geq 0) P(V^2 \geq 0 \vert \hat{R})$ & $[\E(V^2) \geq 0] V^2_E$  \\
- $U_c^2$ & $P(V^2 \geq 0)$ & $[\E(V^2) \geq 0]$  \\
- $U_c^2 \vert V^2 \geq 0$ & $1$ & $[\E(V^2) \geq 0]$  \\
- $U_c^2 \vert V^2 < 0$ & $0$ & $[\E(V^2) \geq 0]$  \\
+ $U_p$ & $\E(V \vert V \geq 0) P(V \geq 0 \vert \hat{R})$ & $[\E(V) \geq 0] V_E$  \\
+ $U_c^2$ & $P(V \geq 0)$ & $[\E(V) \geq 0]$  \\
+ $U_c^2 \vert V \geq 0$ & $1$ & $[\E(V) \geq 0]$  \\
+ $U_c^2 \vert V < 0$ & $0$ & $[\E(V) \geq 0]$  \\
  \hline
 \end{tabular}
 \end{center}
+\caption{Outcomes of opened and closed condition for cross-context flow game.}
+\end{table}
 
-where $V^1_E = \E(V^1)$ and $V^2_E = \E(V^2)$.
+where $D_E = \E(D)$ and $V_E = \E(V)$.
 
 \begin{exm}
   Let $W$ vary over $\{0,1\}$ with even probability,
@@ -1317,17 +1320,17 @@ where $V^1_E = \E(V^1)$ and $V^2_E = \E(V^2)$.
   both have higher reservation prices and offer higher value
   contracts to creditors, employers, and insurance providers.
 
-  $$V^1(w) = \begin{cases}
+  $$D(w) = \begin{cases}
     10 & \text{if } w  = 1 \\
     1, & \text{otherwise}\\
   \end{cases}$$
   
-  $$V^2 = \begin{cases}
+  $$V = \begin{cases}
     1 & \text{if } w  = 1 \\
     -1, & \text{otherwise}\\
   \end{cases}$$
 
-  The firm has access to the reservation price $V^1$
+  The firm has access to the reservation price $D$
   at $\tilde{R}_f$ and so will maximize their utility
   by pricing at slightly below the customer's willingness
   to pay.
@@ -1337,17 +1340,17 @@ where $V^1_E = \E(V^1)$ and $V^2_E = \E(V^2)$.
   The optional edge being considered in this case runs
   from $\tilde{R}$ to $\tilde{B}$.
   In the closed case, the principal has no information
-  about $V^2$ on which to decide except the base rate
+  about $V$ on which to decide except the base rate
   provided by the game structure.
   The expected value to the principal of providing the contract
   is $0$.
 
   In the open case, $\tilde{B}$ is conditional on $\tilde{R}$.
-  Crucially, $V^2$ is conditionally dependent on $\hat{R}$.
+  Crucially, $V$ is conditionally dependent on $\hat{R}$.
   In particular:
 
-  $$P(V^2 = 1 \vert \hat{R} > 1) = 1$$
-  $$P(V^2 = 0 \vert \hat{R} \leq 1) = 1$$
+  $$P(V = 1 \vert \hat{R} > 1) = 1$$
+  $$P(V = 0 \vert \hat{R} \leq 1) = 1$$
 
   The optimal strategy for the principal is to hire
   the agent when the firm reveals to them that they offered
