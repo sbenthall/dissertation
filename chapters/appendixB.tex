@@ -259,18 +259,20 @@ is at strategic equilibrium for all players.
   \label{dfn:strategic-value}
   Given two MAID diagrams $\mc{M}_{o}$ and $\mc{M}_{c}$
   that differ only by a single edge, $e$,
-  and a strategic profile for each diagram, $\sigma_{o}$
-  and $\sigma_{c}$, the \emph{strategic value of $e$ to $a$}
+  and a strategic profile solution for each diagram, $\hat{\sigma}_{o}$
+  and $\hat{\sigma}_{c}$, the \emph{strategic value of $e$ to $a$}
   is the difference in expected utility to $a$ under the
   two respective induced joint distributions:
 
-  $$E(P_{\mc{M}_{o}[\sigma_{o}]}(U_a)) - E(P_{\mc{M}_{c}[\sigma_{c}]}(U_a))$$
+  $$E(P_{\mc{M}_{o}[\hat{\sigma}_{o}]}(U_a)) - E(P_{\mc{M}_{c}[\hat{\sigma}_{c}]}(U_a))$$
 \end{dfn}
 
-*** This is a sketch definition.
-It is has some notational problems, and it does
-not match the descriptive text above it because there
-is not yet a definition of an equilibrium strategy ***
+Definition \ref{dfn:strategic-value} is an incomplete
+definition because it leaves open what \textit{solution concept}
+is used to determine the strategic profile solutions.
+For the purpose of the results in this paper, we use
+Nash Equilibrium as the solution concept for determining
+strategic value of information.
 
 In contrast with the strategic value of information,
 the tactical value of information is the value of
@@ -281,17 +283,16 @@ adjustment to their strategy at the decision variable
 at the head of the new information flow.
 
 \begin{dfn}[Best tactical response to information]
+  \label{dfn:best-tactical-response}
   Given two MAID diagrams $\mc{M}_{o}$ and $\mc{M}_{c}$
   differing only in optional edge $e$ with head in decision
-  variable $D$,
+  variable $D_a$,
   the \emph{best tactical response to $e$} given
-  strategy profile $\sigma$, $\hat{\delta}_{\sigma,e}$
+  strategy profile solution $\hat{\sigma}$, $\hat{\delta}_{\sigma,e}$
   is the decision rule $\delta$ for $D$ such
-  that $\delta$ is optimal for $\sigma$
+  that $\delta$ is optimal for $\hat{\sigma}$
+  for player $a$.
 \end{dfn}
-
-*** Problem: this definition assumes a unique best $\delta$
-which may not exist.***
 
 \begin{dfn}[Tactical value of information]
   \label{def:tactical-value}
@@ -299,13 +300,22 @@ which may not exist.***
   differing only in optional edge $e$ with head in decision
   variable $D$,
   the \emph{tactical value of $e$} to agent $a$ given
-  strategy profile $\sigma$
+  strategy profile solution $\hat{\sigma}$
   is the difference in expected utility of
   the open condition with the best tactical response to $e$
-  and the close condition using the original strategy:
+  and the closed condition using the original strategy:
 
-  $$EU_a((\sigma_{-D},\hat{\delta}_{\sigma,e}) - EU_a(\sigma)$$
+  $$EU_a((\hat{\sigma}_{-D},\hat{\delta}_{\hat{\sigma},e}) - EU_a(\hat{\sigma})$$
 \end{dfn}
+
+
+Note that the uniqueness of a best tactical response
+has not yet been proven.
+However, if the best tactical response is not unique,
+then the tactical value of the information will be the
+same for any best tactical response.
+This definition, like Definition \ref{dfn:strategic-value},
+depends on an implicit solution concept.
 
  
 \end{document}
