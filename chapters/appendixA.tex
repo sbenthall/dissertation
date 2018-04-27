@@ -214,6 +214,7 @@ the effect is in the conditioning set.
 Let's look at the following structure,
 which we will call a \emph{wishbone} structure.
 
+\begin{figure}
 \begin{center}
   \begin{tikzcd}
     X_0 \arrow[dr] &   & \arrow[dl] X_1 \\
@@ -221,6 +222,8 @@ which we will call a \emph{wishbone} structure.
     & Z & 
   \end{tikzcd}
 \end{center}
+\caption{A wishbone graph structure.}
+\end{figure}
 
 Here, $Y$ is a common effect of $X_0$ and $X_1$,
 and $Z$ is a descendant of $Y$.
@@ -273,11 +276,14 @@ We can now look at mutual information of nodes connected
 by longer paths.
 We start with an arbitrariliy long Markov chain.
 
+\begin{figure}
 \begin{center}
   \begin{tikzcd}    
     X_0  \arrow[r] & X_1 \arrow[r] & ... \arrow[r] & X_{n-1} \arrow[r] & X_n
   \end{tikzcd}
 \end{center}
+\caption{An arbitrarily long Markov chain.}
+\end{figure}
 
 \begin{thm}[Chain Data Processing Inequality]
   \label{cdpi-thm}
