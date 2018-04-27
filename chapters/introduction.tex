@@ -5,21 +5,224 @@
  For the rational study of the law the blackletter man may be the man of the present, but the man of the future is the man of statistics and the master of economics. It is revolting to have no better reason for a rule of law than that so it was laid down in the time of Henry IV. It is still more revolting if the grounds upon which it was laid down have vanished long since, and the rule simply persists from blind imitation of the past. (\citet{holmes1897path})
  \end{quote}
  
+ In defiance of all sound advice to the contrary, this dissertation addresses the fundamental scientific, economic, and political challenge of our time: the design and regulation of information infrastructure such as the commercially provided web services made available through the Internet.
+ Its core contention is that no scholarly domain has comprehended the fundamental data economics driving the development and impact of this infrastructure well enough to competently predict and regulate its systemic impact.
+ This scholarship labors to combine the necessary expertise in the correct mixture for progress.
+
+\section{The problem}
  
-*** Introduction here *** 
-  
+ \citet{lessig2009code} has argued that cyberspace is regulated
+ in four modalities: technical infrastructure, social norms,
+ the law, and the market.
+ Each modality has its corresponding fields of academic inquiry.
+ The technical infrastructure is guided by principles from
+ electrical engineering, computer science, and statistics.
+ Social norms are studied in philosophy and sociology.
+ The law is always both a practice and a field of study,
+ always engaged in a study of statues and judgements.
+ The market is studied by economists, sometimes empirically
+ and sometimes theoretically through mathematical modeling.
 
+ It would be convenient for scholars if these domains were
+ as distinct from each other in practice as they are in
+ theory.
+ Of course, they are not, and so each branch of scholarship
+ is partial and inadequate to the task of managing the Internet.
+ Thoughtful leadership of technical infrastructure now comes
+ primarily from the corporate leadership of private entities
+ that are not tied to the academic traditions that tie down
+ the institutions of public expertise.
+ Since what is beyond public understanding is beyond democratic
+ legal rule, the status quo is that these corporations are
+ effectively ungoverned.
+ This has created a public crisis and an opportunity for
+ scientific advance.
  
+ \section{The form of solution}
+
+ The challenge is to construct a solution to this problem.
+ What would such a scientific theory of information
+ infrastructure need to be, to suffice?
+
+ \subsection{Social norms and technical architecture}
+
+ A priori, we know that at the very least it must be
+ consistent with the mathematical foundations of
+ electrical engineering, computer science, and statistics.
+ These are robust and objective truths that are proven
+ by our electronically saturated circumstances.
+ Formal, mathematical specification is a prerequisite
+ to technical design, and we won't shy away from this
+ commitment.
+
+ We also know that our theory must be sensitive to social
+ norms.
+ Herein lies the first major obstacle: the
+ sociologists, anthropologists, and philosophers who best
+ understand social norms are often alienated by
+ mathematical formalism.
+ Most (though not all) would reject the possibility that
+ norms may be understood well enough by technologists
+ that the latter could be adequately responsive to them.
+
+ But not all.
+ Contextual integrity is a social theory of privacy norms
+ that has been actively offered to computer scientists
+ as a guide to technical design.
+ This work at the intersection of social theory and
+ privacy engineering is the subject of 
+ Chapter \ref{chapter:CI-through-CS} of this
+ dissertation, ``Contextual Integrity through the Lens of Computer Science'', co-authored by myself, Seda G{\"u}rses and Helen Nissenbaum \cite{benthall2017contextual}.
+ It is a survey of computer science papers that have claimed
+ to be inspired by contextual integrity.
+ We compare the original social theory with its technical projection, and identify both opportunities for contextual integrity to be made more technically actionable and calls to action for computer scientists to better accomodate social processes and meaning.
+
+ Contextual integrity, which is described in detail in
+ Section \ref{CI2.1}, defines privacy as contextually
+ appropriate information flow.
+ It envisions a social world differentiated into multiple
+ social contexts or spheres, each with well-defined
+ roles, purposes, and meanings of information.
+ In Chapter \ref{chapter:CI-through-CS}, we discover that
+ computer scientists see the world differently.
+ They design infrastructure for a messy reality in which
+ information crosses contextual boundaries.
+
+ In short, technical and social platforms are not well
+ regulated by social norms because they exist outside
+ of our shared understanding of social contexts.
+ Chapter \ref{chapter:bridge} briefly assesses these conclusions
+ and identifies the  heart of the problem:
+ the ambiguity inherent in our socially shared
+ understanding of \textit{information flow}.
+ That understanding is based on a flawed ontology
+ in which data's meaning is contained within it.
+ This is not the case \cite{horvitz2015data};
+ the meaning of information depends on the context,
+ or contexts, in which it flows.
+ Effective design and regulation of information
+ infrastructure requires a precise and scientific
+ definition of information flow that addresses this
+ fact precisely.
  
- \section{Collaborators}
+ \subsection{Technical architecture and information law}
 
- Two of the major chapters of this book are republications of
- joint work done with collaborators.
+ A technical definition of information flow is provided in
+ Chapter \ref{chapter:origin-privacy}, ``Origin Privacy: Causality and Data Protection'', originally written as a technical report
+ with Michael Tschantz and Anupam Datta. 
+ It is targetted at another dyad in the regulation of information
+ infrastructure: the interaction between technical architecture
+ and information law.
 
- Chapter \ref{chapter:CI-through-CS}, ``Contextual Integrity through the Lens of Computer Science'',
- was co-authored by Dr. Seda G{\"u}rses and Dr. Helen Nissenbaum \cite{benthall2017contextual}.
+ This chapter builds on previous work in the automation of
+ regulatory compliance.
+ Businesses and other organizations are motivated to comply
+ with privacy policies even as their information
+ processing systems get more complex \cite{barth2007privacy}
+ \cite{deyoung2010experiences} \cite{sen2014bootstrapping}.
+ Mathematical formulation and implementation of law is
+ an active field of scholarship in computer science.
 
- Chapter \ref{chapter:origin-privacy}, ``Origin Privacy: Causality and Data Protection'' resulted from
- long collaborations with Michael Tschantz and Anupam Datta. 
+ The concept of information implicit in privacy policies
+ has ambiguities that are similar to those identified
+ in Chapter \ref{chapter:bridge}: information is sometimes
+ restricted based on its topic, and other times restricted
+ based on its origin.
+ What theory of information can reconcile that information
+ flows from source to destination with meanings that depend
+ on its larger context?
 
+ Building on \citet{dretske1981knowledge}
+ and \citet{pearl2009causality}, we posit a definition
+ of information flow as a causal flow within a greater
+ context of causal structure.
+ The context provides the particular causal flow with
+ \textit{nomic associations}, or law-like, regular
+ correspondences with other events in the causal system.
+ The nomic associations are what make information useful
+ for inference and give it meanings.
+
+ Chapter \ref{chapter:origin-privacy} develops this
+ theoretical understanding of information flow as a
+ tool for understanding the security of information processing
+ systems.
+ It develops the Embedded Causal System (ECS) model,
+ a generic way of modeling an information processing system
+ embedded in an environment.
+ We use this model to define variations of well-known
+ security properties such as noninterference and semantic
+ security in terms of Pearlian causation,
+ and prove sufficient conditions for systems to have these
+ properties.
+ We consider a new class of security properties based on
+ Origin Privacy, the principle that a system designer
+ must control information flow based on that information's
+ origin.
+ We further extend this model to the GDPR's regulation of
+ biometric data and differential privacy.
+
+ We also introduce a game theoretic variation on the model
+ which relates the causal security properties to the tactical
+ and strategic presence of an attacker.
+ This style of strategic modeling is developed further in
+ the following chapter.
+
+ \subsection{Information law and data economics}
+
+ It is just a fact that most information infrastructure
+ is developed by industry, the military, or both.
+ No sufficient theory of infrastructure design can
+ deny that there is a strategic aspect to its
+ creation and use.
+ But though there is a tradition of economics literature
+ on the business of information goods
+\cite{shapiro1998information}
+\cite{varian2001economics} \cite{acquisti2016economics},
+this scholarship has not captured the economics of data flow
+and reuse
+in a way that is commensurable with technical design and
+available to legal scholars for regulatory design.
+Chapter \ref{chapter:games-and-rules} fills this gap.
+
+ Chapter \ref{chapter:games-and-rules} works with the
+ definition of information flow introduced in
+ Chapter \ref{chapter:origin-privacy} and builds
+ it into a framework for economic mechanism design
+ (detailed in Appendix \ref{appendix:maid})
+ using the Multi-Agent Influence Diagrams
+ of \citet{koller2003multi}.
+ This framework is the basis for a formal method for
+ determining the value of information flow within a
+ data game.
+
+ This framework can capture well-understood economic
+ contexts such as principal-agent contracts and
+ price differentiation.
+ It can also support the modeling and analysis of
+ new economic situations, such as the provision
+ of personalized expert services and the
+ value of the cross-context use of personal data.
+ The model of cross-context use of personal data
+ reveals that when firms trade in the personal data
+ of their user, they can benefit at their user's expense.
+ Because the user is not a party to this transaction,
+ it must be considered a market externality,
+ which invites the discussion of what form of
+ regulation is appropriate to fix the market deficiency.
+
+ What this chapter demonstrates is that information
+ is not, contrary to many traditional economic models,
+ a kind of good that is consumed.
+ Rather, information is a strategic resource, something
+ that changes the very nature of the game played by
+ economic actors.
+ A thorough study of data economics through the
+ modeling, simulation, and empirical analysis of
+ data games may be the scholarly lens needed to
+ understand how technical architecture, social norms,
+ law, and the market interact and resolve in equilibrium.
+
+ Chaper \ref{chapter:conclusion} concludes this dissertation
+ with a discussion of future work.
+ 
 \end{document}
