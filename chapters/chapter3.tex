@@ -433,7 +433,7 @@ are self-interested.
 In this section, I will develop a framework for mechanism
 design of economic situations involving information flows.
 This framework will extend the Multi-Agent Influence Diagram
-(MAID) framework \cite[koller2003multi], which is a
+(MAID) framework \cite{koller2003multi}, which is a
 game-theoretic extension of Bayesian Networks.
 This framework, which was briefly introduced in Chapter 2,
 models information flow in a social context as information
@@ -452,8 +452,8 @@ We have motivated the need for a general framework
 for mechanism design for economics contexts involving
 (personal) information flow.
 In this section, I will specify that framework.
-Summarizing prior work (see \emph{Dissertation Chapter 2},
-\cite{benthall2017origin}), I synthesis a formal representation
+Summarizing prior work (see Section \ref{chapters/chapter2}),
+I synthesis a formal representation
 of information flow from Nissenbaum,
 Dretske \cite{dretske1981knowledge},
 Shannon,
@@ -584,7 +584,7 @@ represented in our diagrams as a dotted edge.
 \begin{tikzcd}
   A \arrow[r, dotted] & B \\
 \end{tikzcd}
-\caption{A dotted arrow.}
+\caption{A dotted arrow representing an optional information flow.}
 \end{center}
 \end{figure}
 
@@ -616,6 +616,8 @@ consider a strategic equilibrium of all players in each case.
 In the cases discussed in this chapter, I will consider
 the strategic value of information flow except when specifically
 stated otherwise.
+As a shorthand, I will refer to the mechanism design models
+using this formalism as \textbf{data games}.
 
 \section{Single Context Economic models}
 \label{sec:single-context}
@@ -652,6 +654,7 @@ Analogous results hold for credit and insurance.
 
 We can model this interaction with the following graph:
 
+\begin{figure}
 \begin{center}
 \begin{tikzcd}
   & V \arrow[d, dotted] \arrow[ddr, bend left = 20] & \\
@@ -659,6 +662,8 @@ We can model this interaction with the following graph:
   \breve{U_a} & & \breve{U_p}\\
 \end{tikzcd}
 \end{center}
+\caption{Graphical model of principal-agent contract data game.}
+\end{figure}
 
 In this model, $V$ represents the value to a principal
 of a service or contract with an agent.
@@ -716,6 +721,7 @@ the contract will be better informed.
   \end{split}
 \end{equation}
 
+\begin{table}
 \begin{center}
 \begin{tabular}{ |c|c|c| } 
  \hline
@@ -728,7 +734,8 @@ the contract will be better informed.
  \hline
 \end{tabular}
 \end{center}
-where $V_E = \E(V)$
+\caption{Outcomes for principal-agent contract data game with $V_E = \E(V)$.}
+\end{table} 
 
 \begin{exm}
   Let $V$ range over $\{-1,1\}$ with even odds.
@@ -815,6 +822,7 @@ price to the firm as producer surplus.
 
 We can model this context graphically like so:
 
+\begin{figure}
 \begin{center}
 \begin{tikzcd}
   & V \arrow[d, dotted] \arrow[dd, bend left = 40] \arrow[dddl, bend right = 20] & \\
@@ -823,6 +831,8 @@ We can model this context graphically like so:
   \breve{U_c} & & \breve{U_f}\\
 \end{tikzcd}
 \end{center}
+\caption{Graphical model of price differentiaion data game.}
+\end{figure}
 
 In this model, $V$ represents a consumer's demand for a product.
 $\tilde{R}_F$ is the price offered by the firm for the product
@@ -863,6 +873,7 @@ This value approaches $v$ from below, and for simplicity of
 presentation we will use $\epsilon$ to represent a vanishingly
 small value.
 
+\begin{table}
 \begin{center}
 \begin{tabular}{ |c|c|c| } 
  \hline
@@ -875,8 +886,8 @@ small value.
  \hline
 \end{tabular}
 \end{center}
-
-where $V_E = \E(V)$
+\caption{Outcomes of open and closed cases in the price differentiation data game with $V_E = \E(V)$.}
+\end{table}
 
 \begin{exm}
   Let $V$ be a uniform distribution ranging $[0,1]$.
@@ -961,6 +972,7 @@ the difference in knowledge between the client and
 the expert and the consequences that has for the service
 market.
 
+\begin{figure}
 \begin{center}
   \begin{tikzcd}
     & W \arrow[ddl, bend right = 40] \arrow[ddr, bend left = 40]& \\
@@ -970,6 +982,8 @@ market.
      \breve{U_e} & \breve{U_c} &\\
   \end{tikzcd}
 \end{center}
+\caption{Graphical model of the expert service data game.}
+\end{figure}
 
 In this model, $W$ are facts about the world that
 determines the relationship between personal qualities
@@ -1070,6 +1084,7 @@ in $W$ (and $C$) may be more efficient.
 
 An example of the instantiated model will illustrate these points.
 
+\begin{table}
 \begin{center}
 \begin{tabular}{ |c|c|c| } 
  \hline
@@ -1079,7 +1094,9 @@ An example of the instantiated model will illustrate these points.
  $U_c$ & $\E(V(\hat{A}_{open}))$ & $\E(V(\hat{A}_{closed}))$  \\
  \hline
 \end{tabular}
+\caption{Outcomes for open and closed cases of the expert service data game.}
 \end{center}
+\end{table}
 
 \begin{exm}
   Let $n$ and $m$ both equal 2.
@@ -1236,6 +1253,7 @@ willingness to pay for the product $V^2$ both depend on
 a prior variable $W$ that encapsulates many factors about
 the background of the person.
 
+\begin{figure}
 \begin{center}
   \begin{tikzcd}
     & & W \arrow[dl] \arrow[dr] & & \\
@@ -1245,6 +1263,8 @@ the background of the person.
   \breve{U_f} & \breve{U_c^1} & & \breve{U_c^2} & \breve{U_p}\\
 \end{tikzcd}
 \end{center}
+\caption{Graphical model of cross-context flow data game.}
+\end{figure}
 
 $D \rightarrow \tilde{R}_f$ represents the ability of
 the firm to known the customer's demand before choosing their
@@ -1304,10 +1324,8 @@ $D$, and therefore prices at $\hat{R} = D - \epsilon$.
  \hline
 \end{tabular}
 \end{center}
-\caption{Outcomes of opened and closed condition for cross-context flow game.}
+\caption{Outcomes of opened and closed condition for cross-context flow data game with $D_E = \E(D)$ and $V_E = \E(V)$.}
 \end{table}
-
-where $D_E = \E(D)$ and $V_E = \E(V)$.
 
 \begin{exm}
   Let $W$ vary over $\{0,1\}$ with even probability,
