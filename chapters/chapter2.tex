@@ -705,6 +705,8 @@ $Pr(X \vert Pa(X))$.
   Bad traffic can be caused by construction $C$
   or an accident on the road $D$.
 \end{exm}
+
+\begin{figure}
 \begin{center}
 \begin{tikzcd}
   A \arrow[rrd] & & \\
@@ -712,6 +714,8 @@ $Pr(X \vert Pa(X))$.
   D \arrow[ur] & & 
 \end{tikzcd}
 \end{center}
+\caption{Alice's commute to work.}
+\end{figure}
 
 Given the discussion of information flows above,
 we can see why this
@@ -939,7 +943,8 @@ distributions that generalize over particular instances of a
 system's functioning. These nomic relations
 are factored out as an explicit structure of causal relationships.
 
-This reveals an ambiguity in the very concept of \emph{information flow},
+This reveals an ambiguity in the very concept of
+\emph{information flow},
 illustrated in the following example.
 
 \begin{exm}
@@ -961,7 +966,10 @@ A formal representation of this example makes the
 root of the ambiguity clear.
 Consider a three node Bayesian network where $R$ is the test
 results, $B$ is the message sent to Bob, and $E$ is
-the message sent to Eve:
+the message sent to Eve (Fig \ref{fig:school}).
+
+\begin{figure}
+  \label{fig:school}
 \begin{center}
 \begin{tikzcd}[row sep=tiny]
    & B \\
@@ -969,6 +977,9 @@ the message sent to Eve:
    & E
 \end{tikzcd}
 \end{center}
+\caption{Test score ranks ($R$) distributed to Bob ($B$) and Eve ($E$).}
+\end{figure}
+
 There is \textbf{causal flow} along the edges from
 $R$ to $B$ and from $R$ to $E$.
 But an observer of a single variable aware of the
@@ -1107,11 +1118,15 @@ Embedded Causal System (ECS) Model.
   probability distribution that may be modeled as a
   Bayesian network $(G_\W,Pr_\W)$.
 \end{dfn}
+
+\begin{figure}
 \begin{center}
 \begin{tikzcd}
-   \W \\
+   \W
 \end{tikzcd}
 \end{center}
+\caption{The entire world.}
+\end{figure}
 
 %
 %\begin{dfn}[Contiguous]
@@ -1134,12 +1149,16 @@ Embedded Causal System (ECS) Model.
   nodes in the world that are not in the system,
   $\mathcal{E} = \W - \Y$ 
 \end{dfn}
+
+\begin{figure}
 \begin{center}
 \begin{tikzcd}
   \Y \arrow[d, bend left=50]\\
   \mathcal{E} \arrow[u, bend left=50]
 \end{tikzcd}
 \end{center}
+\caption{A system in mutual causal relationship with its environment.}
+\end{figure}
 
 (In this and a few other diagrams, we will include cycles because
 these are diagrams of blockmodels over other networks.
@@ -1177,6 +1196,8 @@ to the environment.
   An \emph{output} is the tail node of an actuator, $A$.
   Denote the set of all outputs with $\A$.
 \end{dfn}
+
+\begin{figure}
 \begin{center}
 \begin{tikzcd}[column sep=tiny]
   \mathcal{S} \arrow[r] &
@@ -1185,6 +1206,8 @@ to the environment.
   & \mathcal{E} \arrow[ul, bend left=50] &
 \end{tikzcd}
 \end{center}
+\caption{Sensors and actuators mediating the internals of a system andits environment.}
+\end{figure}
 
 See the definition of \emph{orderly} (Definition \ref{def:orderly-system})
 for a set of further constraints on inputs and outputs
@@ -1202,6 +1225,8 @@ that should not be leaked.
   Similarly, outputs $\A$ are each partitioned
   high-side $\A_H$ and low-side $\A_L$ variables.
 \end{dfn}
+
+\begin{figure}
 \begin{center}
 \begin{tikzcd}[column sep=tiny]
   \mathcal{S_H} \arrow[r]
@@ -1219,6 +1244,9 @@ that should not be leaked.
   &
 \end{tikzcd}
 \end{center}
+\caption{High and low side sensors and actuators mediating
+the internals of a system and its environment.}
+\end{figure}
 
 Note that in the above diagram and throughout this paper,
 we will sometimes refer to a set of random variables
@@ -1400,15 +1428,22 @@ and so the system is safe.
 We assume for our purposes that a system designer can
 guarantee its safety through sound engineering alone.
 
-For example, in the system defined by the graph
+For example, consider the system defined by the graph in
+Figure \ref{fig:safe-system}.
+
+\begin{figure}
+  \label{fig:safe-system}
 \begin{center}
 \begin{tikzcd}
   \mathcal{S}_H \arrow[r] & \mathcal{A}_H \\
   \mathcal{S}_L \arrow[r] \arrow[ur]& \mathcal{A}_L
 \end{tikzcd}
 \end{center}
+\caption{A system that is safe so long as its high-side actuators,
+$\mathcal{A}_H$, are not observed.}
+\end{figure}
 
-when $\mathcal{A}_H$ is not in the conditioning set,
+When $\mathcal{A}_H$ is not in the conditioning set,
 the path between $\mathcal{S}_H$ and $\mathcal{A}_L$
 is blocked, so the high-side input and low-side
 outputs are independent.
@@ -1578,23 +1613,6 @@ iff $s_l = s_l'$.
 \end{proof}
 
 Under what conditions is a system secure by noninterference?
-
-\iffalse
-\cite{sabelfeld03journal}'s informal definition of
-noninterference is expressed in terms of causation:
-``a variation of confidential (high)
-input does not cause a variation of public (low) output.''
-In Pearl's account of causation, an intervention or
-manipulation of a variable in a causal model sets its
-value and, for the purposes of inferring other variables,
-severs the edges pointing to that variable from others
-in the graph.
-Consequently, even if we model a system within its environment,
-if there is not path from its high-side inputs to its low-side
-outputs then an \emph{intervention} (in Pearl's sense)
-on its high-side inputs will not cause a variation in the
-low-side outputs.
-\fi
 
 We can prove that if the system designer can guarantee
 that the system is present and safe, then it is secure
@@ -1778,14 +1796,18 @@ system outputs to reveal system inputs.
 Noninterference does not imply semantic security.
 Put another way, the same system can be secure by
 noninterference but semantically insecure.
-Consider the system:
+Consider the system in Figure \ref{fig:not-propitious}.
 
+\begin{figure}
+  \label{fig:not-propitious}
 \begin{center}
 \begin{tikzcd}
   E \arrow[r] \arrow[dr] & S_H \arrow[r] & A_H\\
-  & S_L \arrow[r] \arrow[ur] & A_L \\
+  & S_L \arrow[r] \arrow[ur] & A_L
 \end{tikzcd}
 \end{center}
+\caption{A system that is not propitious.}
+\end{figure}
 
 This system is safe when $A_H$ is not in the conditioning
 set.
