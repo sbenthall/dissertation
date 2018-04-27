@@ -545,42 +545,6 @@ The governed system may or may not have access to
 assured metadata (such as cryptographic certificates)
 about the provenance of its data.
 
-\iffalse
-## Commenting out for PoPETS
-See Figure \ref{fig:provenance}.
-
-\begin{figure*}
-\noindent
-Data's Provenance:
-\begin{center}
-\footnotesize
-\begin{tikzcd}[cramped, sep=small, math mode=false]
-   \begin{tabular}{ll}data creator\\ (ultimate source)\end{tabular} \arrow[r]
- & \begin{tabular}{ll}intermediate\\ system $A$\end{tabular} \arrow[r]
- & \begin{tabular}{ll}intermediate\\ system $B$\end{tabular} \arrow[r]
- & \begin{tabular}{ll}transmitting system\\ (immediate source)\end{tabular} \arrow[r]
- & \begin{tabular}{ll}governed\\ system \end{tabular}\arrow[r, dotted]
- & \begin{tabular}{ll}potential\\ receipt\end{tabular}\\
-\end{tikzcd}
-\end{center}
-\noindent
-Data's Known Provenance:
-\begin{center}
-\footnotesize
-\begin{tikzcd}[cramped, sep=small, math mode=false]
-   \phantom{\begin{tabular}{ll}data creator\\ (ultimate source)\end{tabular}} \arrow[r]
- & \begin{tabular}{ll}intermediate\\ system $A$\end{tabular} \arrow[r]
- & \phantom{\begin{tabular}{ll}intermediate\\ system $B$\end{tabular}} \arrow[r]
- & \begin{tabular}{ll}transmitting system\\ (immediate source)\end{tabular} \arrow[r]
- & \begin{tabular}{ll}governed\\ system \end{tabular}\arrow[r, dotted]
- & \begin{tabular}{ll}potential\\ receipt\end{tabular}\\
-\end{tikzcd}
-\end{center}
-\caption{Data's Origin.  The data is created by some system and makes it way to the governed system, subject to the privacy policy, by way of intermediate entities and finally the transmitting system.  The governed system must consult the privacy policy to determine whether it may further transmit the data to some potential receipt.  In some cases, the governed system might not have a complete view of the data's provenance, knowing only a subset of the other entities involved in the data's transmission to it.}
-\label{fig:provenance}
-\end{figure*}
-\fi
-
 We consider the origin of data to be the processes
 that have caused it, either directly or indirectly.
 For the purposes of enforcement of a policy, these processes
