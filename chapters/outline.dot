@@ -1,0 +1,33 @@
+digraph G {
+
+rankdir=LR
+
+"Technology" [shape=box]
+"Social Norms" [shape=box]
+"Law" [shape=box]
+"Market" [shape=box]
+
+"Information Flow" [shape=doubleoctagon]
+"Data Games" [shape=doubleoctagon]
+
+"Cha. 2" -> "Technology"
+"Cha. 2" -> "Social Norms"
+"Cha. 2" -> "Appendix A"
+
+"Cha. 3" -> "Social Norms"
+"Cha. 3" -> "Information Flow"
+
+"Cha. 4" -> "Law"
+"Cha. 4" -> "Technology"
+"Cha. 4" -> "Information Flow"
+"Cha. 4" -> "Data Games"
+
+"Cha. 5" -> "Law"
+"Cha. 5" -> "Market"
+"Cha. 5" -> "Information Flow"
+"Cha. 5" -> "Data Games"
+
+"Appendix B" -> "Information Flow"
+"Appendix C" -> "Data Games"
+
+}
