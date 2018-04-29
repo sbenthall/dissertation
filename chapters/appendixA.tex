@@ -20,6 +20,7 @@ It concerns the mutual information of three variables arranged in a
 Markov Chain.
 
 \begin{dfn}
+  (\citet{cover2012elements})
   Random variables $X, Y, Z$ are said to \emph{form a Markov chain in that order}
   (denoted $X \rightarrow Y \rightarrow Z$) if the conditional distribution
   of $Z$ depends only on $Y$ and is conditionally independent of $X$.
@@ -28,7 +29,6 @@ Markov Chain.
   \begin{equation}
     p(x,y,z) = p(x)p(y \vert x)p(z \vert y)
   \end{equation}
-  \cite{cover2012elements}
 \end{dfn}
 
 \begin{thm}[Data Processing Inequality]
@@ -214,7 +214,6 @@ the effect is in the conditioning set.
 Let's look at the following structure,
 which we will call a \emph{wishbone} structure.
 
-\begin{figure}
 \begin{center}
   \begin{tikzcd}
     X_0 \arrow[dr] &   & \arrow[dl] X_1 \\
@@ -222,8 +221,6 @@ which we will call a \emph{wishbone} structure.
     & Z & 
   \end{tikzcd}
 \end{center}
-\caption{A wishbone graph structure.}
-\end{figure}
 
 Here, $Y$ is a common effect of $X_0$ and $X_1$,
 and $Z$ is a descendant of $Y$.
@@ -277,14 +274,11 @@ We can now look at mutual information of nodes connected
 by longer paths.
 We start with an arbitrariliy long Markov chain.
 
-\begin{figure}
 \begin{center}
   \begin{tikzcd}    
     X_0  \arrow[r] & X_1 \arrow[r] & ... \arrow[r] & X_{n-1} \arrow[r] & X_n
   \end{tikzcd}
 \end{center}
-\caption{An arbitrarily long Markov chain.}
-\end{figure}
 
 \begin{thm}[Chain Data Processing Inequality]
   \label{cdpi-thm}
