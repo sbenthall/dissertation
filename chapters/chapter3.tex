@@ -2,14 +2,14 @@
 \begin{document}
 
 
-In this chapter, I build on the prior sections to
-develop a general, formal model of economic information
-flow.
+In this chapter, I develop a general, formal model
+of economic information flow.
 This builds on prior work identifying the gaps in
-social theoretical understanding of privacy (Chapter 1)
+social theoretical understanding of privacy
+(Chapter \ref{chapter:CI-through-CS})
 and advancing a formal definition of information flow
 compatible with concepts of security and privacy
-in computer science (Chapter 2).
+in computer science (Chapter \ref{chapter:origin-privacy}).
 I argue that this model is well suited to capturing
 the economic impact of information flows through
 mechanism design, which can inform both regulation
@@ -17,7 +17,8 @@ and privacy by design.
 
 Section \ref{sec:limitations} considers the social
 theory of privacy and notes, based on prior work
-in Chapter 1 of this dissertation, that cross-context
+in Chapters \ref{chapter:CI-through-CS} and \ref{chapter:bridge}
+of this dissertation, that cross-context
 information flows remain an unresolved theoretical problem
 in privacy.
 When societal expectations are organized according
@@ -28,7 +29,7 @@ technical infrastructure and their impact on society
 are difficult to conceptualize and therefore
 difficult to regulate socially.
 
-Section \ref{sec:law} outlines the legal frameworks
+Section \ref{sec:law} outlines legal frameworks
 for data protection.
 These do offer rationales for preventing cross-context
 information flow in particular contexts, such as
@@ -41,27 +42,28 @@ by the law of society or the law of the state,
 are beholden instead by the law of the market.
 
 Section \ref{sec:economics} addresses the existing
-economic of privacy and information.
+economics of privacy and information.
 This literature is also organized into analysis
 of single economic contexts.
 I argue that this is due to a lack of formal modeling
 tools for addressing the complex reality of economic
 information flow.
 Drawing on the formal model of information flow in
-Chapter 2 based on Dretske, Pearl, and Nissenbaum,
-and multi-agent influence models \cite{koller2003multi},
+Chapter \ref{chapter:origin-privacy}
+based on Dretske, Pearl, and Nissenbaum,
+and Multi-Agent Influence Models \cite{koller2003multi},
 I develop a framework for mechanism design of games
-involving information flows.
+involving information flows: \textbf{data games}.
 
-Section \ref{sec:single-context} uses the framework
-developed in Section \ref{sec:economics} to economic
-games of information flow.
+Section \ref{sec:single-context} uses the data game framework
+developed in Section \ref{sec:economics} to model simple
+economic contexts involving personal information flow.
 This section includes models of: a principal hiring
 and agent of uncertain quality; price differentiation
 based on personal information; and the provision
 of expert advice to a client.
-These models demonstrate the expressivity of the
-modeling framework.
+These models demonstrate the expressivity of
+data games.
 
 Section \ref{sec:cross-context} builds on the prior
 sections to model a case of cross-context information
@@ -76,14 +78,14 @@ the economy of information flow is prone to market failure.
 
 Section \ref{sec:discussion} concludes the chapter
 with a discussion of broader implications and future
-work.
+work in a broadly conceived data economics.
 
 \section{The limitiations of contextualized privacy}
 \label{sec:limitations}
 
 Privacy is a many-meaninged term
 difficult \cite{solove2005taxonomy} to concisely define.
-\cite{mulligan2016privacy} argues that privacy is an
+\citet{mulligan2016privacy} argue that privacy is an
 essentially pluralistic and contestable
 concept that should be defined at the `retail' rather
 than `wholesale' level.
@@ -113,7 +115,7 @@ by social context a \emph{contextualized} account.
 Both particularist and contextualist accounts have trouble addressing legal,
 ethical, and technical privacy challenges arising from
 social platforms, technologies
-that mediate multiple different contexts.
+that mediate multiple different contexts
 \cite{benthall2017contextual}.
 The commonly felt awkwardness of social media due to
 the unexpected participation of different audiences
@@ -142,14 +144,14 @@ Beyond society's expecations of privacy, there
 are also legal limits to the collection and use
 of personal data.
 
-
-
-
 \section{Information in the Law}
 \label{sec:law}
 
 This section will briefly survey relevant
 legal positions on information and data protection.
+This analysis will show how the law has yet to discover
+a regulatory framework that deals squarely with
+the economic effects of personal data flow.
 
 \subsection{Information as property}
 
@@ -178,7 +180,7 @@ They are not designed to protect ownership of data
 in general.
 For example, copyright specifically does
 not pertain to mere data or the organization
-of facts. \footnote{Feist v. Rural, 499 U.S. 340 (1991)}
+of facts.\footnote{Feist v. Rural, 499 U.S. 340 (1991)}
 So a data subject does not by default own facts
 about themselves.
 Databases may be protected as a compilation if
@@ -241,7 +243,11 @@ This indexes them into a particular social context, the
 one defined by that sector's activity.
 In the language of Contextual Integrity,
 it is clear to which abstract social \emph{sphere}
-each law applies.
+each law applies.\footnote{Though business sectors can
+  be assigned to social contexts in CI, it is important
+  to distinguish business sectors from social contexts
+  because only the latter form legitimate societal norms
+\cite{nissenbaum2015respecting}.}
 Notably, these laws generally do not apply to
 data collection performed by online services.
 
@@ -256,11 +262,12 @@ how information norms need not be restrictive,
 and sectoral privacy laws indeed do recognize
 cases where some kind of information flow
 is mandatory (for example, when a hospital
-must comply with law enforcement).
-But it may be that throttling
-information flow between situations that
-keeps sphere or sector based information flow
-rules enforceable.
+disclose medical records to comply with
+law enforcement procedure).
+Throttling information flow between situations is
+what keeps sphere or sector based information flow
+rules enforceable in part because it simplifies
+the information semantics.
 
 \subsection{Notice and consent}
 
@@ -313,8 +320,8 @@ Exceptions to this rule are also framed in terms of purposes
 (such as the purpose to protect the ``vital interests''
 of the data subject).
 While purpose binding is not a new legal standard
-(it is a feature of the EU's Data Protective Directive,
-whic the GDPR supersedes, as well as the U.S. Fair
+(it is a feature of the EU's Data Protection Directive,
+which the GDPR supersedes, as well as the U.S. Fair
 Information Practice Principles), its purpose binding
 clauses are empowered by the addition of 
 obligations of \emph{data minimization},
@@ -329,7 +336,7 @@ The efficacy of this regulation is still untested.
 However, it compares favorably with existing U.S. law.
 Narrowing the complexity of notices to be about particular
 purposes may be an improvement over the
-more complex legal and technical conditions in onotices
+more complex legal and technical conditions in notices
 typical under the FTC's notice and comment framework.
 While some U.S. sectoral privacy policies include
 purpose restrictions on information use
@@ -419,8 +426,8 @@ Application Programming Interface (API), than any particular
 piece of data.
 
 One tool in the economics toolkit for understanding
-policy decisions is mechanism design. \cite{hurwicz2006designing}
-\cite{nisan2007introduction}
+policy decisions is mechanism design \cite{hurwicz2006designing}
+\cite{nisan2007introduction}. 
 Mechanism design is an ``inverted game theory'',
 wherein the designer defines a range of possible
 economic games and chooses the structure of the game
@@ -435,20 +442,18 @@ can be imposed on an economic transaction such that socially
 prefered outcomes result, even when the economic actors
 are self-interested.
 
-In this section, I will develop a framework for mechanism
+In this section, I develop a framework, data games, for mechanism
 design of economic situations involving information flows.
 This framework will extend the Multi-Agent Influence Diagram
 (MAID) framework \cite{koller2003multi}, which is a
 game-theoretic extension of Bayesian Networks.
-This framework, which was briefly introduced in Chapter 2,
+This framework, which was briefly introduced in Chapter
+\ref{chapter:origin-privacy},
 models information flow in a social context as information
 is understood by engineers and economists.
 For regulatory regimes to be most effective, they must
 be reducible, in the scientific sense, to something like
-this model. In Section ???, I will reflect back on whether
-and how this model can reflect the restrictions of information
-law.
-
+this model.
 
 \subsection{Formalizing information flow mechanisms}
 \label{sec:formalizing}
@@ -457,7 +462,7 @@ We have motivated the need for a general framework
 for mechanism design for economics contexts involving
 (personal) information flow.
 In this section, I will specify that framework.
-Summarizing prior work (see Section \ref{chapters/chapter2}),
+Summarizing prior work (see Section \ref{sec:causality}),
 I synthesis a formal representation
 of information flow from Nissenbaum,
 Dretske \cite{dretske1981knowledge},
@@ -468,8 +473,8 @@ that carries nomic associations, which can be represented
 precisely using Bayesian networks.
 I then propose the use of Multi-Agent Influence Diagrams,
 a game theoretic extension to Bayesian networks, as
-a framework for mechanism design in privacy economics.
-\cite{koller2003multi}
+a framework for mechanism design in privacy economics
+\cite{koller2003multi}.
 
 \subsection{Formal theory of information flow}
 
@@ -485,7 +490,7 @@ relationship between events or objects such that one
 is sufficient for inferences about the other
 \cite{nunberg1996farewell}.
 
-\cite{benthall2017origin} provides an mathematical
+Section \ref{sec:causality} provides a mathematical
 analysis of the concept of \emph{information flow}
 on robust foundations: Dretske's philosophical theory
 of information flow and Pearl's account of statistical
@@ -544,10 +549,11 @@ See Appendix \ref{appendix:information-theory-theorems} for
 theorems concerning the ways bounds on mutual information
 between variables can be read off of Bayesian networks.
 
-\subsection{MAIDs and Mechanism Design}
+\subsection{Data Games}
+\label{sec:data-games}
 
-Introduced briefly in Chapter 2, the Multi-Agent Influence Diagram
-(MAID) framework developed by \cite{koller2003multi} provides
+Introduced briefly in Chapter \ref{chapter:origin-privacy}, the Multi-Agent Influence Diagram
+(MAID) framework developed by \citet{koller2003multi} provides
 a game-theoretic extension to Bayesian networks.
 As a formalism, it is well suited for modeling how
 information flows, which we have detailed as causal
@@ -556,7 +562,7 @@ games.
 A full account of the formalism is in the
 Appendix \ref{appendix:maid}.
 
-MAIDs extend Bayesian networks with two new node types:
+MAIDs have three types of nodes: chance variables,
 decision variables, and utility variables.
 Chance variables are much like the nodes in a Bayesian
 network: a CPD is defined for each chance variable
@@ -578,21 +584,23 @@ Taken to together, the strategy $\sigma$ of all the players
 induces a MAID into a Bayesian network, from which the
 expected utilitites of all players may be computed.
 
-In this work we have extended the MAID framework in a few
-respects.
-
-First, we have introduced the mechanic of an \emph{optional edge},
-represented in our diagrams as a dotted edge.
+I defined a data game as a MAID adapted into a framework
+for mechanism design. This is done with a few extension
+to the formalism.
 
 \begin{figure}
+  \label{fig:optional-edge}
 \begin{center}
 \begin{tikzcd}
-  A \arrow[r, dotted] & B \\
+  A \arrow[r, dotted] & B
 \end{tikzcd}
 \caption{A dotted arrow representing an optional information flow.}
 \end{center}
 \end{figure}
 
+First, we introduce the mechanic of an \emph{optional edge},
+represented in our diagrams as a dotted edge
+(see Figure \ref{fig:optional-edge}).
 A dotted edge represents a potential information flow
 whose value is the focus of the study.
 An optional edge means a diagram represents two
@@ -608,10 +616,11 @@ well-establish information flows to which everyone is
 accustomed, such as security cameras in malls.
 In both cases the information flow will have an effect on
 outcomes, but the cases are subtly different.
-I try to capture this difference by distinguishing between the
+This difference is reflected in data games by
+the distinction between the
 tactical and strategic
 value of information (this is formalized in Appendix
-\ref{sec:value-of-information}).
+\ref{sec:value-of-data}).
 The tactical value of information is its value to an agent
 assuming all other agent's strategies remain fixed.
 The strategic value of information is the difference
@@ -621,8 +630,7 @@ consider a strategic equilibrium of all players in each case.
 In the cases discussed in this chapter, I will consider
 the strategic value of information flow except when specifically
 stated otherwise.
-As a shorthand, I will refer to the mechanism design models
-using this formalism as \textbf{data games}.
+
 
 \section{Single Context Economic models}
 \label{sec:single-context}
@@ -661,9 +669,10 @@ while conversely less suitable employees are harmed
 by the same.
 Analogous results hold for credit and insurance.
 
-We can model this interaction with the following graph:
+We can model this interaction with the graphin Figure \ref{fig:principal-agent}.
 
 \begin{figure}
+  \label{fig:principal-agent}
 \begin{center}
 \begin{tikzcd}
   & V \arrow[d, dotted] \arrow[ddr, bend left = 20] & \\
@@ -699,7 +708,7 @@ This model affords some simplifications through backwards
 induction.
 The optimal strategy for the principal is 
 to buy the contract if the expected value of it is positive.
-iIf the dotted edge is open, then the principal is able to use
+If the dotted edge is open, then the principal is able to use
 the know $V$ to make this decision.
 
 If the dotted edge is closed, then the optimal
@@ -766,9 +775,9 @@ openness, while agents with low-value contracts suffer.
 
 Early work on privacy economics reasoned that
 flow of personal information in labor markets
-leads to greater economic efficiency. \cite{posner1981economics}
+leads to greater economic efficiency \cite{posner1981economics}. 
 The MAID model in Section \ref{sec:agent-quality}
-does reflect this reasoning.
+corroborates this result.
 More flow of personal information (the open condition)
 brings greater utility to the principal
 on average, and this is a form of market surplus.
@@ -802,8 +811,8 @@ discrimination.
 If contract value is negatively correlated with membership
 in a protected class of persons, choosing contracts solely
 on the basis of value might compound an injustice, which
-Hellman argues there is a duty to avoid doing.
-\cite{hellman2017indirect}
+Hellman argues there is a duty to avoid doing
+\cite{hellman2017indirect}.
 Modeling historical injustice with MAIDs is a problem
 left for future work.
 
@@ -829,9 +838,11 @@ a price they can afford, while transforming consumer
 surplus formerly accrued by those with high reservation
 price to the firm as producer surplus.
 
-We can model this context graphically like so:
+We can model this context graphically with
+Figure \ref{fig:price-diff}.
 
 \begin{figure}
+  \label{fig:price-diff}
 \begin{center}
 \begin{tikzcd}
   & V \arrow[d, dotted] \arrow[dd, bend left = 40] \arrow[dddl, bend right = 20] & \\
@@ -980,8 +991,11 @@ The MAID modeling tool we have been using can capture
 the difference in knowledge between the client and
 the expert and the consequences that has for the service
 market.
+This model was introduced briefly in Section \ref{sec:expert-services-ECS}
+and is shown here again as Figure \ref{fig:expert-data-game}.
 
 \begin{figure}
+  \label{fig:expert-data-game}
 \begin{center}
   \begin{tikzcd}
     & W \arrow[ddl, bend right = 40] \arrow[ddr, bend left = 40]& \\
@@ -1192,8 +1206,8 @@ value information through the narrow bandwidth of
 communication.
 The constraints on information flow are due mathematically
 to the Data Processing Inequality and its consequences
-for Bayesian networks, which are discussed at length in
-\ref{appendix:information-theory-theorems}.
+for Bayesian networks, which analyzed in depth in
+Appendix \ref{appendix:information-theory-theorems}.
 
 \subsubsection{Values}
 
@@ -1257,8 +1271,8 @@ models.
 Here $c$ is a natural person who is \emph{both} potentially
 a consumer of firm $f$'s products and potentially involved
 in a contract with principal $p$.
-The value of this person's contract $V^1$ and their
-willingness to pay for the product $V^2$ both depend on
+The value of this person's contract $V$ and their
+willingness to pay for the product $D$ both depend on
 a prior variable $W$ that encapsulates many factors about
 the background of the person.
 
@@ -1292,7 +1306,7 @@ Why would two companies ever interact in this way?
 If the principal does \emph{not} know the value of
 a potential contract $V$ directly, then the pricing
 information $\hat{R}_f$ potentially contains information
-about $V$ in a way that the principal $p$ can use
+about $V$ in a way that the principal $p$ can use.
 Here, ``contains information about'' can be read to
 mean ``has mutual information with'', i.e.
 $I(\hat{R}_f, V) \geq 0$.
@@ -1407,7 +1421,7 @@ to optimize service performance, to predict social class, presumably useful
 for targeting advertisements \cite{cb_insights_research_2018}.
 The cross-context use of personal data for targetted advertising
 is arguably the fundamental business proposition of on-line
-advertising companies like Facebook and Google.
+advertising companies like Facebook and Google \cite{narayanan_2018}.
 
 The strategic value of the information to the principal can
 be interpreted as the price at which the principal would
@@ -1495,7 +1509,7 @@ this information flow to experts will be negative.
 \section{Discussion}
 \label{sec:discussion}
 
-This chapter has developed a framework for modeling
+This chapter has developed a ``data games'' framework for modeling
 economic games with information flow.
 This framework expands MAIDs with optional edges,
 which results in a system for modeling mechanism
@@ -1564,9 +1578,8 @@ A robust empirical result is that there are
 different segments of the general population that have different
 privacy concerns.
 These are often presented as the marginally concerned, pragmatic majority,
-and privacy fundamentalists.
-\cite{ackerman1999privacy} \cite{berendt2005privacy}
-\cite{sheehan2002toward}
+and privacy fundamentalists \cite{ackerman1999privacy}
+\cite{berendt2005privacy} \cite{sheehan2002toward}.
 This matches expectations from economic model:
 some populations are more vulnerable than others to the
 negative effects of personal information flow.
@@ -1575,7 +1588,8 @@ different preferences or concerns about information
 flow are determined by the economic situation
 of data subjects.
 Class differences may have significant effects,
-with implications for value-driven policy design.
+with implications for value-driven policy design
+\cite{madden2017privacy}.
 
 There is also evidence that consumers are generally not making
 privacy decisions in rational and informed
@@ -1594,8 +1608,9 @@ Data analytics drawing conclusions from
 aggregating for an unforeseen business end,
 a network of companies engaged in secondary uses of data
 shared between them, or an illicit dark web of hackers
-and fraudsters, are due to cross-context inforamation
-flows in which the data subject plays little active role.
+and fraudsters, are due to cross-context information
+flows in which the data subject plays little active role
+\cite{narayanan2012critical}.
 Section \ref{sec:cross-context} shows the mechanics
 of how companies can gain strategic advantage by
 reusing personal data to the detriment of consumers.
@@ -1614,6 +1629,9 @@ by Bayesian networks, are opaque and largely unknown.
 The framework provided here can be extended to take into
 account different degrees of knowledge about the causal
 structure that gives information flow its meaning.
+This sheds light on the well known problem of
+the ineffectiveness of privacy self-management
+\cite{solove2012introduction}.
 Further work is needed to understand the implications
 of knowledge and information assymetry in data economy
 market equilibria.
@@ -1632,7 +1650,7 @@ these associational properties are
 discovered through aggregation and data mining by the
 very firms that attract consumer interaction through
 expert services that they offer.
-This data is then used in two-sided markets, which
+This data is then used in two-sided advertising markets, which
 act as intermediaries in many other economic contexts,
 further complicating any prediction of the benefits
 and harms of disclosure.
@@ -1663,7 +1681,8 @@ or else there would be if there were a market to begin
 with.
 As has been mentioned, property rights for
 personal data are weak if not nonexistant (see Section \ref{sec:law}).
-Personal data is not a good being produced by anybody
+Metaphors aside, personal data is not a good being
+\textit{produced} by anybody
 in the privacy economics ecosystem.
 It is rather information in the \emph{strategic} sense of
 allowing some market actors to perform more effectively.
@@ -1678,29 +1697,30 @@ some have proposed regulating personal data through tort
 \cite{posner1981economics, cofone2017dynamic}.
 Certainly some meanings of "privacy", such as those that refer
 to protection from libel, are enforceable in this way.
-To the extent that considering personal data to be a /thing/
+To the extent that considering personal data to be a \textit{thing}
 is misleading, it may more more
 effective to craft data protection regulation through
-the framework of dignitary privacy. \cite{post2017data}
+the framework of dignitary privacy \cite{post2017data}. 
 However, as we have discussed it seems unlikely that the scope
 of consumer harm or benefit can be adequately assessed given the
 scale of the empirical problems involved.
 
-A another alternative is strengthened
+Another alternative is strengthened
 data protection laws for two-sided markets involving targeting,
 such as advertising in social media platforms.
 As we have noted, in most expert service sectors, including
 health care, finance, education, and so on, there are existing
 sectoral data protection laws ensuring confidentiality.
 The existence of these laws is an indication that without
-them, these expert service markets would implode in market failure.
+them, these expert service markets would degrade through
+market failure.
 If protecting confidential information from secondary use
 (through austere prohibitions on disclosure and security
 investments) is a form of service \emph{quality}, and this quality
 is difficult for consumers to assess independently, then
 this information assymetry about service quality would result
 in a market failure along the lines of Akerlof's market for
-"lemons". \cite{akerlof1970market}
+"lemons" \cite{akerlof1970market}. 
 Since unregulated two-sided markets are in the senses described
 above equivalent to providing unrestricted secondary use to
 other firms, perhaps present economic conditions are just such
@@ -1711,7 +1731,7 @@ a market failure.
 As discussed in Section \ref{sec:GDPR},
 the EU's GDPR attempts to limit the kinds of privacy
 violations due to secondary use of personal information
-through \emph{purpose restrictions},
+through purpose restrictions,
 which place restrictions on the goals for which collected
 data may be used.
 Personal data may be processed only for purposes to which
@@ -1728,18 +1748,17 @@ The rising importance of purpose binding as a privacy requirement
 raises the question of how the purpose of data processing can
 be formalized to facilitate privacy engineering.
 \citet{tschantz2012formalizing} \cite{tschantz13esorics}
-do formalize purpose
-in order to provide the basis of
-automatic enforcement of privacy policies.
-In their approach, ``an action is for a purpose if the
+do so by positing that ``an action is for a purpose if the
 action is part of a plan for achieving that purpose.''
 They then go on to formalize this in terms of
-a Markov Decision Process (MDP), a way of modeling the relationship between actions,
+a Markov Decision Process (MDP), a way of modeling
+the relationship between actions,
 environment, policies, and outcomes that allows for a formal definition of optimal policy.
 A promising direction for future work is to formalize
 purpose binding in terms of Bayesian causality and incentives,
 extending the mechanism design framework introduced in
 this chapter.
+Can purpose be modeled in a data game?
 
 
 \end{document}
