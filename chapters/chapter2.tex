@@ -698,17 +698,8 @@ $Pa(X)$ to denote the parents of $X$ in the graph. Pr is a mapping
 of each node $X$ to a conditional probability distribution (CPD),
 $Pr(X \vert Pa(X))$.
 \end{dfn}
-
-\begin{exm}
-  (Figure \ref{fig:alice-commute})
-  Alice will be on time for work $W$ if she sets her
-  alarm $A$ early enough and traffic $T$ allows.
-  Bad traffic can be caused by construction $C$
-  or an accident on the road $D$.
-\end{exm}
-
+ 
 \begin{figure}
-  \label{fig:alice-commute}
 \begin{center}
 \begin{tikzcd}
   A \arrow[rrd] & & \\
@@ -718,6 +709,14 @@ $Pr(X \vert Pa(X))$.
 \end{center}
 \caption{Alice's commute to work.}
 \end{figure}
+
+\begin{exm}
+  (Figure 4.1) %alice-commute
+  Alice will be on time for work $W$ if she sets her
+  alarm $A$ early enough and traffic $T$ allows.
+  Bad traffic can be caused by construction $C$
+  or an accident on the road $D$.
+\end{exm}
 
 Given the discussion of information flows above,
 we can see why this
@@ -827,7 +826,7 @@ or they may share an observed common effect.
 \end{tikzcd}
 \end{center}
 
-\begin{exm}(Figure \ref{fig:alice-commute})
+\begin{exm}(Figure 4.1) % alice-commute
   Suppose we observe that Alice is late for work $W$, as per our
   earlier example. This could be due to many reasons,
   including traffic $T$ and missing her alarm $A$.
@@ -950,7 +949,7 @@ This reveals an ambiguity in the very concept of
 illustrated in the following example.
 
 \begin{exm}
-  (Figure \ref{fig:school})
+  (Figure 4.2)
 Alice, a teacher tells every student
 privately their test score's rank $R$ (first in class,
 second in class, etc.) after every test, with class
@@ -1123,14 +1122,11 @@ Embedded Causal System (ECS) Model.
   Bayesian network $(G_\W,Pr_\W)$.
 \end{dfn}
 
-\begin{figure}
 \begin{center}
 \begin{tikzcd}
    \W
 \end{tikzcd}
 \end{center}
-\caption{The entire world.}
-\end{figure}
 
 %
 %\begin{dfn}[Contiguous]
@@ -1154,15 +1150,12 @@ Embedded Causal System (ECS) Model.
   $\mathcal{E} = \W - \Y$ 
 \end{dfn}
 
-\begin{figure}
 \begin{center}
 \begin{tikzcd}
   \Y \arrow[d, bend left=50]\\
   \mathcal{E} \arrow[u, bend left=50]
 \end{tikzcd}
 \end{center}
-\caption{A system in mutual causal relationship with its environment.}
-\end{figure}
 
 (In this and a few other diagrams, we will include cycles because
 these are diagrams of blockmodels over other networks.
@@ -1201,7 +1194,6 @@ to the environment.
   Denote the set of all outputs with $\A$.
 \end{dfn}
 
-\begin{figure}
 \begin{center}
 \begin{tikzcd}[column sep=tiny]
   \mathcal{S} \arrow[r] &
@@ -1210,8 +1202,6 @@ to the environment.
   & \mathcal{E} \arrow[ul, bend left=50] &
 \end{tikzcd}
 \end{center}
-\caption{Sensors and actuators mediating the internals of a system andits environment.}
-\end{figure}
 
 See the definition of \emph{orderly} (Definition \ref{def:orderly-system})
 for a set of further constraints on inputs and outputs
@@ -1230,7 +1220,6 @@ that should not be leaked.
   high-side $\A_H$ and low-side $\A_L$ variables.
 \end{dfn}
 
-\begin{figure}
 \begin{center}
 \begin{tikzcd}[column sep=tiny]
   \mathcal{S_H} \arrow[r]
@@ -1248,9 +1237,6 @@ that should not be leaked.
   &
 \end{tikzcd}
 \end{center}
-\caption{High and low side sensors and actuators mediating
-the internals of a system and its environment.}
-\end{figure}
 
 Note that in the above diagram and throughout this paper,
 we will sometimes refer to a set of random variables
@@ -1433,7 +1419,7 @@ We assume for our purposes that a system designer can
 guarantee its safety through sound engineering alone.
 
 For example, consider the system defined by the graph in
-Figure \ref{fig:safe-system}.
+Figure 4.3.
 
 \begin{figure}
   \label{fig:safe-system}
@@ -1443,8 +1429,7 @@ Figure \ref{fig:safe-system}.
   \mathcal{S}_L \arrow[r] \arrow[ur]& \mathcal{A}_L
 \end{tikzcd}
 \end{center}
-\caption{A system that is safe so long as its high-side actuators,
-$\mathcal{A}_H$, are not observed.}
+\caption{A system that is safe so long as its high-side actuators are not observed.}
 \end{figure}
 
 When $\mathcal{A}_H$ is not in the conditioning set,
@@ -1800,7 +1785,7 @@ system outputs to reveal system inputs.
 Noninterference does not imply semantic security.
 Put another way, the same system can be secure by
 noninterference but semantically insecure.
-Consider the system in Figure \ref{fig:not-propitious}.
+Consider the system in Figure 4.4.
 
 \begin{figure}
   \label{fig:not-propitious}
