@@ -164,7 +164,7 @@ Section~\ref{sec:future} addresses directions for future work.
 %
 
 
-\textbf{Contributions}. The contributions of this paper
+\textbf{Contributions}. The contributions of this Chapter
 include:
 \begin{itemize}
 \item An analysis of privacy policies, specifically with
@@ -191,13 +191,13 @@ include:
   modeling using Multi-Agent Influence Diagrams.
 \end{itemize}
 
-This paper includes two technical appendices.
+This Chapter refers to two technical appendices.
 Appendix \ref{appendix:information-theory-theorems}
 proves several supplemental theorems in information theory
 that are used in a proof of the relationship between
 causal modeling and differential privacy.
 Appendix \ref{appendix:maid} outlines the major
-findings of \cite{koller2003multi} on Multi-Agent
+findings of \citet{koller2003multi} on Multi-Agent
 Influence Diagrams, and introduces a new concept:
 tactical independence.
 
@@ -279,7 +279,7 @@ Criterion~3 is written as if to cover all other
 cases where a financial institution could 
 collect individualized information, 
 regardless of the process of transmission. 
-It is agnostic to process of transmission. 
+It is agnostic to the process of transmission. 
 It raises the question of whether information can be
 personal financial information without having the specific
 provenance of a transaction or service with a
@@ -298,7 +298,7 @@ personal financial information no matter how it is discovered.
 \label{sec:pci-dss}
 
 Though not a law, we consider the Payment Card Industry 
-Data Security Standard (PCI DSS) as an exemplary 
+Data Security Standard (PCI DSS) to be a 
 security regulation~\cite{bradleypayment}.
 Established as a proprietary information security standard 
 by the Payment Card Industry Security Standards Council, 
@@ -329,10 +329,10 @@ This is in contrast with legal regimes that regulate the
 flow of more generally meaningful information between persons 
 and organizations.
 
-A second feature of PCI DSS is that they are explicit about 
+A second feature of PCI DSS is that it is explicit about 
 the application of the standard to networks of technology and 
 business processes,
-which they call the cardholder data environment 
+which it calls the \textit{cardholder data environment} 
 (CDE) \cite{pcisecuritystandardscouncil2016DSS}:
 \begin{quote}
   The PCI DSS security requirements apply to all system components 
@@ -372,7 +372,7 @@ a definition of information topic. For example,
 the Family Educational Rights and Privacy Act (FERPA)
 defines ``education records'' as
 \begin{quote}
-  those records, files, documents, and other materials which—
+  those records, files, documents, and other materials which--
   
   (i) contain information directly related to a student; and
 
@@ -386,7 +386,7 @@ on-line, but includes special restrictions on personal
 information collected from a child, which could be
 read as a restriction based on origin.
 
-The United States Executive Order 13526 of 2009,
+The United States Executive Order 13526 of 2009
 gives certain government officials authority to classify
 documents they determine pose a risk to national
 security.
@@ -444,7 +444,7 @@ health care providers\footnote{``Covered entity means:
 (1) A health plan. (2) A health care clearinghouse. 
 (3) A health care provider who transmits any health 
 information in electronic form in connection with a 
-transaction covered by this subchapter. 45 CFR \S 160.103}.
+transaction covered by this subchapter.'' 45 CFR \S 160.103}.
 These spaces may be defined by legal jurisdiction, or they 
 may be defined through networks of contractual relations.
 More often than not, the regulated space is not bounded 
@@ -515,11 +515,11 @@ be an (undirected) path between the two through channels that
 includes only other processes in the system.
 
 While causal modeling has been used in a security context
-(e.g.,~\cite{feng2014security}), formal security research
-more often relies on static analysis of programs (e.g.,~\cite{mclean90sp}).
-We choose a causal models in this article because
+(e.g., \citet{feng2014security}), formal security research
+more often relies on static analysis of programs (e.g., \citet{mclean90sp}).
+We choose a causal models in this chapter because
 these models can represent both programs and their
-subprograms (see Section \ref{sec:programs}),
+subprograms,
 as well as non-technical environmental processes
 that generate data.\footnote{While it may be the case that
   programs are as expressive as causal models, this
@@ -671,10 +671,10 @@ the causal relationship between uncertain events: the
 \emph{Bayesian network}, or probabilistic 
 graphical model, framework \cite{pearl1988probabilistic}. 
 As we will see, this form of modeling can be used to represent
-processes within a system, as well as in its an environment.
+processes within a system, as well as in its environment.
 Before showing the relationship between Bayesian networks
 and Origin Privacy, we will present them and a few of their
-formal properties, drawing heavily on \cite{koller2003multi}
+formal properties, drawing heavily on \citet{koller2003multi}
 for our choice of formal notation and wording.
 
 \subsubsection{Bayesian networks}
@@ -700,6 +700,7 @@ $Pr(X \vert Pa(X))$.
 \end{dfn}
 
 \begin{exm}
+  (Figure \ref{fig:alice-commute})
   Alice will be on time for work $W$ if she sets her
   alarm $A$ early enough and traffic $T$ allows.
   Bad traffic can be caused by construction $C$
@@ -707,6 +708,7 @@ $Pr(X \vert Pa(X))$.
 \end{exm}
 
 \begin{figure}
+  \label{fig:alice-commute}
 \begin{center}
 \begin{tikzcd}
   A \arrow[rrd] & & \\
@@ -719,7 +721,7 @@ $Pr(X \vert Pa(X))$.
 
 Given the discussion of information flows above,
 we can see why this
-is relevant to privacy. The condition dependence
+is relevant to privacy. The conditional dependence
 functions between
 random variables are the \emph{nomic relations}
 between events and messages.
@@ -825,7 +827,7 @@ or they may share an observed common effect.
 \end{tikzcd}
 \end{center}
 
-\begin{exm}
+\begin{exm}(Figure \ref{fig:alice-commute})
   Suppose we observe that Alice is late for work $W$, as per our
   earlier example. This could be due to many reasons,
   including traffic $T$ and missing her alarm $A$.
@@ -866,7 +868,7 @@ is blocked, then \(X_1\) and \(X_2\) are d-separated.
 \end{thm}
 
 \begin{proof}
-  Proof is discussed in \cite{koller2003multi}.
+  Proof is discussed in \citet{koller2003multi}.
 \end{proof}
 \hfill
 \hfill
@@ -948,6 +950,7 @@ This reveals an ambiguity in the very concept of
 illustrated in the following example.
 
 \begin{exm}
+  (Figure \ref{fig:school})
 Alice, a teacher tells every student
 privately their test score's rank $R$ (first in class,
 second in class, etc.) after every test, with class
@@ -980,11 +983,11 @@ the message sent to Eve (Fig \ref{fig:school}).
 \caption{Test score ranks ($R$) distributed to Bob ($B$) and Eve ($E$).}
 \end{figure}
 
-There is \textbf{causal flow} along the edges from
+There is causal flow along the edges from
 $R$ to $B$ and from $R$ to $E$.
 But an observer of a single variable aware of the
 system's laws (nomic connections,
-graphical structure) can learn \textbf{nomic associations}
+graphical structure) can learn nomic associations
 of a message that inform about variables that
 are not in the message's causal history.
 Despite $E$ neither causing nor being caused by $B$,
@@ -1044,7 +1047,8 @@ meaning.
 It is no etymological accident that it forms part of the analytic
 definition of ``information flow'' that we have developed in this
 section.
-In the Appendix, we derive several theorems relating to
+In the Appendix \ref{appendix:information-theory-theorems},
+we derive several theorems relating to
 the mutual information of variables organized in a Bayesian
 Network.
 We will use these theorems in proofs about system security
@@ -1364,7 +1368,7 @@ may be used to reveal sensitive information.
 
 The term ``present'' indicates that the attacker
 is able to condition on variables prior to and
-during the operating of the system, but not
+during the operation of the system, but not
 variables in the ``future'' of the system.
 Requiring that the system outputs are not ancestors of
 the the system inputs guarantees that the system is
@@ -1734,7 +1738,7 @@ as easily restricted; to be effective there
 must be independence relations in the environment
 of the system.
 Thus the viability of privacy policies depends
-on the distinction noted in \ref{sec:ambiguity}
+on the distinction noted in Section \ref{sec:ambiguity}
 between causal flow and association.
 
 \subsection{Preventing associations}
@@ -1777,7 +1781,7 @@ The term has taken on a wider use in the differential
 privacy literature as it has been introduced
 as a desideratum for statistical
 databases along the lines of that proposed
-by Dalenius in 1977. \cite{dalenius77statistik, dwork06icalp}
+by Dalenius in 1977 \cite{dalenius77statistik, dwork06icalp}. 
 Dwork and Naor \cite{dwork06icalp,dwork08jpc} show that it is impossible to
 guarantee the semantic security of such a database
 given arbitrary auxiliary knowledge.
@@ -1806,7 +1810,7 @@ Consider the system in Figure \ref{fig:not-propitious}.
   & S_L \arrow[r] \arrow[ur] & A_L
 \end{tikzcd}
 \end{center}
-\caption{A system that is not propitious.}
+\caption{A system that is not propitious when $E$ is unobserved.}
 \end{figure}
 
 This system is safe when $A_H$ is not in the conditioning
@@ -2233,10 +2237,10 @@ $S_P$ and $S_D$; it includes imagery from $S_P$
 that has been identified using the database $S_D$.
 
 \begin{center}
-\begin{tikzcd}
+  \begin{tikzcd}
+    \\
   E_F \arrow[r] & S_D \arrow[r] & Y_B \arrow[r] & A_H\\
-  & S_P \arrow[ur] \arrow[rr] & & A_L \\
-  \\
+  & S_P \arrow[ur] \arrow[rr] & & A_L\\
 \end{tikzcd}
 \end{center}
 
@@ -2327,7 +2331,7 @@ datasets $D_1$ and $D_2$ that differ on a single element,
 the probability of the output of the algorithm run
 on the datasets being in $S$ differs by at most a
 multiplicative factor of $e^\epsilon$ and an additive
-factor $\delta$. \cite{dwork2014algorithmic}
+factor $\delta$ \cite{dwork2014algorithmic}. 
 
 \begin{dfn}[Differential Privacy (($\epsilon,\delta$)-DP)]
 $$Pr[\A(D_1) \in S] \leq e^\epsilon Pr[\A(D_2) \in S] + \delta$$
@@ -2346,7 +2350,7 @@ privacy expressed in terms of mutual information.
 
 \subsection{Mutual information differential privacy}
 
-\cite{cuff2016differential} demonstrate that there is
+\citet{cuff2016differential} demonstrate that there is
 an equivalence between differential privacy and what they define
 as mutual information differential privacy:
 
@@ -2364,7 +2368,7 @@ They prove that $\epsilon$-MI-DP is equivalent to differential
 privacy in the sense that $\epsilon$-MI-DP implies
 ($\epsilon,\delta$)-DP) for some $\delta$, though
 $\epsilon$-MI-DP is weaker than $\epsilon$-DP.
-\cite{mcsherry_2017} argues that that $\epsilon$-MI-DP
+\citet{mcsherry_2017} argues that that $\epsilon$-MI-DP
 falls short of the desiderata of $\epsilon$-DP.
 Nevertheless, we will proceed with the
 $\epsilon$-MI-DP because it is suggestive of
@@ -2394,7 +2398,7 @@ differential privacy.
 A common way of achieving differential privacy
 is by randomizing inputs to the database
 prior to aggregation; this is done in practice
-in \cite{erlingsson2014rappor}.
+in \citet{erlingsson2014rappor}.
 We can model randomization explicitly as in
 the following example.
 
@@ -2482,7 +2486,8 @@ the appendix.
 \subsection{Generalizing $\epsilon$-security}
 
 We can generalize the two formal security models
-that we introduced in Sections X and Y to models
+that we introduced in Section \ref{sec:noninterference}
+to models
 that allow for $\epsilon$ mutual information between
 sensitive inputs and low-side outputs.
 
@@ -2585,7 +2590,7 @@ In this section, we will show how the same ECS framework
 can be extended to include strategic actors and their incentives.
 
 To accomplish this, we will use the Multi-Agent Influence Diagram
-(MAID) framework developed by \cite{koller2003multi}.
+(MAID) framework developed by \citet{koller2003multi}.
 In brief, a MAID is a Bayesian network with two important
 extensions.
 
@@ -2603,16 +2608,18 @@ extensions.
 \end{itemize}
 
 A formal definition of MAIDS, strategies, and other useful
-properties is given in Section \ref{appendix:maid},
+properties is given in Appendix \ref{appendix:maid},
 which includes an account of the graphical notation we
-will use in Section \ref{sec:maid-notation}.
+will use in this Section.
 
 \subsection{Expert services model}
+\label{sec:expert-services-ECS}
 
 As an illustration of an information game
 that can be represented as a MAID, consider the
 following diagram, which is a generalized model of
-an expert service.
+an expert service. (This model will be analyzed in more detail
+in the following chapter, in Section \ref{sec:expertise}.)
 The services, which include health services, legal services,
 as well as some software based services like search engines,
 involve a client, $c$, who presents knowledge of their situation
@@ -2670,7 +2677,7 @@ their recommendation and outcomes for both players.
 
 We now combine the expert service model with
 the ECS model.
-We will embed the expert insider an ECS and given them
+We will embed the expert insider an ECS and give them
 access to personal information of the client via the
 high-side input.
 They will also have access to general knowledge
@@ -2816,7 +2823,7 @@ provide in terms of the incentives of Alice and Bob.
 What can be shown is that given that the expert ECS
 system is semantically secure, it is also the case
 that $\tilde{E}_a$ and $\tilde{D}_e$ are tactically
-independent (see Definitoin \ref{dfn:tactical-independence}),
+independent (see Definition \ref{dfn:tactical-independence}),
 meaning that for any strategy specifying decision rules
 to each decision variable, in the induced probability
 distribution $\tilde{E}_a$ and $\tilde{D}_e$ are independent.
@@ -2994,7 +3001,7 @@ input data.
 We have shown how Multi-Agent Influence Diagrams
 (MAIDS) \cite{koller2003multi} can be used in
 game theoretic modeling of security problems.
-\cite{feng2014security} have used Bayesian networks
+\citet{feng2014security} have used Bayesian networks
 to model security risks and perform a security
 vulnerability propagation analysis.
 They build their causal model from observed cases
@@ -3004,16 +3011,19 @@ new frameworks for aligning the incentives
 of system designers and data subjects which
 are sensitive to risk of data misuse (see
 \cite{brooks15nist}).
-Our work in Section \ref{sec:incentives} is
-a first step in developing a new way of assessing
-the value of security properties based on
-their impact on game outcomes.
-
 An application of this work is automated policy
 design for smart buildings and cities, where
 interacting data subjects and control systems
 must share information while minimizing data
 misuse.
+
+Our work in Section \ref{sec:incentives} is
+a first step in developing a new way of assessing
+the value of security properties based on
+their impact on game outcomes.
+This method of modeling information value through
+data games is the subject of the next chapter.
+
 
 \hfill
 \hfill
