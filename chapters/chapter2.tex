@@ -72,7 +72,7 @@ Others focus on particular kinds of clauses, such as those
 restricting information based on its purpose
 \cite{tschantz13esorics} or its use \cite{datta2017use}.
 This article is concerned with clauses in privacy policies
-that restricting information based on its \emph{origin}.
+that restrict information based on its \emph{origin}.
 We consider the origin of data to be the processes that 
 created or transmitted that data to the system 
 governed by the privacy policy, that is, the data's provenance.
@@ -191,7 +191,7 @@ include:
   modeling using Multi-Agent Influence Diagrams.
 \end{itemize}
 
-This Chapter refers to two technical appendices.
+This chapter refers to two technical appendices.
 Appendix \ref{appendix:information-theory-theorems}
 proves several supplemental theorems in information theory
 that are used in a proof of the relationship between
@@ -211,7 +211,7 @@ We build on prior work in logical specification of privacy
 laws as inspiration for this 
 approach~\cite{barth06sp,DeYoungGJKD10}.
 
-\subsection{Policy Example: HIPAA Psychotherapy Notes}
+\subsection{Policy example: HIPAA Psychotherapy Notes}
 \label{sec:orgheadline3}
 
 Some laws define a class of information in terms
@@ -238,7 +238,7 @@ care provider who is a mental health professional documenting a conversation
 during a counseling session separately from an individual's medical record, 
 barring some exceptions, are psychotherapy notes.
 
-\subsection{Policy Example: GLBA}
+\subsection{Policy example: GLBA}
 \label{sec:orgheadline4}
 
 Some laws include references to information origin in the 
@@ -528,7 +528,7 @@ An example of such a process is a medical examination
 conducted via an interpersonal interaction between
 patient and doctor.
 
-\subsection{Origin and Provenance}
+\subsection{Origin and provenance}
 
 The data resulting from a process depends causally
 on a history of prior processes.
@@ -559,7 +559,7 @@ Origin privacy includes any and only those information
 flow restrictions implemented in a system that are conditioned
 on the provenance of system inputs.
  
-\section{Information Flow and Causal Models}
+\section{Information flow and causal models}
 \label{sec:causality}
 
 We have motivated Origin Privacy as a concept of privacy
@@ -595,14 +595,16 @@ We will close this section by showing how this formalism
 rigorously clarifies an ambiguity in the term `information flow',
 which refers to both causal flow and nomic associations between
 variables.
+We adopt the term \textit{situated information flow} for this
+sense of information flow in causal context.
 
-\subsection{Philosophy: Contextual Integrity and Information Flow}
+\subsection{Philosophy: contextual integrity and information flow}
 
 Origin Privacy is intended to be broadly consistent
-with the Contextual Integrity \cite{nissenbaum09book}
+with the contextual integrity \cite{nissenbaum09book}
 philosophy of privacy in so far as it defines privacy
 as \emph{appropriate information flow}.
-Specifically, Contextual Integrity maintains that
+Specifically, contextual integrity maintains that
 privacy expectations can be characterized by norms
 about how information about persons flows in particular
 social contexts, or spheres.
@@ -613,14 +615,14 @@ as \emph{policies} in natural language and endowed with a
 social system of enforcement.
 We consider laws and contracts as kinds of policies.
 Policies may or may not express social norms as per
-Contextual Integrity; addressing the conditions under
+contextual integrity; addressing the conditions under
 which policies reflect social norms is beyond the scope
 of this article.
 However, we maintain that some policies are specifically
 \emph{privacy} policies because they, like privacy norms,
 prescribe personal information flows. 
 
-As a way of bridging from Contextual Integrity through
+As a way of bridging from contextual integrity through
 privacy policies to the specification of privacy-preserving
 mechanisms, we address \emph{information flows} in general.
 Despite its wide use, the phrase ``information flow''
@@ -663,7 +665,7 @@ The formal theory of the causal dependence between events has been
 worked out in the literature on causal graphical 
 models \cite{pearl1988probabilistic}.
 
-\subsection{Causal Probabilistic Graphical Models}
+\subsection{Causal probabilistic graphical models}
 \label{sec:orgheadline18}
 
 There is the a well known formalism for representing
@@ -1000,7 +1002,7 @@ one has to recognize how the systematic creation and
 transfer of messages--represented in general by a graph
 of causal flows--gives each message its meaningful
 contents.
-In our formalism, an information flow is a causal flow
+In our formalism, a situated information flow is a causal flow
 that, by virtue of its place in a larger causal structure,
 has nomic associations.
 
