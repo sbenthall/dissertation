@@ -1,6 +1,11 @@
  \documentclass[../thesis.tex]{subfiles}
  \begin{document}
 
+ This appendix contains formal specifics of Multi-Agent Influence
+ Diagrams and data games.
+ 
+\section{Multi-Agent Influence Diagrams}
+ 
 Multi-Agent Influence Diagrams (MAIDs) are a game-theoretic
 extension of Bayesian networks developed by Koller and Milch
 \cite{koller2003multi}.
@@ -75,7 +80,7 @@ decision rule of a strategy profile.
   $$EU_a((\sigma_{-\mc{E}},\sigma*_{\mc{E}})) \geq EU_a((\sigma_{\mc{E}}, \sigma'_{\mc{E}}))$$
 \end{dfn}
 
-A major contribution of \cite{koller2003multi} is their analysis
+A major contribution of \citet{koller2003multi} is their analysis
 of how to efficiently discover Nash Equilibrium strategy profiles
 for MAIDs.
 Their method involves analyzing the qualitative graphical
@@ -117,12 +122,10 @@ $D$ depends on the choice of the decision rule for $D'$.
   does not strategically rely on $D'$.
 \end{thm}
 
-\section{Tactical independence}
+\subsection{Tactical independence}
 
-In our analysis in this paper, we will not compute
-equilibrium strategies for MAIDs.
-Rather, we will focus on a newly defined property
-of MAIDs, tactical independence.
+This dissertation introduces a new concept
+related to Multi-Agent Influence Diagrams: tactical independence.
 
 \begin{dfn}[Tactical independence]
   \label{dfn:tactical-independence}
@@ -171,11 +174,11 @@ apply readily.
 % Utility CPDs are deterministic
 % Utility nodes have to be leaves (I bend this in my models!)
 
-\section{Notation}
+\subsection{Notation}
 \label{sec:maid-notation}
 
 We will use a slightly different graphical notation than that used by
-\cite{koller2003multi}
+\citet{koller2003multi}.
 
 In the models in this paper, we will denote random variables
 with undecorated capital letters, e.g. $A, B, C$.
@@ -194,57 +197,17 @@ E.g., $\tilde{A}_q$ and $\breve{U}_q$ denote an action
 taken by agent $q$ and a payoff awarded to $q$,
 respectively.
 
-A dotted arrow in a diagram indicates an optional arrow.
-They indicate that two separate models, one including the
-arrow and one without, are being considered.
+\section{Data Games}
+\label{sec:value-of-data}
+
+What distinguishes a data game from a MAID is the use
+of optional arrows to support mechanism design.
+A dotted arrow in a data game an optional arrow.
+The diagram defines two separate models, one including the
+arrow and one without.
 When considering an instantiation of the model with the dotted
 edge present, we will say the model or edge is \emph{open}.
 When the edge is absent, we'll say it's \emph{closed}.
-
-\section{Value of Data}
-\label{sec:value-of-data}
-
-Using the MAID framework, we can develop a
-the tools to analyze the value of data.
-
-We proceed with several considerations.
-First, we note that the meaning of data depends
-on the context in which is flows.
-This is a consequence of the fact that information
-flow consists of both causal flow and the nomic
-associations of the information, which are due
-to the causal structure in which the flow takes
-place.
-Similarly, we cannot determine the value of data
-except in the context of a system of causal relations
-that give data its meaning.
-
-Second, data is valuable not primarily as a good to
-be consumed but as a resource for determining
-correct actions.
-The value of data is in its strategic and/or tactical
-value.
-This means that data is valuable only in so far as it
-is available to an active agent.
-The value of the data to that agent will be the value
-of the strategic or tactical advantage that the data
-provides.
-
-Third, as a consequence of the second point,
-the effect of data on an agent's action may or may
-not effect outcomes for other agents.
-The value of a particular flow of data to an agent
-may have negative value \emph{to other agents}.
-
-These three points can be seen by an analysis of the MAID
-framework we have introduced in this section.
-In this framework, the flow of data is represented by
-an edge in the causal graph.
-The value of a data flow can be computed as the difference
-in utility to each agent between the open and closed cases
-in the game.
-
-\subsection{Strategic and tactical value}
 
 As we have distinguished between strategic reliance and
 tactical independence, we can distinguish between the
