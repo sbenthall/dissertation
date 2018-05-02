@@ -7,7 +7,7 @@ of economic information flow.
 This builds on prior work identifying the gaps in
 social theoretical understanding of privacy
 (Chapter \ref{chapter:CI-through-CS})
-and advancing a formal definition of information flow
+and advancing a formal definition of situated information flow
 compatible with concepts of security and privacy
 in computer science (Chapter \ref{chapter:origin-privacy}).
 I argue that this model is well suited to capturing
@@ -48,7 +48,7 @@ of single economic contexts.
 I argue that this is due to a lack of formal modeling
 tools for addressing the complex reality of economic
 information flow.
-Drawing on the formal model of information flow in
+Drawing on the formal model of situated information flow in
 Chapter \ref{chapter:origin-privacy}
 based on Dretske, Pearl, and Nissenbaum,
 and Multi-Agent Influence Models \cite{koller2003multi},
@@ -166,7 +166,7 @@ good that could be protected by property rights and
 thereby allocated more efficiently 
 \citep{murphy1995property}.
 Private property rights create a legal relationship between
-a person and a thing that generally transcends
+a person and a thing that transcends
 social spheres; robbery of private property is illegal
 in almost all social contexts.
 
@@ -240,7 +240,7 @@ cut examples of contextual privacy.
 These are examples of \emph{sectoral} privacy laws,
 meaning laws that apply only to a single business sector.
 This indexes them into a particular social context, the
-one defined by that sector's activity.
+one implicated by that sector's activity.
 In the language of Contextual Integrity,
 it is clear to which abstract social \emph{sphere}
 each law applies.\footnote{Though business sectors can
@@ -295,12 +295,12 @@ may be revealing about others who have not consented
 \cite{reidenberg2015privacy} \cite{solove2012introduction}.
 The complexity of notices may indeed reflect the complexity
 with which collected personal data may be used
-\cite{schaub2015design} in practice.
+in practice \cite{schaub2015design}.
 Nevertheless, the scholarly consensus is that
 the notice and consent framework does little to
 protect privacy.
 
-\subsection{GDPR and purpose-binding}
+\subsection{GDPR, purpose-binding, and data minimization}
 \label{sec:GDPR}
 
 The European Union's General Data Protection Regulation,
@@ -372,7 +372,7 @@ claims about how interests
 or incentives shape outcomes.
 
 Modern economics of privacy concerns itself mainly with
-concerns about the economics of personal information
+the economics of personal information
 as it is used by businesses employing
 information technology.
 Specially, it most often addresses what Acquisti,
@@ -463,13 +463,14 @@ for mechanism design for economics contexts involving
 (personal) information flow.
 In this section, I will specify that framework.
 Summarizing prior work (see Section \ref{sec:causality}),
-I synthesis a formal representation
-of information flow from Nissenbaum,
+I synthesize a formal representation
+of situated information flow from Nissenbaum,
 Dretske \cite{dretske1981knowledge},
 Shannon,
 and Pearl \cite{pearl1988probabilistic}.
 In this representation, information flow is a causal flow
-that carries nomic associations, which can be represented
+that carries nomic associations due to other causal
+flows in its context, which can be represented
 precisely using Bayesian networks.
 I then propose the use of Multi-Agent Influence Diagrams,
 a game theoretic extension to Bayesian networks, as
@@ -496,7 +497,7 @@ on robust foundations: Dretske's philosophical theory
 of information flow and Pearl's account of statistical
 causation.
 
-Dretske's \cite{dretske1981knowledge} formulation
+Dretske's \cite{dretske1981knowledge} definition
 that a message carries information about something it represents
 if and only if it messages of its kind carry a regular or ``nomic''
 relationship with what is represented.
@@ -584,11 +585,10 @@ Taken to together, the strategy $\sigma$ of all the players
 induces a MAID into a Bayesian network, from which the
 expected utilitites of all players may be computed.
 
-I defined a data game as a MAID adapted into a framework
-for mechanism design. This is done with a few extension
+I define a data game as a MAID adapted into a framework
+for mechanism design. This is done with an extension
 to the formalism.
-
-First, we introduce the mechanic of an \emph{optional edge},
+We introduce the mechanic of an \emph{optional edge},
 represented in our diagrams as a dotted edge.
 \begin{center}
 \begin{tikzcd}
@@ -599,7 +599,7 @@ A dotted edge represents a potential information flow
 whose value is the focus of the study.
 An optional edge means a diagram represents two
 distinct MAIDs, one with the edge ``open'' or present
-in the graph, and one with the edge ``closed''.
+in the graph, and one with the edge ``closed'' or absent.
 We will look at the outcomes of the open and closed
 cases and evaluate them
 according to values like efficiency and equity.
@@ -619,11 +619,14 @@ The tactical value of information is its value to an agent
 assuming all other agent's strategies remain fixed.
 The strategic value of information is the difference
 in an agent's utilities in the open and closed cases,
-consider a strategic equilibrium of all players in each case.
+considering a strategic equilibrium of all players in each case.
 
 In the cases discussed in this chapter, I will consider
 the strategic value of information flow except when specifically
-stated otherwise.
+stated otherwise.\footnote{Section \ref{sec:expert-ecs-analysis}
+  discusses a case where tactical and strategic properties of
+  a system are different: modeling the reaction to a pontential
+security threat.}
 
 
 \section{Single context economic models}
@@ -636,11 +639,11 @@ phenomena in privacy economics: pricipal-agent contracts
 and price differentiation.
 One of these is a new economic model of
 personalized expert services.
-These models
-use MAIDs with optional information flows
-makes explicit the relationship
+These data games
+make explicit the relationship
 between information flow and contextual outcomes.
-This reveals the strategic value of information flow.
+This reveals the strategic value of information flow
+in each economic context.
 
 \subsection{Agent quality uncertainty}
 \label{sec:agent-quality}
@@ -657,7 +660,7 @@ The firm generally benefits from having more information
 about the persons under consideration.
 The effect of privacy, or lack of it, is uneven across
 the population being considered by the firm.
-Paradigmatically, more suitably employees are benefited
+Paradigmatically, more suitable employees are benefited
 if their suitability is known to potential employers,
 while conversely less suitable employees are harmed
 by the same.
@@ -695,7 +698,7 @@ $$U_p = \begin{cases}
 \end{cases} = \tilde{B_p} V$$
 
 The utility for the agent is, for simplicity, 
-a fixed amount (for example $1$) if the principal buys the contract,
+a fixed amount (for example, $1$) if the principal buys the contract,
 and zero otherwise; so $U_a = \tilde{B_p}$.
 
 This model affords some simplifications through backwards 
@@ -703,7 +706,7 @@ induction.
 The optimal strategy for the principal is 
 to buy the contract if the expected value of it is positive.
 If the dotted edge is open, then the principal is able to use
-the know $V$ to make this decision.
+the knowledge of $V$ to make this tactical decision.
 
 If the dotted edge is closed, then the optimal
 decision $\hat{B_p}$ depends only on
@@ -725,7 +728,7 @@ the contract will be better informed.
 
 \begin{equation}
   \begin{split}
-    \hat{B_p \vert V = v} & = \begin{cases}
+    \hat{B_p \vert (V = v)} & = \begin{cases}
       1 & \text{if } v \geq 0 \\
       0, & \text{otherwise}
     \end{cases} \\
@@ -858,7 +861,7 @@ The firm's utility is the offered price of the product if
 it is bought and zero otherwise; $U_f = B_c R_p$.
 
 The consumer's utility is their demand minus the price if
-they buy the product and zero otherwise; $U_c = B_c (V - R_p)$.
+they buy the product, and zero otherwise; $U_c = B_c (V - R_p)$.
 
 Once again, we can consider two cases.
 In the ``closed'' case,
@@ -881,7 +884,7 @@ Otherwise, they will not purchase the good.
 In the ``open'' case, the producer knows the reservation price
 $V = v$ when deciding their price $\hat{R}$.
 
-$$\hat{R} = \argmax_{r \in \R} r [v > r]) = v - \epsilon$$
+$$\hat{R} = \argmax_{r \in \R} r [v > r] = v - \epsilon$$
 
 This value approaches $v$ from below, and for simplicity of
 presentation we will use $\epsilon$ to represent a vanishingly
@@ -1018,7 +1021,7 @@ The variable $C$ encodes those personal qualities known to
 and communicable by the client.
 The domain of this variable is an integer from 1 to $n$.
 
-The variable $V$ encodes the value of a particular to the client
+The variable $V$ encodes the value to the particular client
 of a variety of courses of action that they might take.
 It depends on $W$ and $C$, and in the simple version of the
 model considered here is a deterministic function: $V$
@@ -1043,7 +1046,8 @@ of the action taken $V$, and that the expert
 benefits from the positive recommendations of
 satisfied clients.
 Future work and other models may explore other
-possible configurations of incentives.
+possible configurations of incentives,
+including conflicts of interest.
 For an action taken $a \in A$, we will
 specify that $U_c = V(a)$.
 
@@ -1122,6 +1126,24 @@ An example of the instantiated model will illustrate these points.
   Let the distribution of $W$ be uniform over the four
   possible matrices in its domain.
 
+  $$dom(W) = \{ \left( \begin{array}{cc}
+    1 & 0 \\
+    1 & 0
+  \end{array} \right),
+  \left( \begin{array}{cc}
+  1 & 0 \\
+  0 & 1
+  \end{array} \right),
+  \left( \begin{array}{cc}
+  0 & 1 \\
+  1 & 0
+  \end{array} \right),
+  \left( \begin{array}{cc}
+  0 & 1 \\
+  0 & 1
+  \end{array} \right)
+  \}$$
+
   In the closed case, $\tilde{R}_e$ does not depend on $C$.
   $\tilde{R}_e$ is therefore a strategically chosen encoding
   of only the information in $W$.
@@ -1171,7 +1193,7 @@ An example of the instantiated model will illustrate these points.
   in the two cases, which in this example is $1 - .75 = .25$.
 \end{exm}
 
-In this example, the expert chooses a strategic at
+In this example, the expert chooses a strategy at
 $\tilde{R}$ that maximizes the flow of information,
 in the Shannon sense of the term,
 to $\tilde{A}$ about another variable of interest,
@@ -1241,7 +1263,7 @@ What these models have in common is that they show
 that the relevance of information on outcomes depends
 on the process by which it is generated and how
 elements of that process affect outcomes.
-While we have provided narrative cover stories for
+While we have provided narrative stories for
 each example where we have described the information
 flows in terms of particular types of documents or events
 (job applications, symptoms, etc.), what really gives
@@ -1251,10 +1273,11 @@ These are given by the conditional probability
 distribution governing the model.
 
 A reason for modeling games with information flow in
-this way is to begin to model the challenges of modeling
-the economic impact of the \emph{secondary use} of data.
-It is the cases where data collected for one purpose or context
-is used in another that are often presented as alarming.
+this way is to model the economic impact of the
+\emph{secondary use} of data.
+What economic reason makes secondary data use so popular
+for businesses, even though it risks affronting social norms
+and risks legal violation?
 
 \subsection{Cooperating Firms: Price differentiation and agent quality}
 \label{sec:cooperating-firms}
@@ -1320,7 +1343,7 @@ Nevertheless, sharing this data has a function analogous
 to sharing personal data that could be used in a hiring decision
 or in offering a loan.
 
-In this situation, the firm's incentives are the same
+In this model, the firm's incentives are the same
 as in the simple price differention
 case in Section \ref{sec:price-differentiation}.
 By assumption, the firm knows the customer's demand
@@ -1394,7 +1417,8 @@ $D$, and therefore prices at $\hat{R} = D - \epsilon$.
   So the strategic value of the information flow from $\tilde{R}$
   to $\tilde{B}$ to the principal is $.5$.
   The strategic value to the average customer/agent of this information flow
-  is negative, as it results in many customer/agents not getting hired.
+  is negative, as it results in many customer/agents not getting hired,
+  whereas in the closed case all potential agents get hired.
 \end{exm}
 
 In this simple example, in strategic equilibrium the firm's offered
@@ -1466,10 +1490,10 @@ HIPAA in health care,
 GLBA in personal finance, and FERPA in education all
 place restrictions on firm's ability to disclose personal
 information. (See Section \ref{sec:confidentiality}.)
-What these sectors all have in common is that they do not
-function without significant disclosures of personal
-information to firms because the provide personalized
-service unavailable to the consumer.
+What these sectors all have in common is their firms require
+significant disclosures of personal
+information to provide personalized
+service.
 The expertise model in Section \ref{sec:expertise}
 captures why personal information is necessary for
 the functioning of these services in fundamental
@@ -1503,14 +1527,14 @@ this information flow to experts will be negative.
 \section{Discussion}
 \label{sec:discussion}
 
-This chapter has developed a ``data games'' framework for modeling
+This chapter has demonstrated ``data games'', a framework for modeling
 economic games with information flow.
 This framework expands MAIDs with optional edges,
 which results in a system for modeling mechanism
 design with Bayesian Networks.
 This framework can model well understood cases of
-privacy economics (principal agent, price differentiation)
-as well as the lesser understood case of expert services.
+privacy economics (principal/agent, price differentiation)
+as well as the less understood case of expert services.
 The framework makes it clear how the fundamental limits
 of information theory, as well as the nature of information
 flow as causal flow with nomic associations,
@@ -1535,22 +1559,7 @@ socioeconomic classes, as they are in reality.
 
 Central to this modeling system is a conceptual shift in
 how to understand the role of information flow in economics.
-In a framework like Contextual Integrity, information flow
-gets its meaning from its social context, or the way
-the information plays a role in an abstractly and normatively
-understood social sphere.
-This captures social expectations well, but not the reality
-of information flow when businesses develop infrastructure
-technologies that span social contexts.
-For this, we need a model of information flow that is more
-realistic.
-We accomplish this by modeling information flows as situated
-within larger causal structures.
-These causal structures give each individual flow its
-nomic associations, which are what make the information
-strategically useful.
-
-The model makes clear that the strategic choices of agents
+These models make clear that the strategic choices of agents
 in the economy is one of
 the elements that determines the causal structure that gives
 information its meaning.
@@ -1574,7 +1583,8 @@ privacy concerns.
 These are often presented as the marginally concerned, pragmatic majority,
 and privacy fundamentalists \cite{ackerman1999privacy}
 \cite{berendt2005privacy} \cite{sheehan2002toward}.
-This matches expectations from economic model:
+This matches results from the economic models:
+in this chapter,
 some populations are more vulnerable than others to the
 negative effects of personal information flow.
 Further work is needed to test to what extent
@@ -1670,9 +1680,7 @@ personal information so important in the first place.
 Security in this sense is necessary for an implementation of 
 confidentiality.
 
-The conditions appear to be ripe for classic market failure,
-or else there would be if there were a market to begin
-with.
+The conditions appear to be ripe for classic market failure
 As has been mentioned, property rights for
 personal data are weak if not nonexistant (see Section \ref{sec:law}).
 Metaphors aside, personal data is not a good being
@@ -1682,9 +1690,9 @@ It is rather information in the \emph{strategic} sense of
 allowing some market actors to perform more effectively.
 There is no sense in which the market of personal information
 has the properties that would lead us to believe the
-market would allocate resources efficiently.
-Perhaps rather than ask if there is a market failure,
-we should be asking what is happening, if not a market at all?
+market would allocate resources efficiently,
+because if there was perfect information in the data market,
+it would cease to exist.
 
 As an alternative to regulating personal data as a kind of property,
 some have proposed regulating personal data through tort
@@ -1730,8 +1738,8 @@ which place restrictions on the goals for which collected
 data may be used.
 Personal data may be processed only for purposes to which
 the data subjects consent (with some exceptions).
-Further data minimization requirements reduce the amount
-to which data is unintendedly exposed to other unintended purposes.
+Data minimization requirements reduce the amount
+to which data is unintendedly exposed to other purposes.
 As a way of creating agreement between the expectations of data
 subjects and the activities of data processors, this can be
 seen as a refinement of the notice-and-consent framework.
