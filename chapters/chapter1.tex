@@ -90,9 +90,9 @@
  computer scientists to do more work exploring the horizons
  of CI.\footnote{This chapter was originally published as:
 
- Sebastian Benthall, Seda G{\"u}rses and Helen Nissenbaum (2017), "Contextual Integrity through the Lens of Computer Science", Foundations and Trends® in Privacy and Security: Vol. 2: No. 1, pp 1-69.
+ Sebastian Benthall, Seda G{\"u}rses and Helen Nissenbaum (2017), "Contextual Integrity through the Lens of Computer Science", Foundations and Trends\textsuperscript{\textregistered} in Privacy and Security: Vol. 2: No. 1, pp 1-69.
 
- I am deeply indebted to my collaborators, Dr. Seda G{\"u}rses and Dr. Helen Nissenbaum, for permission to include our joint work here.}
+ I am grateful to my collaborators, Dr. Seda G{\"u}rses and Dr. Helen Nissenbaum, for permission to include our joint work here.}
  
 
 \section{Introduction}
@@ -144,7 +144,8 @@ expressive framing of privacy threats and solutions than other
 approaches, the additional factors allow for greater specificity --
 hence less ambiguity -- in prescribing and prohibiting certain flows.
 Because CI allows formal representation of flow constraints, it may
-serve to bridge privacy needs experienced by humans, in situ, with
+serve to bridge privacy needs experienced by humans, \textit{in situ},
+with
 privacy mechanisms in digital systems. Although CI's
 account of privacy's ethical importance plays a lesser
 role in the work we have surveyed it remains important as a normative
@@ -169,7 +170,7 @@ integrity in its full theoretical scope. They often give specificity
 and depth to some of its concepts while bracketing others, rarely
 addressing normative dimensions of CI explicitly. Another common
 departure from CI is how researchers interpret context, which often
-maps onto their respective disciplinary assumptions and strategies, and
+maps onto their respective disciplinary assumptions, strategies, and
 literatures. In reviewing the literature, it was not our aim to declare
 any of these approaches ``wrong'' or
 ``misguided''. Instead, our aim was
@@ -179,7 +180,7 @@ improve CI, to guide future research practice, and, in our terms, to
 make CI more ``actionable.''
 
 On the other hand, the forays into implementing systems using contextual
-integrity leads to significant innovations and improvisation that we
+integrity led to significant innovations and improvisation that we
 believe can inform contextual integrity theory.
 For example, the papers
 we have surveyed have elaborated on different types of contexts, most
@@ -262,7 +263,7 @@ multiple contexts.
 
 In this section we provide theoretical
 background in privacy and context in computer science that situates our
-findings. Section \ref{CI2.1} details Contextual Integrity as a philosophical
+findings. Section \ref{CI2.1} details contextual integrity as a philosophical
 theory that aspires to be robust to changes wrought by technology,
 rooted in legal, ethical, and social theory. Our study is primarily of
 how this framework has been used by computer scientists. As an
@@ -287,7 +288,7 @@ theoretical insights and opening new research problems.
 \label{CI2.1}
 
 The practice of privacy may be as old as social life itself but the
-contemporary need for a concept of privacy, rich enough to drive policy
+contemporary need for a concept of privacy rich enough to drive policy
 and precise enough to shape architecture follows in the wake of
 advances in technologies that have disrupted how we create, collect,
 communicate, disseminate, interpret, process, and utilize data. (It is
@@ -349,7 +350,7 @@ key concepts into the privacy vocabulary:
 \begin{enumerate}
 
 \item \textbf{Contexts.} These refer to social contexts, not formally
-constructed but, discoverable as natural constituents of social life.
+constructed but discoverable as natural constituents of social life.
 As theorized in sociology, social theory, and and social philosophy,
 they have been assigned various labels, including, social domains,
 social spheres, fields, or institutions. (Throughout this survey, we
@@ -454,7 +455,7 @@ what we might call its \textit{descriptive} or conceptual aspects,
 referring to the the structure of informational norms.
 
 
-\subsection{Context in Computing}
+\subsection{Context in computing}
 \label{CI2.2}
 
 CI bridges two worlds. In one, it is an account of
@@ -478,7 +479,8 @@ computer scientists interested in privacy design and engineering.
 Although philosophical versions of contextual
 integrity appeared in articles, dating back to 1998
 \citep{nissenbaum1998protecting}
-and, later, in the book, Privacy in Context, it was not represented in
+and, later, in the book, \textit{Privacy in Context} \cite{nissenbaum2009privacy},
+it was not represented in
 computer science literature until \citet{barth06sp}. This paper,
 which we introduce as one of our survey exemplars in
 Section \ref{CI3.3.1},
@@ -554,8 +556,9 @@ computing would lead to privacy by design, arguing that technical
 systems and legal frameworks would be co-designed. But hints of the
 connection between context-aware computing and contextual integrity,
 which was not formulated as a framework until later, were present at
-least as early as Dey et al.'s anchor article:
+least as early as Dey et al.'s anchor article \cite{dey2001conceptual}:
 
+\begin{quote}
 As computational
 capabilities seep into our environments, there is an ever-growing and
 legitimate concern that technologists are not spending enough of their
@@ -570,7 +573,8 @@ computational support to establish default access control
 lists to any
 information that has been captured \cite{lau1999privacy},
 limiting distribution to those who were in
-attendance \cite{dey2001conceptual}.
+attendance.
+\end{quote}
 
 Most relevant to this
 article are the implicit connections these authors draw between the
@@ -642,7 +646,7 @@ in the literature that we review, even though we have limited this
 review only to computer science literature that refers to contextual
 integrity. 
 
-\subsubsection{Context in Privacy Policy}
+\subsubsection{Context in privacy policy}
 \label{CI2.2.2}
   
 While we were looking specifically for computer science papers that
@@ -650,8 +654,9 @@ referenced contextual integrity, it was interesting to find many papers
 that took ``privacy in context'' as
 an idea (which also happens to be the title of
 Nissenbaum's book about contextual integrity
-\citep{nissenbaum2009privacy}), that do not draw from the framework of contextual
-integrity.If the direct origin of ``privacy in
+\citep{nissenbaum2009privacy}), but that do not draw from the
+framework of contextual integrity.
+If the direct origin of ``privacy in
 context'' was not contextual integrity, what was it?
 
 Our contention is that interest was prompted by the general uptake of
@@ -714,7 +719,7 @@ more actionable for computer scientists and systems developers. In
 order to do so we systematically reviewed literature coming out of
 different subfields of computer science explicitly stating the use of
 contextual integrity in their problem or solution definition. We made
-use of techniques proposed by Kitchenham et al. \cite{kitchenham2007guidelines} to make our
+use of techniques proposed by \citet{kitchenham2007guidelines} to make our
 study as comprehensive and transparent as possible. 
 
 In their projects invoking CI, computer scientists have taken on the
@@ -1216,8 +1221,7 @@ In addition, the authors introduce a number of distinctions and
 parameters that go beyond those of CI (see RQ4). The distinction between
 inappropriate exchange and undesirable dissemination allows the authors
 to express norms with respect to information flows within and
-\textit{across multiple contexts}. This is a pragmatic extension of CI
-to also cover information that cross contexts. 
+\textit{across multiple contexts}.  
 
 The different functions for frequency, reciprocity and prior knowledge
 give the authors the tools to explore adaptivity of informational norms
@@ -1423,9 +1427,9 @@ Platforms for Smart Things \cite{jia2017contexiot},
 the Web (and web browsers)
 and Smart Grids \cite{salehie2012adaptive}.
 
-A difficulty in defining 'technical
-platform' is that the technology in question is often
-designed as a 'stack' with multiple
+A difficulty in defining ``technical
+platform'' is that the technology in question is often
+designed as a ``stack'' with multiple
 layers, each layer being a 'platform'
 on which the next one operates.
 Hence there are many technologies, such
@@ -1923,7 +1927,7 @@ information and how this affects privacy (\ref{CI4.4.3}). Others were
 particularly concerned with \textbf{user decision making} (\ref{CI4.4.4}) with
 respect to privacy and information controls. While all these
 innovations are compatible with contextual integrity as outlined in
-[Nissenbaum, 2009], we found the detail with which the paper authors
+\citet{nissenbaum2009privacy}, we found the detail with which the paper authors
 engaged these topics showed ways to expand contextual integrity.
 
 We note that many of these themes echo discoveries made with respect to
@@ -2333,7 +2337,7 @@ co-exist. What role the normative and conceptual aspects of CI can and
 should play in infrastructure underlying multiple contexts is an open
 research question.
 
-\subsubsection{Calls to Action}
+\subsubsection{Calls to action}
 \label{CI5.1.2}
 
 We call computer science researchers to be as explicit as possible about
@@ -2421,7 +2425,7 @@ problem, but one that is made urgent by the demands of existing
 research on privacy by design.
 
 Another theoretical challenge to CI is raised by
-\citet{dourish2004we} critique of ubiquitous computing.
+the \citet{dourish2004we} critique of ubiquitous computing.
 CI's model of contexts as social spheres parameterized
 by roles, information types, and transmission principles does suggest
 what Dourish describes as a positivist model of social contexts:
@@ -2441,13 +2445,13 @@ more specific scale than is currently suggested by CI.
 Philosophical
 theorists can work to make this claim more precise.
 
-\subsubsection{Calls to Action}
+\subsubsection{Calls to action}
 \label{CI5.2.2}
 
 Computer scientists need not wait for theoretical prescriptions to
 continue to do good work at the intersection of CI and privacy by
 design. There is much to be done designing systems that address the
-reality that supporting users privacy requires skillful creation and
+reality that supporting users' privacy requires skillful creation and
 moderation of context. We anticipate that the best work will be
 explicitly aware of the challenges of matching concrete situations with
 the abstract spheres from which CI posits users get their normative
@@ -2476,7 +2480,7 @@ explicit. We call upon computer scientists to work on pragmatic
 solutions to the problems these conceptual discrepancies pose to
 designers and users.
 
-\subsection{Privacy as a Moral Imperative: Between bits and norms}
+\subsection{Privacy as a moral imperative: between bits and norms}
 \label{CI5.3}
 
 One major finding from our investigation of
@@ -2505,7 +2509,7 @@ their research more actionable. But these methods also carry the risk
 of falling short of socially maintained norms of privacy. Threat
 modeling may miss the mark; user expectations can be habituated by
 technology that works at odds with social principle; laws may be
-unjust. The burden is on Contextual Integrity theorists to show how its
+unjust. The burden is on contextual integrity theorists to show how its
 social and philosophical theory of social norms relates to these more
 concrete factors. In turn, we call computer scientists to stretch
 towards the social and philosophical sources of normativity. Our survey
@@ -2519,7 +2523,7 @@ theory, whereby norms arise from the evolution of social spheres, ties
 in with the concrete sources of normativity used by computer
 scientists. We have identified three areas that need elaboration.
 
-Contextual Integrity must provide a way of translating from the
+Contextual integrity must provide a way of translating from the
 information norms of social spheres into a characterization of
 enumerated and discrete privacy \textit{threats}. This is connected to
 the task of deriving mid-level theories of CI for modules of the
@@ -2545,7 +2549,7 @@ address what circumstances social norms provide important guidelines to
 appropriate information flow that are not covered by law, and what
 advantages they provide to technology designers who heed them.
 
-\subsubsection{Calls to Action}
+\subsubsection{Calls to action}
 \label{CI5.3.2}
 
 Computer scientists need not wait for passive instruction on the
@@ -2575,7 +2579,7 @@ conflicts not as something to be designed away but as productive points
 of departure for engagement presents itself as another interesting
 research question.
 
-\subsection{Expanding and Sharpening Contextual Integrity}
+\subsection{Expanding and sharpening contextual integrity}
 \label{CI5.4}
 
 This leads to our findings from \textbf{RQ4}, where we look for aspects
@@ -2641,7 +2645,7 @@ consequently can give (or restrict) users' control over
 how their data flows. A refinement of CI would address how user control
 and user diversity relate to social norms.
 
-\subsubsection{Calls to Action}
+\subsubsection{Calls to action}
 \label{CI5.4.2}
 
 Computer scientists have already made significant contributions to CI by
