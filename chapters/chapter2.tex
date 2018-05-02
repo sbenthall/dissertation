@@ -1019,8 +1019,7 @@ That the law refers variously to aspects of information flow
 based on contents and causal history reflects how
 both are essential to the meaning of the term.
 
-Following on this account of information flow,
-in the following sections we will precisely model a system
+In the following sections we will precisely model a system
 in its environment
 in order to disambiguate the different
 aspects of information flow and understand the conditions
@@ -1079,7 +1078,8 @@ security properties that could not be discovered
 by static program analysis in isolation.
 For example, it is well known that information
 can be revealing of other sensitive information given
-auxiliary knowledge. Our theorem reflects the conditions
+auxiliary knowledge. Our Theorem \ref{thm:semantic}
+reflects the conditions
 under which auxiliary knowledge is possible.
 
 Because the CPD defined by \(Pr\) between each random
@@ -1243,7 +1243,7 @@ Note that in the above diagram and throughout this paper,
 we will sometimes refer to a set of random variables
 such as the set of all high-side inputs $\mc{S}_H$
 as if it is a single random variable.
-This is well-motivate, because for any set of random
+This is well-motivated, because for any set of random
 variables $\mc{X} = \{X_0, X_1, X_2, ...\}$
 one can define a new random variable
 whose domain $Dom(\mc{X})$ is the cross product
@@ -1522,7 +1522,7 @@ by a relation $\approx_L$ such that if two behaviors
 are related by $\approx_L$ they are indistinguishable
 to an attacker. 
 
-Following \cite{tschantz15csf} and \cite{datta2017use},
+Following \citet{tschantz15csf} and \citet{datta2017use},
 we expand the definition of the operator $\lbb \cdot\rbb $
 to be a function to and from probability distributions
 over states, which affords a probabilistic definition
@@ -2254,7 +2254,7 @@ $E_F$ and $A_L$: that no unblocked path exist within $Y$ between
 inputs originating in $E_F$ and $A_L$.
 This implies that both $S_D$ and $Y_B$ be d-separated
 from $A_L$ within $\Y$.
-Note that in the diagram above, $E_F$ is indeedd d-separated
+Note that in the diagram above, $E_F$ is indeed d-separated
 from $A_L$ when the system is \emph{covered}, i.e.
 when none of its components are in the conditioning set.
 Intuitively, $Y_B$ is subject to restricted flow because
@@ -2309,7 +2309,7 @@ requirement.
 The particular case of privacy preserving statistical
 analysis of databases of personal information has
 motivated differential privacy as a formal privacy
-model. \cite{dwork06icalp,dwork08jpc}
+model \cite{dwork06icalp,dwork08jpc}. 
 
 Formally, an algorithm $\A$ is $\epsilon$-differentially private
 if for all subsets $S \subset image(\A)$ and
@@ -2427,7 +2427,7 @@ We can prove this using the Data Processing Inequality,
 A standard proof of this is in the appendix.
 We will also use the Path Mutual Information Theorem (PMIT),
 that we prove as Theorem \ref{thm:path-mutual-information} in
-the appendix.
+Appendix \ref{appendix:information-theory-theorems}.
 
 \begin{exm}
   For the structure described above,
@@ -2514,14 +2514,15 @@ with respect to the other entries in the data set.
   For an ECS model, if for all $D_i$,
   ECS is secure by $\epsilon$-noninterference with
   respect to $D_i$ as a high-side input and $D^{-i}$
-  as low-side input, then $A$ is differentially
+  as low-side input, then $A$ is mutual information
+  differentially
   private with respect to data set $D$
 \end{thm}
 
 \begin{center}
 \begin{tikzcd}
   D_i  \arrow[rd,"\epsilon"] & \\
-  D^{-1} \arrow[r] & A \\
+  D^{-i} \arrow[r] & A \\
 \end{tikzcd}
 \end{center}
 \begin{proof}
@@ -2540,10 +2541,7 @@ with respect to the other entries in the data set.
   which is the condition for $\epsilon$-MI-DP.
 \end{proof}
 
-It is interesting to note that in this proof,
-the fact that noninterference conditions on some
-inputs is necessary for proving its use in
-securing differential privacy.
+
 It is not generally the case that if
 each of a database's entries $D_i$
 is $\epsilon$-semantically secure
@@ -2622,7 +2620,7 @@ of their ability.
 \begin{center}
   \begin{tikzcd}
     & W \arrow[ddl, bend right = 40] \arrow[ddr, bend left = 40]& \\
-    & S \arrow[dl] \arrow[dd] \arrow[dr, bend left = 20, dotted]& \\
+    & C \arrow[dl] \arrow[dd] \arrow[dr, bend left = 20, dotted]& \\
     V \arrow[dd] \arrow[ddr] &  & \tilde{R}_e \arrow[dl] \\
     & \tilde{A}_c \arrow[dl] \arrow[d] &\\
     \breve{U_e} & \breve{U_c} &\\
@@ -2636,13 +2634,13 @@ The action taken by the client $\tilde{A}_c$ and the
 action value function $V$ determine the utility of
 both the expert and the client, $\breve{U_e}$ and $\breve{U_c}$.
 The value function is influence both by general facts about
-the world $W$ and the particular situation of the client, $S$.
+the world $W$ and the particular situation of the client, $C$.
 The client knows their situation but not the general expert knowledge.
 
 The client's action is informed by the general knowledge only
 through the recommendation of the expert.
 The expert may or may not know the client's specific situation;
-this is represented by the dotted arrow between $S$ and $\tilde{R}_e$.
+this is represented by the dotted arrow between $C$ and $\tilde{R}_e$.
 
 The value of such a model is that a qualitative analysis
 can readily provide insights into the influence of an
@@ -2653,9 +2651,9 @@ and that the value of this action depends on $V$,
 the expert's effectiveness will be limited by how well
 they can predict $V$ given the knowledge availabel to them
 at $\tilde{R}_e$.
-Without information about their client's specific situation $S$,
+Without information about their client's specific situation $C$,
 their advice can at best be perfectly general.
-But with access to information $S$, the expert can improve
+But with access to information $C$, the expert can improve
 their recommendation and outcomes for both players.
 
 \subsection{Expert ECS Model}
@@ -2708,7 +2706,7 @@ with high- and low- side sensors ($\mc{S}_H, \mc{S}_L$)
 and actuators ($\mc{A}_H, \mc{A}_L$).
 
 In this model, Alice is aware of her
-personal information $\tilde{C}_a$ and decides at
+personal information $C$ and decides at
 $\tilde{E}_a$ what if any of it to divulge
 secretly (via $\mc{S}_H$)
 into the system because she wants an expert recommendation
@@ -2794,10 +2792,10 @@ of the expert ECS system hold:
   origin secure with respect to $C$ both semantically
   and by noninterference.
 \item If $e_1$ is open, then the system will be origin
-  secure with respect to $C$ by nonintefernce, but may not
+  secure with respect to $C$ by noninterference, but may not
   be semantically secure.
-\item If $e_2$ is open, then the system may be origin secure
-  with respect to $C$ neither by noninterference nor semantically.
+\item If $e_2$ is open, then the system may not be origin secure
+  with respect to $C$ either by noninterference nor semantically.
 \end{itemize}
 
 Though we have been able to show that these security
@@ -2845,13 +2843,17 @@ We developed an informational ontology that reflects
 the assumptions underlying many of these policies.
 We have shown that this informal ontology can
 be formalized in terms of causal graphical models.
-Under this formalism, we show that the two aspects
+These models show that the two aspects
 of information flow correspond to precisely defined
 concepts of causal flow and nomic association.
-Using Bayesian networks, which clarify the difference between
-two senses of information flow, we developed a model
-of system security, the ECS model.
+Both senses of information flow are accomodated by
+an understanding of situated information flow as
+a causal flow in causal context, as represented
+by a Bayesian network.
 
+We developed a model
+of system security, the ECS model, which represents
+a system embedded in its environment.
 This model can
 demonstrate and extend known results in computer security,
 such as those concerning noninterference, semantic security,
@@ -2893,7 +2895,8 @@ as well.
 In general, mathematical results about the limits
 of computational enforceability will generalize
 to the possibility of enforceability through
-non-computational means as well.
+non-computational means.\footnote{This claim assumes the
+Church-Turing thesis.}
 Privacy policies and social expectations
 that restrict information
 based on its contents may be unenforceable or ambiguous
