@@ -37,36 +37,46 @@
 \renewcommand\labelenumiii{\theenumiii.}
 \renewcommand\labelenumiv{\theenumiv.}
 }
+
 % Page layout (geometry)
-\setlength\voffset{-1in}
-\setlength\hoffset{-1in}
-\setlength\topmargin{0in}
-\setlength\oddsidemargin{1in}
-\setlength\textheight{7.5795994in}
-\setlength\textwidth{6.5in}
-\setlength\footskip{0.9602in}
-\setlength\headheight{1in}
-\setlength\headsep{0.9602in}
+%\setlength\voffset{-1in}
+%\setlength\hoffset{-1in}
+%\setlength\topmargin{0in}
+%\setlength\oddsidemargin{1in}
+%\setlength\textheight{7.5795994in}
+%\setlength\textwidth{6.5in}
+%\setlength\footskip{0.9602in}
+%\setlength\headheight{1in}
+%\setlength\headsep{0.9602in}
+
+
 % Footnote rule
 \setlength{\skip\footins}{0.0469in}
 \renewcommand\footnoterule{\vspace*{-0.0071in}\setlength\leftskip{0pt}\setlength\rightskip{0pt plus 1fil}\noindent\textcolor{black}{\rule{0.0\columnwidth}{0.0071in}}\vspace*{0.0398in}}
+
+
 % Pages styles
-\makeatletter
-\newcommand\ps@Standard{
-  \renewcommand\@oddhead{}
-  \renewcommand\@evenhead{\@oddhead}
-  \renewcommand\@oddfoot{\thepage{}}
-  \renewcommand\@evenfoot{\@oddfoot}
-  \renewcommand\thepage{\arabic{page}}
-}
-\makeatother
-\pagestyle{Standard}
-\setlength\tabcolsep{1mm}
-\renewcommand\arraystretch{1.3}
+%\makeatletter
+%\newcommand\ps@Standard{
+%  \renewcommand\@oddhead{}
+%  \renewcommand\@evenhead{\@oddhead}
+%  \renewcommand\@oddfoot{\thepage{}}
+%  \renewcommand\@evenfoot{\@oddfoot}
+%  \renewcommand\thepage{\arabic{page}}
+%}
+
+%\makeatother
+%\pagestyle{Standard}
+%\setlength\tabcolsep{1mm}
+%\renewcommand\arraystretch{1.3}
+
+
 % footnotes configuration
 \makeatletter
 \renewcommand\thefootnote{\arabic{footnote}}
- \begin{document}
+
+
+\begin{document}
 
  \paragraph{Abstract:}
  The theory of Privacy as Contextual Integrity (CI) defines
@@ -2119,7 +2129,7 @@ individual and her decisions in context.
       \textbf{Paper} &
 \textbf{RQ1. Architecture} &
 \textbf{RQ3. Source of Normativity} &
-\textbf{RQ4. Expanding Contextual Integrity}\\\hline\hline
+\textbf{RQ4. Expanding CI}\\\hline\hline
 \citet{barth06sp} &
 FM &
 COMP &
