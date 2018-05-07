@@ -924,10 +924,10 @@ Dissertation Committee Co-chair
 \def\tableofcontents{
 \sectionmark{}
 \@restonecolfalse
-\thispagestyle{plain}
+%\thispagestyle{plain}
   \if@twocolumn\@restonecoltrue\onecolumn\fi
   \chapter*{\contentsname}%
-  {\ssp\thispagestyle{empty}\@starttoc{toc}}\if@restonecol\twocolumn\fi}
+  {\ssp\@starttoc{toc}}\if@restonecol\twocolumn\fi}
 \def\l@part#1#2{\thispagestyle{plain}\addpenalty{-\@highpenalty}%
    \addvspace{2.25em plus\p@}% space above part line
    \begingroup
